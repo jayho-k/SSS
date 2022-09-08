@@ -2,10 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
-    // 홈 페이지
-    // path: '/',
-    // name: 'home',
-    // component: () => import('@/views/HomeView.vue')
+    path: '/cctv',
+    name: 'cctv',
+    component: () => import('@/views/cctv/cctvMainView.vue')
   }
 ]
 
