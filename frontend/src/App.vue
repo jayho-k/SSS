@@ -1,21 +1,20 @@
 <template>
   <div>
-    <kakaoMap></kakaoMap>
+    <router-view></router-view>
+    <router-link to="/cctv">sadfsdfdasf</router-link>
     <div>{{store.count}}</div>
   </div>
 </template>
 
 <script>
 import { useIndexStore } from "@/stores/index"
-import kakaoMap from '@/components/kakaoMap'
 export default {
   name: 'App',
   components: {
-    kakaoMap,
-  },
+},
   setup () {
     const store = useIndexStore()
-    store.count++ 
+    store.count ++
     return {
       store
     }
@@ -24,12 +23,17 @@ export default {
 </script>
 
 <style>
+:root {
+  --main-color1: #000000;
+  --main-color2: #eee;
+  --main-color3: #FFFFFF;
+
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
