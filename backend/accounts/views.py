@@ -3,8 +3,10 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.contrib.auth.hashers import check_password
 from django.db.models import Q
 from .serializers import (
+    UserChangePasswordSeriailzer,
     UserSignupSerializer, 
     UserActiveSeriailzer, 
     UserDetailSerializer,
@@ -69,19 +71,41 @@ def user_detail_or_update_or_delete(request):
             return Response(status=status.HTTP_200_OK)
 
 # 비밀번호 변경
+# curr_password가 기존 비밀번호와 일치히면 new_password로 변경
 @api_view(["POST"])
 def password_change(request):
-    pass
+    token = request.META.get("HTTP_AUTHORIZATION")
+    user_id = checkuser(token)
+    user = get_object_or_404(get_user_model(),id=user_id)
+    curr_password = request.data.get("curr_password")
+    new_password = request.data.get("new_password")
+    print(curr_password,new_password)
+    if check_password(curr_password, user.password):
+        user.set_password(new_password)
+        user.save()
+        return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_403_FORBIDDEN)
 
 # 아이디 찾기
+# email과 name이 일치하는 username반환
 @api_view(["POST"])
 def find_id(request):
-    pass
+    name = request.data.get("name")
+    email = request.data.get("email")
+    user = get_user_model().objects.filter(name=name,email=email)
+    data = {
+        "username" : user.username
+    }
+    return Response(data, status=status.HTTP_200_OK)
 
 # 비밀번호 초기화
+# 유저가 비밀번호 찾기 요청을 보내면 관리자가 임시비밀번호 반환
 @api_view(["POST"])
 def password_reset(request):
     pass
+
+    
+    
 
 # 회원가입 승인    
 @api_view(['PATCH'])
@@ -89,7 +113,7 @@ def user_activate(request):
     token = request.META.get("HTTP_AUTHORIZATION")
     admin_id = checkuser(token)
     admin = get_object_or_404(get_user_model(), id=admin_id)
-    user = get_object_or_404(get_user_model(), id=request.data["uid"])
+    user = get_object_or_404(get_user_model(), id=request.data.get("uid"))
     if (admin.is_admin):
         if request.method == "PATCH":
             serializer = UserActiveSeriailzer(instance=user, data=request.data)
