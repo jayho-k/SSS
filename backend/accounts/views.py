@@ -6,7 +6,6 @@ from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
 from django.db.models import Q
 from .serializers import (
-    UserChangePasswordSeriailzer,
     UserSignupSerializer, 
     UserActiveSeriailzer, 
     UserDetailSerializer,
@@ -27,13 +26,13 @@ def checkuser(token):
     SIMPLE_JWT['SIGNING_KEY'],
     algorithms=[SIMPLE_JWT['ALGORITHM']],
     )
-    return user_token["user_id"]
+    return user_token.get("user_id")
 
 
-# # 로그아웃
-# @api_view(["GET"])
-# def logout(request):
-#     pass
+# 로그아웃
+@api_view(["GET"])
+def logout(request):
+    pass
 
 # 회원가입 신청
 @api_view(["POST"])
@@ -47,7 +46,7 @@ def signup(request):
         
 
 
-@api_view(["GET", "PUT","DELETE"])
+@api_view(["GET", "PUT", "DELETE"])
 def user_detail_or_update_or_delete(request):
     token = request.META.get("HTTP_AUTHORIZATION")
     user_id = checkuser(token)
@@ -79,7 +78,7 @@ def password_change(request):
     user = get_object_or_404(get_user_model(),id=user_id)
     curr_password = request.data.get("curr_password")
     new_password = request.data.get("new_password")
-    print(curr_password,new_password)
+
     if check_password(curr_password, user.password):
         user.set_password(new_password)
         user.save()
@@ -92,7 +91,7 @@ def password_change(request):
 def find_id(request):
     name = request.data.get("name")
     email = request.data.get("email")
-    user = get_user_model().objects.filter(name=name,email=email)
+    user = get_user_model().objects.get(name=name, email=email)
     data = {
         "username" : user.username
     }
@@ -102,8 +101,25 @@ def find_id(request):
 # 유저가 비밀번호 찾기 요청을 보내면 관리자가 임시비밀번호 반환
 @api_view(["POST"])
 def password_reset(request):
-    pass
-
+    name = request.data.get("name")
+    email = request.data.get("email")
+    username = request.data.get("username")
+    user = get_user_model().objects.get(username=username, name=name, email=email)
+    import string
+    import secrets
+    string_pool = string.ascii_letters + string.digits
+    while True:
+        temp_password = ''.join(secrets.choice(string_pool) for i in range(10))
+        if (any(c.islower() for c in temp_password)
+            and any(c.isupper() for c in temp_password)
+            and sum(c.isdigit() for c in temp_password) >= 3):
+            break
+    data = {
+        "password" : temp_password
+    }
+    user.set_password(temp_password)
+    user.save()
+    return Response(data, status=status.HTTP_200_OK)
     
     
 

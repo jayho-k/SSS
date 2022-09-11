@@ -14,7 +14,7 @@ urlpatterns = [
     # 유효성 검사 기능(왜 쓰는지 모르겠음)
     # path('user/token/test/', TokenVerifyView.as_view(), name='token_verify'),
 
-    # path("user/logout/", views.logout),
+    path("user/logout/", views.logout),
     path("user/signup/", views.signup),
     path("user/password/", views.password_change),
     path("user/find/id/", views.find_id),
