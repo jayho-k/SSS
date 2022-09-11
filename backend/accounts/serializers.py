@@ -38,6 +38,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
             "email",
             "phone_number",
             "department",
+            "is_admin"
         )
 
 class UserListSerializer(serializers.ModelSerializer):
