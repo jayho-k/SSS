@@ -8,9 +8,9 @@ class UserSignupSerializer(serializers.ModelSerializer):
         fields = (
             "username",
             "password",
-            "Name",
+            "name",
             "email",
-            "phonenumber",
+            "phone_number",
             "department",
         )
     def create(self,validated_data):
@@ -28,15 +28,28 @@ class UserActiveSeriailzer(serializers.ModelSerializer):
         fields = (
             "activation",
         )
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = (
+            "id",
+            "username",
+            "name",
+            "email",
+            "phone_number",
+            "department",
+        )
+
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = (
             "id",
-            "UserId",
-            "Name",
-            "Email",
-            "PhoneNumber",
-            "Department",
-            "Activation",
+            "username",
+            "name",
+            "email",
+            "phone_number",
+            "department",
+            "activation",
         )

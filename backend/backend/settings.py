@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "accounts",
     
     "rest_framework",
+    "rest_framework.authentication",
     "corsheaders",
     "rest_framework_simplejwt.token_blacklist",
 
@@ -135,8 +136,12 @@ AUTH_USER_MODEL = 'accounts.User'
 SITE_ID = 1
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    # "DEFAULT_PERMISSION_CLASSES": (
+    #     "rest_framework.permissions.IsAuthenticated",
+    # ),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     )
 }
 
