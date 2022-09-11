@@ -34,7 +34,6 @@ class UserDetailSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = (
             "id",
-            "username",
             "name",
             "email",
             "phone_number",
