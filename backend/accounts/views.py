@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.db.models import Q
 from .serializers import (
     UserSignupSerializer, 
     UserActiveSeriailzer, 
@@ -10,7 +11,7 @@ from .serializers import (
     UserListSerializer,
 )
 import jwt
-from backend.settings import SIMPLE_JWT   
+from backend.settings import SIMPLE_JWT
 
 # access 토큰을 통한 유저 확인 => user_id값 반환
 def checkuser(token):
@@ -128,10 +129,12 @@ def user_search(request):
     token = request.META.get("HTTP_AUTHORIZATION")
     admin_id = checkuser(token)
     admin = get_object_or_404(get_user_model(), id=admin_id)
+    res = request.data.get("search")
     if (admin.is_admin):
         if request.method == "POST":
-            pass
-
+            search_user = get_user_model().objects.filter(Q(name__contains=res) | Q(email__contains=res))
+            serializers = UserListSerializer(search_user, many=True)
+            return Response(serializers.data, status=status.HTTP_200_OK)
 
    
 
