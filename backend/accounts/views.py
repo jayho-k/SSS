@@ -7,6 +7,7 @@ from .serializers import (
     UserSignupSerializer, 
     UserActiveSeriailzer, 
     UserDetailSerializer,
+    UserListSerializer,
 )
 import jwt
 from backend.settings import SIMPLE_JWT   
@@ -41,21 +42,6 @@ def signup(request):
             return Response(status=status.HTTP_201_CREATED)
 
         
-# 회원가입 승인    
-@api_view(['PATCH'])
-def user_activate(request):
-    token = request.META.get("HTTP_AUTHORIZATION")
-    admin_id = checkuser(token)
-    admin = get_object_or_404(get_user_model(), id=admin_id)
-    user = get_object_or_404(get_user_model(), id=request.data["uid"])
-    if (admin.is_admin):
-        if request.method == "PATCH":
-            serializer = UserActiveSeriailzer(instance=user, data=request.data)
-            if serializer.is_valid(raise_exception=True):
-                serializer.save()
-                return Response(status=status.HTTP_200_OK)
-    else:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(["GET", "PUT","DELETE"])
@@ -96,20 +82,55 @@ def find_id(request):
 def password_reset(request):
     pass
 
+# 회원가입 승인    
+@api_view(['PATCH'])
+def user_activate(request):
+    token = request.META.get("HTTP_AUTHORIZATION")
+    admin_id = checkuser(token)
+    admin = get_object_or_404(get_user_model(), id=admin_id)
+    user = get_object_or_404(get_user_model(), id=request.data["uid"])
+    if (admin.is_admin):
+        if request.method == "PATCH":
+            serializer = UserActiveSeriailzer(instance=user, data=request.data)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                return Response(status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
 # Activation = True인 유저 리스트
 @api_view(["GET"])
 def user_activate_list(request):
-    pass
+    token = request.META.get("HTTP_AUTHORIZATION")
+    admin_id = checkuser(token)
+    admin = get_object_or_404(get_user_model(), id=admin_id)
+    if (admin.is_admin):
+        if request.method == "GET":
+            users = get_user_model().objects.filter(activation=1, is_admin=False)
+            serializers = UserListSerializer(users, many=True)
+            return Response(serializers.data, status=status.HTTP_200_OK)
 
 # Activation = False인 유저 리스트
 @api_view(["GET"])
 def user_deactivate_list(request):
-    pass
+    token = request.META.get("HTTP_AUTHORIZATION")
+    admin_id = checkuser(token)
+    admin = get_object_or_404(get_user_model(), id=admin_id)
+    if (admin.is_admin):
+        if request.method == "GET":
+            users = get_user_model().objects.filter(activation=0, is_admin=False)
+            serializers = UserListSerializer(users, many=True)
+            return Response(serializers.data, status=status.HTTP_200_OK)
 
 # 유저 검색
 @api_view(["POST"])
 def user_search(request):
-    pass
+    token = request.META.get("HTTP_AUTHORIZATION")
+    admin_id = checkuser(token)
+    admin = get_object_or_404(get_user_model(), id=admin_id)
+    if (admin.is_admin):
+        if request.method == "POST":
+            pass
 
 
    
