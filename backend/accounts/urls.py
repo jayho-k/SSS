@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 urlpatterns = [
-    path("user/", views.user_detail_or_update_delete),
+    path("user/", views.user_detail_or_update_or_delete),
     # JWT 토큰 발행
     path('user/login/', TokenObtainPairView.as_view()),
     # refresh토큰으로 유저 확인후 access토큰 재발행
