@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from rest_framework import status
+from rest_framework_simplejwt.tokens import BlacklistedToken, OutstandingToken
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
@@ -23,16 +24,22 @@ def checkuser(token):
     type, jwt_token = token.split(' ')
     user_token = jwt.decode(
     jwt_token,
-    SIMPLE_JWT['SIGNING_KEY'],
-    algorithms=[SIMPLE_JWT['ALGORITHM']],
+    SIMPLE_JWT["SIGNING_KEY"],
+    algorithms=[SIMPLE_JWT["ALGORITHM"]],
     )
     return user_token.get("user_id")
 
 
 # 로그아웃
-@api_view(["GET"])
+@api_view(["POST"])
 def logout(request):
-    pass
+    token = request.META.get("HTTP_AUTHORIZATION")
+    user_id = checkuser(token)
+    tokens = OutstandingToken.objects.filter(user_id=user_id)
+    for token in tokens:
+        t, _ = BlacklistedToken.objects.get_or_create(token=token)
+
+    return Response(status=status.HTTP_205_RESET_CONTENT)
 
 # 회원가입 신청
 @api_view(["POST"])
@@ -64,10 +71,8 @@ def user_detail_or_update_or_delete(request):
     # 회원 탈퇴(비활성화)
     elif request.method == "DELETE":
         user.activation = -1
-        serializer = UserActiveSeriailzer(instance=user, data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(status=status.HTTP_200_OK)
+        user.save()
+        return Response(status=status.HTTP_200_OK)
 
 # 비밀번호 변경
 # curr_password가 기존 비밀번호와 일치히면 new_password로 변경
@@ -91,7 +96,7 @@ def password_change(request):
 def find_id(request):
     name = request.data.get("name")
     email = request.data.get("email")
-    user = get_user_model().objects.get(name=name, email=email)
+    user = get_object_or_404(get_user_model(),name=name, email=email)
     data = {
         "username" : user.username
     }
@@ -99,12 +104,13 @@ def find_id(request):
 
 # 비밀번호 초기화
 # 유저가 비밀번호 찾기 요청을 보내면 관리자가 임시비밀번호 반환
+# KISA(한국인터넷진흥원)에서 가이드하는 안전한 패스워드 정책(2가지 이상의 문자열을 대소문자조합 그리고 10자리 이상)
 @api_view(["POST"])
 def password_reset(request):
     name = request.data.get("name")
     email = request.data.get("email")
     username = request.data.get("username")
-    user = get_user_model().objects.get(username=username, name=name, email=email)
+    user = get_object_or_404(get_user_model(),username=username, name=name, email=email)
     import string
     import secrets
     string_pool = string.ascii_letters + string.digits
