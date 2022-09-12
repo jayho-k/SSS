@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework_simplejwt.tokens import BlacklistedToken, OutstandingToken
@@ -12,6 +12,7 @@ from .serializers import (
     UserDetailSerializer,
     UserListSerializer,
 )
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 import jwt
 from backend.settings import SIMPLE_JWT
 
@@ -28,6 +29,32 @@ def checkuser(token):
     algorithms=[SIMPLE_JWT["ALGORITHM"]],
     )
     return user_token.get("user_id")
+
+@api_view(["POST"])
+def login(request):
+    username=request.data.get("username")
+    password=request.data.get("password")
+    user = get_user_model().objects.get(username=username)
+    is_login = OutstandingToken.objects.filter(user_id=user.id).exists()
+    if not is_login:
+        if user is not None:
+            if user.activation==True:
+                if check_password(password, user.password):
+                    token = TokenObtainPairSerializer.get_token(user)
+                    refresh_token = str(token)
+                    access_token = str(token.access_token)
+                    data = {
+                        "refresh": refresh_token,
+                        "access": access_token,
+                    }
+                    return Response(data, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_403_FORBIDDEN)
+    else:
+        error = {
+            "message" : "이미 로그인중인 유저입니다." 
+        }
+        return Response(error,status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 
 
 # 로그아웃
