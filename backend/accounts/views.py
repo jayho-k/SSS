@@ -34,9 +34,9 @@ def checkuser(token):
 def login(request):
     username=request.data.get("username")
     password=request.data.get("password")
-    user = get_object_or_404(get_user_model(), username=username)
-    is_login = get_object_or_404(OutstandingToken,user_id=user.id)
-    if is_login is None:
+    user = get_user_model().objects.get(username=username)
+    is_login = OutstandingToken.objects.filter(user_id=user.id).exists()
+    if not is_login:
         if user is not None:
             if user.activation==True:
                 if check_password(password, user.password):
