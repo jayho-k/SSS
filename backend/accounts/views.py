@@ -2,13 +2,13 @@ import jwt
 import string
 import secrets
 from backend.settings import SIMPLE_JWT
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from rest_framework import status
-from rest_framework_simplejwt.tokens import BlacklistedToken, OutstandingToken
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import BlacklistedToken, OutstandingToken
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.hashers import check_password
 from django.db.models import Q
 from .serializers import (
