@@ -21,5 +21,5 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("cctvs/", include("cctvs.urls")),
     path("missingchilds/", include("missingchilds.urls")),
-    path("safetys/", include("safetys.urls")),
+    path("uploads/", include("uploads.urls")),
 ]
