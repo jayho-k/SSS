@@ -32,6 +32,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "accounts",
+    "cctvs",
+    "safetys",
+    "missingchilds",
     
     "rest_framework",
     "rest_framework.authentication",
