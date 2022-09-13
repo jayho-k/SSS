@@ -2,7 +2,7 @@
   <div class="NavMenuBox">
     <div>cctv</div>
     <div>분석</div>
-    <img class="navMenu" src="@/assets/optionIcon.png" alt="">
+    <img class="navMenu" src="@/assets/optionIcon.png" alt="옵션">
   </div>
 </template>
 
