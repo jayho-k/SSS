@@ -1,7 +1,12 @@
+import jwt
+import string
+import secrets
+from backend.settings import SIMPLE_JWT
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework_simplejwt.tokens import BlacklistedToken, OutstandingToken
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
@@ -12,9 +17,6 @@ from .serializers import (
     UserDetailSerializer,
     UserListSerializer,
 )
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-import jwt
-from backend.settings import SIMPLE_JWT
 
 # access 토큰을 통한 유저 확인 => user_id값 반환
 def checkuser(token):
@@ -25,8 +27,8 @@ def checkuser(token):
     type, jwt_token = token.split(' ')
     user_token = jwt.decode(
     jwt_token,
-    SIMPLE_JWT["SIGNING_KEY"],
-    algorithms=[SIMPLE_JWT["ALGORITHM"]],
+    SIMPLE_JWT.get("SIGNING_KEY"),
+    algorithms=[SIMPLE_JWT.get("ALGORITHM")],
     )
     return user_token.get("user_id")
 
@@ -60,13 +62,16 @@ def login(request):
 # 로그아웃
 @api_view(["POST"])
 def logout(request):
-    token = request.META.get("HTTP_AUTHORIZATION")
-    user_id = checkuser(token)
-    tokens = OutstandingToken.objects.filter(user_id=user_id)
-    for token in tokens:
-        t, _ = BlacklistedToken.objects.get_or_create(token=token)
-
-    return Response(status=status.HTTP_205_RESET_CONTENT)
+    if request.method == "POST":
+        token = request.META.get("HTTP_AUTHORIZATION")
+        user_id = checkuser(token)
+        tokens = OutstandingToken.objects.filter(user_id=user_id)
+        if tokens is not None:
+            for token in tokens:
+                t, _ = BlacklistedToken.objects.get_or_create(token=token)
+                token.delete()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 # 회원가입 신청
 @api_view(["POST"])
@@ -138,8 +143,6 @@ def password_reset(request):
     email = request.data.get("email")
     username = request.data.get("username")
     user = get_object_or_404(get_user_model(),username=username, name=name, email=email)
-    import string
-    import secrets
     string_pool = string.ascii_letters + string.digits
     while True:
         temp_password = ''.join(secrets.choice(string_pool) for i in range(10))
@@ -155,6 +158,7 @@ def password_reset(request):
     return Response(data, status=status.HTTP_200_OK)
     
     
+###############################관리자 영역##########################################
 
 # 회원가입 승인    
 @api_view(['PATCH'])
