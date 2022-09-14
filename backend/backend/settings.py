@@ -155,3 +155,6 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'AUTH_HEADER_TYPES': ('JWT',),
 }
+
+MEDIA_ROOT = "/BACKEND/"
+MEDIA_URL = "/media/"
