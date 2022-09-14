@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import { ref, computed } from '@vue/reactivity'
 export default {
   props: {
     D_item: {
@@ -11,7 +11,7 @@ export default {
     }
   },
   setup (props) {
-    const items = ref(props.D_item)
+    const items = ref(computed(() => props.D_item))
     return {
       items
     }

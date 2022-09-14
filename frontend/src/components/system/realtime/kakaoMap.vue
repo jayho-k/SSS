@@ -5,6 +5,8 @@
 <script>
 import { onMounted, watch } from 'vue';
 import { useKakoStore } from '@/stores/kakaoMap';
+import Swal from 'sweetalert2'
+
 export default {
 	setup() {
 		const store = useKakoStore()
@@ -74,12 +76,17 @@ export default {
 
 				// 오버레이 생성 함수
 				make_overlay (store.saved_markers[i][0], new kakao.maps.LatLng(store.saved_markers[i][1], store.saved_markers[i][2]), saved_overlay, marker)
+				// saved  클릭 이벤트
 				kakao.maps.event.addListener(marker, 'click', function() {
-					click_update_savedMarker(marker)
+					if (store.mode === 1) {click_update_savedMarker(marker)
+					} else if (store.mode === 3) {
+						click_delete_marker_and_overlay(marker, saved_markers, saved_overlay, true)
+					}
+
 
 				})}
+			
 			// add일 시 마커를 생성하고 지도위에 표시하는 함수입니다
-
 			function addMarker(position) {
 				store.add_position(position['Ma'], position['La'])
 				// 마커를 생성합니다
@@ -113,26 +120,29 @@ export default {
 					add_markers.push(marker);
 					make_overlay (title, position, add_overlay, marker)
 
-				} else {
-					alert('이미 존재하는 장소입니다')
-				}}
+					// 클릭 이벤트
+					kakao.maps.event.addListener(marker, 'click', function() {
+						if (store.mode === 1) {
+							click_update_addMarker(marker, position)
+						} 
+						else if (store.mode === 3 ) {
+							click_delete_marker_and_overlay(marker, add_markers, add_overlay, false)
+						}
+						
+					})
+					// 드래그 이벤트
+					kakao.maps.event.addListener(marker, 'dragstart', function() {
+							// do something
+					})
 
-				// 클릭 이벤트
-				kakao.maps.event.addListener(marker, 'click', function() {
-					if (store.mode === 1) {
-						click_update_addMarker(marker, position)
-					} 
-					// else if (store.mode === 3 ) {
+					} else {
+						alert('이미 존재하는 장소입니다')
+					}}
 
-					// }
-					
-				})
-				// 드래그 이벤트
-				kakao.maps.event.addListener(marker, 'dragstart', function() {
-					console.log('asdf')
-						// do something
-				})
+
 			}
+
+// ############################## 부분 함수 파트 ##############################
 //3. move 시 드래그 가능
 			watch(() => store.is_move, () => {
 				if (store.is_move) {
@@ -190,7 +200,7 @@ export default {
 			}
 		}
 		function click_update_savedMarker(marker) {
-			var title = prompt('title')
+			var title = sweet_update_info(title)
 			var cnt = 0
 			var s_index = 0
 			if ( title === null || title === '') {
@@ -220,12 +230,94 @@ export default {
 				}
 			}
 		}
-		// function click_delete_marker_and_overlay() {}
+		function click_delete_marker_and_overlay(marker, marker_arr, overlay_arr, is_saved) {
+			var s_index = 0
+			marker_arr.forEach(function(item, index) {
+				if (marker === item) {
+					s_index = index
+				} 
+			})
+			const swalWithBootstrapButtons = Swal.mixin({
+				customClass: {
+					confirmButton: 'btn btn-success',
+					cancelButton: 'btn btn-danger'
+				},
+				buttonsStyling: false
+			})
+			swalWithBootstrapButtons.fire({
+				title: 'Are you sure?',
+				text: "You won't be able to revert this!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: 'Yes, delete it!',
+				cancelButtonText: 'No, cancel!',
+				reverseButtons: true
+			}).then((result) => {
+				if (result.isConfirmed) {
+					swalWithBootstrapButtons.fire(
+						'Deleted!',
+						'Your file has been deleted.',
+						'success'
+					)
+					marker_arr[s_index].setMap(null)
+					overlay_arr[s_index].setMap(null)
+					marker_arr.splice(s_index,1)
+					overlay_arr.splice(s_index,1)
+					if (is_saved) {
+						store.saved_markers.splice(s_index,1)
+					}
+				} else if (
+					/* Read more about handling dismissals below */
+					result.dismiss === Swal.DismissReason.cancel
+				) {
+					swalWithBootstrapButtons.fire(
+						'Cancelled',
+						'Your imaginary file is safe :)',
+						'error'
+					)
+				}
+			})
+		}
+		function sweet_update_info() {
+			Swal.fire({
+				title: 'Submit your Github username',
+				input: 'text',
+				inputAttributes: {
+					autocapitalize: 'off'
+				},
+				showCancelButton: true,
+				confirmButtonText: 'Look up',
+				showLoaderOnConfirm: true,
+				preConfirm: (login) => {
+					return fetch(`//api.github.com/users/${login}`)
+						.then(response => {
+							if (!response.ok) {
+								throw new Error(response.statusText)
+							}
+							return response.json()
+						})
+						.catch(error => {
+							Swal.showValidationMessage(
+								`Request failed: ${error}`
+							)
+						})
+				},
+				allowOutsideClick: () => !Swal.isLoading()
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire({
+						title: `${result.value.login}'s avatar`,
+						imageUrl: result.value.avatar_url
+					})
+				}
+			})
+		}
 		return {
 			initMap,
 			make_overlay,
 			click_update_addMarker,
-			click_update_savedMarker
+			click_update_savedMarker,
+			sweet_update_info
 		}
 	}
 }
@@ -238,5 +330,8 @@ export default {
 	border-radius: 5px;
 	width: auto;
 	height: auto;
+}
+.btn-success {
+	font-size: 20px;
 }
 </style>
