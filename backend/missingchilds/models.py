@@ -11,11 +11,11 @@ class Child(models.Model):
     belonging = models.CharField(max_length=50)
     pet = models.CharField(max_length=50)
     video_url = models.CharField(max_length=50)
-    activation = models.BooleanField()
+    activation = models.BooleanField(default=True)
 
 
 class Result(models.Model):
     result_img = models.CharField(max_length=50)
     time = models.DateTimeField()
     place = models.CharField(max_length=50)
-    activation = models.BooleanField(max_length=50)
+    activation = models.BooleanField(default=True)
