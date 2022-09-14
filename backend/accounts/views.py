@@ -1,7 +1,7 @@
-import jwt
+
 import string
 import secrets
-from backend.settings import SIMPLE_JWT
+from backend.common import checkuser
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from rest_framework import status
@@ -19,18 +19,18 @@ from .serializers import (
 )
 
 # access 토큰을 통한 유저 확인 => user_id값 반환
-def checkuser(token):
-    if token is None:
-        return Response(status=status.HTTP_401_UNAUTHORIZED) 
-    # header에서 받은 token 내용에 선행값 (ex. Bearer)이 있다면 token값이랑 분리 시켜준다.
-    # "bearer 토큰값"
-    type, jwt_token = token.split(' ')
-    user_token = jwt.decode(
-    jwt_token,
-    SIMPLE_JWT.get("SIGNING_KEY"),
-    algorithms=[SIMPLE_JWT.get("ALGORITHM")],
-    )
-    return user_token.get("user_id")
+# def checkuser(token):
+#     if token is None:
+#         return Response(status=status.HTTP_401_UNAUTHORIZED) 
+#     # header에서 받은 token 내용에 선행값 (ex. Bearer)이 있다면 token값이랑 분리 시켜준다.
+#     # "bearer 토큰값"
+#     type, jwt_token = token.split(' ')
+#     user_token = jwt.decode(
+#     jwt_token,
+#     SIMPLE_JWT.get("SIGNING_KEY"),
+#     algorithms=[SIMPLE_JWT.get("ALGORITHM")],
+#     )
+#     return user_token.get("user_id")
 
 @api_view(["POST"])
 def login(request):
