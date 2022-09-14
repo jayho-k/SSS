@@ -8,9 +8,6 @@ class Child(models.Model):
     cctv = models.ManyToManyField(CCTV, related_name="child_cctv", null=True)
     chlid_class = models.TextField()
     
-    
-
-
 
 class Result(models.Model):
     child = models.ForeignKey(Child, on_delete=models.CASCADE)
