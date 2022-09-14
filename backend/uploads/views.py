@@ -7,24 +7,39 @@ from .models import Upload, Result
 from backend.common import checkuser
 from .serializers import (
     UploadSerializer,
-    UploadInputSerializer
+    UploadlistSerializer,
+    ResultDetailSerializer
 )
 
 # Create your views here.
 
 # 공공안전 업로드
+@api_view(["GET"])
+def Upload_list(requset):
+    token = requset.META.get("HTTP_AUTHORIZATION")
+    user_id = checkuser(token)
+    user = get_object_or_404(get_user_model(), id=user_id)
+    uploads = user.upload_set.order_by("pk")
+    serializers = UploadlistSerializer(uploads, many=True)
+    return Response(serializers.data)
+    
 
 
-@api_view(["POST", "DELETE"])
-def upload_save_or_delete(request):
+@api_view(["GET", "POST", "DELETE"])
+def upload_detail_or_save_or_delete(request):
     token = request.META.get("HTTP_AUTHORIZATION")
     user_id = checkuser(token)
-    get_object_or_404(get_user_model(), id=user_id)
+    user = get_object_or_404(get_user_model(), id=user_id)
+    # 결과 상세정보 전송
+    if request.method == "GET":
+        upload_data = get_object_or_404(Upload, id=request.data.get("id"))
+        serializer = UploadSerializer(upload_data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     # 데이터 저장
     if request.method == "POST":
-        serializer = UploadSerializer(data=request.data)
+        serializer = UploadlistSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
+            serializer.save(user=user)
             return Response(status=status.HTTP_200_OK)
         
     # 데이터 삭제 
@@ -44,12 +59,12 @@ def upload_save_or_delete(request):
 def upload_result_save(request):
     token = request.META.get("HTTP_AUTHORIZATION")
     user_id = checkuser(token)
-    get_object_or_404(get_user_model(), id=user_id)
+    user = get_object_or_404(get_user_model(), id=user_id)
     upload_data = get_object_or_404(Upload, id=request.data.get("id"))
     if request.method == "POST":
-        serializer = UploadInputSerializer(data=request.data)
+        serializer = ResultDetailSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(upload=upload_data)
+            serializer.save(user=user,upload=upload_data)
             return Response(status=status.HTTP_200_OK)
 
 
