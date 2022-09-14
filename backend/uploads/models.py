@@ -5,7 +5,7 @@ from django.conf import settings
 class Upload(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     detection_class = models.CharField(max_length=5)
-    activation = models.BooleanField(default=True)
+
 
 class Result(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -13,4 +13,3 @@ class Result(models.Model):
     result_img = models.FileField(upload_to=file_upload_path)
     time = models.DateTimeField(auto_now_add=True)
     result_class = models.CharField(max_length=5)
-    activation = models.BooleanField(default=True)

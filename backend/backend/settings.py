@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "accounts",
     "cctvs",
-    "safetys",
+    "uploads",
     "missingchilds",
     
     "rest_framework",

@@ -18,20 +18,6 @@ from .serializers import (
     UserListSerializer,
 )
 
-# access 토큰을 통한 유저 확인 => user_id값 반환
-# def checkuser(token):
-#     if token is None:
-#         return Response(status=status.HTTP_401_UNAUTHORIZED) 
-#     # header에서 받은 token 내용에 선행값 (ex. Bearer)이 있다면 token값이랑 분리 시켜준다.
-#     # "bearer 토큰값"
-#     type, jwt_token = token.split(' ')
-#     user_token = jwt.decode(
-#     jwt_token,
-#     SIMPLE_JWT.get("SIGNING_KEY"),
-#     algorithms=[SIMPLE_JWT.get("ALGORITHM")],
-#     )
-#     return user_token.get("user_id")
-
 @api_view(["POST"])
 def login(request):
     username=request.data.get("username")
@@ -76,6 +62,7 @@ def logout(request):
 # 회원가입 신청
 @api_view(["POST"])
 def signup(request):
+
     if request.method == "POST":
         user = UserSignupSerializer(data=request.data)
         if user.is_valid(raise_exception=True):
@@ -102,8 +89,9 @@ def user_detail_or_update_or_delete(request):
             return Response(status=status.HTTP_200_OK)
     # 회원 탈퇴(비활성화)
     elif request.method == "DELETE":
-        user.activation = -1
-        user.save()
+        token = OutstandingToken.objects.filter(user_id=user_id)
+        token.delete()
+        user.delete()
         return Response(status=status.HTTP_200_OK)
 
 # 비밀번호 변경
