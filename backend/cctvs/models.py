@@ -8,6 +8,5 @@ class CCTV(models.Model):
     video = models.CharField(max_length=20)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    activation = models.BooleanField(default=True)
     
     
