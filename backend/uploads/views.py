@@ -15,7 +15,7 @@ from .serializers import (
 
 # 공공안전 업로드
 @api_view(["GET"])
-def Upload_list(requset):
+def upload_list(requset):
     token = requset.META.get("HTTP_AUTHORIZATION")
     user_id = checkuser(token)
     user = get_object_or_404(get_user_model(), id=user_id)
@@ -45,12 +45,7 @@ def upload_detail_or_save_or_delete(request):
     # 데이터 삭제 
     elif request.method == "DELETE":
         upload_data = get_object_or_404(Upload, id=request.data.get("id"))
-        upload_data.activation = False
-        results = upload_data.results.order_by("pk")
-        for result in results:
-            result.activation = False
-            result.save()
-        upload_data.save()
+        upload_data.delete()
         return Response(status=status.HTTP_200_OK) 
 
 
