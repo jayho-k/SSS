@@ -9,7 +9,7 @@ class CCTVCreateSerializer(serializers.ModelSerializer):
             "name",
             "video",
             "latitude",
-            "longtitude",
+            "longitude",
         )
 class CCTVDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,5 +18,5 @@ class CCTVDetailSerializer(serializers.ModelSerializer):
             "name",
             "video",
             "latitude",
-            "longtitude",
+            "longitude",
         )
