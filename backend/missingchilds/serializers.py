@@ -10,7 +10,8 @@ class ChildSerializer(serializers.ModelSerializer):
             "child_img",
             "missing_time",
             "age",
-            "name"
+            "name",
+            "find",
         )
 
 class ChildListSerializer(serializers.ModelSerializer):
