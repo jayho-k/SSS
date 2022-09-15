@@ -155,6 +155,6 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'AUTH_HEADER_TYPES': ('JWT',),
 }
-
-MEDIA_ROOT = "/BACKEND/"
+import os
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = "/media/"
