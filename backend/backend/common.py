@@ -1,18 +1,30 @@
 import datetime
 import os
-import uuid
+from uuid import uuid4
+from django.utils import timezone
 import jwt
 from rest_framework.response import Response
 from .settings import SIMPLE_JWT
 from rest_framework import status
 
 def file_upload_path(instance, filename):
-    ext = filename.split(".")[-1]
-    d = datetime.datetime.now()
-    filepath = d.strftime("%Y/%m/%d")
-    suffix = d.strftime("%Y%m%d%H%M%S")
-    filename = "%S_%S.%S" % (uuid.uuid4().hex, suffix, ext)
-    return os.path.join(filepath, filename)
+    # ext = filename.split(".")[-1]
+    # d = datetime.datetime.now()
+    # filepath = d.strftime("%Y/%m/%d")
+    # suffix = d.strftime("%Y%m%d%H%M%S")
+    # filename = "%%S_%%S.%%S" % (uuid.uuid4().hex, suffix, ext)
+    # return os.path.join(filepath, filename)
+    ymd_path = timezone.now().strftime('%Y/%m/%d') 
+    # 길이 32 인 uuid 값
+    uuid_name = uuid4().hex
+    # 확장자 추출
+    extension = os.path.splitext(filename)[-1].lower()
+    # 결합 후 return
+    return '/'.join([
+        ymd_path,
+        uuid_name + extension,
+    ])
+
 
 
 def checkuser(token):
