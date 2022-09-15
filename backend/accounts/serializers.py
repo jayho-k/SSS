@@ -1,9 +1,11 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
+User = get_user_model()
+
 class UserSignupSerializer(serializers.ModelSerializer):
     class Meta:
-        model = get_user_model()
+        model = User
         fields = (
             "username",
             "password",
@@ -23,14 +25,14 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
 class UserActiveSeriailzer(serializers.ModelSerializer):
     class Meta:
-        model = get_user_model()
+        model = User
         fields = (
             "activation",
         )
 
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = get_user_model()
+        model = User
         fields = (
             "id",
             "name",
@@ -42,7 +44,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = get_user_model()
+        model = User
         fields = (
             "id",
             "username",

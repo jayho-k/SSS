@@ -1,3 +1,4 @@
+from venv import create
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from rest_framework import status
@@ -14,8 +15,6 @@ def cctv_detail_or_create_or_update_or_delete(request):
     token = request.META.get("HTTP_AUTHORIZATION")
     user_id = checkuser(token)
     user = get_object_or_404(get_user_model(), id=user_id)
-    cctv_id = request.data.get("id")
-    cctv = get_object_or_404(CCTV, id=cctv_id)
 
     if request.method == "GET":
         cctvs = CCTV.objects.order_by("id").filter(user=user_id)
@@ -29,13 +28,23 @@ def cctv_detail_or_create_or_update_or_delete(request):
         return Response(status=status.HTTP_200_OK)
 
     elif request.method == "PUT":
-        serializer = CCTVDetailSerializer(cctv)
+        cctv_id = request.data.get("id")
+        cctv = get_object_or_404(CCTV, id=cctv_id)
+        serializer = CCTVDetailSerializer(instance=cctv, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=user)
         return Response(status=status.HTTP_200_OK)
 
     elif request.method == "DELETE":
+        cctv_id = request.data.get("id")
+        cctv = get_object_or_404(CCTV, id=cctv_id)
         cctv.delete()
         return Response(status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_403_FORBIDDEN)
+
+    # get - list
+
+    # post - create
+
+    # get,put,delete - detail,upadate,delete
