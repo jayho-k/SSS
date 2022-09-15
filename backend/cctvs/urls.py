@@ -3,5 +3,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("/cctvs", views.cctv_detail_or_create_or_update_or_delete),
+    path("", views.cctv_detail_or_update_or_delete),
+    path("list/", views.cctv_list),
+    path("create/", views.cctv_create),
 ]
