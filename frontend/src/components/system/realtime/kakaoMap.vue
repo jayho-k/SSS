@@ -78,69 +78,115 @@ export default {
 				make_overlay (store.saved_markers[i][0], new kakao.maps.LatLng(store.saved_markers[i][1], store.saved_markers[i][2]), saved_overlay, marker)
 				// saved  클릭 이벤트
 				kakao.maps.event.addListener(marker, 'click', function() {
-					if (store.mode === 1) {click_update_savedMarker(marker)
+					if (store.mode === 1) {
+            click_update_Marker(marker, saved_markers, saved_overlay, true)
 					} else if (store.mode === 3) {
 						click_delete_marker_and_overlay(marker, saved_markers, saved_overlay, true)
 					}
-
-
-				})}
+				})
+        // saved  드래그 이벤트
+        kakao.maps.event.addListener(marker, 'dragstart', function() {
+          dragstart_move_marker(marker, saved_markers, saved_overlay)
+        })
+        
+        kakao.maps.event.addListener(marker, 'dragend', function() {
+          dragend_move_marker(marker, saved_overlay)
+        });
+      }
 			
 			// add일 시 마커를 생성하고 지도위에 표시하는 함수입니다
 			function addMarker(position) {
-				store.add_position(position['Ma'], position['La'])
 				// 마커를 생성합니다
 				var cnt = 0
-				var title = prompt('title')
-				// 장소가 빈값이면 오류 반환
-				if ( title === null || title === '') {
-						alert('내용을 입력하세요')
-				} else {
-					store.saved_markers.forEach(function(item) {
-						if ( title === item[0]) {
-							cnt += 1
-						}
-					})
-					add_markers.forEach(function(item) {
-						if ( title === item.Gb) {
-							cnt += 1
-						}
-					})
-					if ( cnt === 0) {
-					var marker = new kakao.maps.Marker({
-						position: position,
-						title : title
-					});
+        Swal.fire({
+        title: 'Submit your Github username',
+        input: 'text',
+        inputAttributes: {
+          autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Look up',
+        confirmButtonColor: '#3085d6',
+        showLoaderOnConfirm: true,
+        preConfirm: (title) => {
+          if (title === '') {
+            Swal.showValidationMessage(
+            `title을 입력하세요 `
+            ) 
+          } else {
+            for (var s_m_i = 0; s_m_i < saved_markers.length; s_m_i ++) {
+              if (title === saved_markers[s_m_i].getTitle()){
+                cnt ++
+              }
+              if (cnt != 0) {
+                break
+              }
+            }
+            for (var a_m_i = 0; s_m_i < add_markers.length; a_m_i ++){
+              if (title === add_markers[a_m_i].getTitle()){
+                cnt ++
+              }
+              if (cnt != 0) {
+                break
+              }
+            }
+            if (cnt < 1) {
+              var marker = new kakao.maps.Marker({
+              position: position,
+              title : title
+            });
 
-					marker.setClickable(true)
-					// 마커가 지도 위에 표시되도록 설정합니다
-					marker.setMap(initMap.map);
-					
-					// 생성된 마커를 배열에 추가합니다
-					add_markers.push(marker);
-					make_overlay (title, position, add_overlay, marker)
+            marker.setClickable(true)
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(initMap.map);
+            
+            // 생성된 마커를 배열에 추가합니다
+            add_markers.push(marker);
+            make_overlay (title, position, add_overlay, marker)
 
-					// 클릭 이벤트
-					kakao.maps.event.addListener(marker, 'click', function() {
-						if (store.mode === 1) {
-							click_update_addMarker(marker, position)
-						} 
-						else if (store.mode === 3 ) {
-							click_delete_marker_and_overlay(marker, add_markers, add_overlay, false)
-						}
-						
-					})
-					// 드래그 이벤트
-					kakao.maps.event.addListener(marker, 'dragstart', function() {
-							// do something
-					})
+             // add 클릭 이벤트
+            kakao.maps.event.addListener(marker, 'click', function() {
+              if (store.mode === 1) {
+                click_update_Marker(marker, add_markers, add_overlay, false)
+              } 
+              else if (store.mode === 3 ) {
+                click_delete_marker_and_overlay(marker, add_markers, add_overlay, false)
+              }  
+            })
+            // add 드래그 이벤트
+            kakao.maps.event.addListener(marker, 'dragstart', function() {
+              dragstart_move_marker(marker, add_markers, add_overlay)
+            })
+            kakao.maps.event.addListener(marker, 'dragend', function() {
+              dragend_move_marker(marker, add_overlay)
+            });
 
-					} else {
-						alert('이미 존재하는 장소입니다')
-					}}
+            } else {
+              Swal.showValidationMessage(
+                '이미 존재하는 장소입니다'
+              ) 
+            }
+          }
+        }
+      }).then((title) => {
+        if (title.isConfirmed) {
+          Swal.fire(
+          '',
+          'title이 '+ title.value + ' 생성되었습니다',
+          'success'
+
+          )
+        } else {
+          Swal.fire(
+          '',
+          '취소되었습니다',
+          'error',
+          )
+        }
+      })
+  } 
 
 
-			}
 
 // ############################## 부분 함수 파트 ##############################
 //3. move 시 드래그 가능
@@ -166,74 +212,69 @@ export default {
 			// 커스텀 오버레이를 지도에 표시합니다
 			customOverlay.setMap(initMap.map, marker);
 		}
-		function click_update_addMarker(marker, position) {
-			var title = prompt('title')
-			var cnt = 0
-			var s_index = 0
-			if ( title === null || title === '') {
-				alert('내용을 입력하세요')
-			} else {
-				store.saved_markers.forEach(function(item) {
-					if ( title === item[0]) {
-						cnt += 1
-					}
-				})
-				add_markers.forEach(function(item, index) {
-					if ( marker.Gb === item.Gb) {
-						s_index = index
-					} else if ( title === item.Gb) {
-						cnt += 1
-					}
-				})
-				if ( cnt === 0) {
-					add_overlay[s_index].setMap(null);
-					add_markers[s_index].Gb = title
-					var customOverlay = new kakao.maps.CustomOverlay({
-						position: position,
-						content: '<div class="customOverlay ">'+ title +'</div>'
-					});
-					add_overlay[s_index] = customOverlay
-					customOverlay.setMap(initMap.map, marker);
-				} else {
-					console.log(alert('이미 존재하는 장소입니다'))
-				}
-			}
-		}
-		function click_update_savedMarker(marker) {
-			var title = sweet_update_info(title)
-			var cnt = 0
-			var s_index = 0
-			if ( title === null || title === '') {
-				alert('내용을 입력하세요')
-			} else {
-				store.saved_markers.forEach(function(item, index) {
-					if ( marker.Gb === item[0]) {
-						s_index = index
-					} else if ( title === item[0]) {
-						cnt += 1
-					}
-				})
-				if ( cnt === 0) {
-					saved_overlay[s_index].setMap(null);
-					saved_markers[s_index].Gb = title
-					store.saved_markers[s_index][0] = title
-					var customOverlay = new kakao.maps.CustomOverlay({
-						position: new kakao.maps.LatLng(store.saved_markers[s_index][1], store.saved_markers[s_index][2]),
-						content: '<div class="customOverlay">'+ title +'</div>'
-					});
-					saved_overlay[s_index] = customOverlay
-					customOverlay.setMap(initMap.map, marker);
-					console.log(marker)
-					console.log(saved_overlay[s_index])
-				} else {
-					alert('이미 존재하는 장소입니다')
-				}
-			}
-		}
+    
+		function click_update_Marker(marker, marker_arr, overlay_arr, is_saved) {
+      var cnt = 0
+      var s_index = null
+      Swal.fire({
+        title: 'Submit your Github username',
+        input: 'text',
+        inputAttributes: {
+          autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Look up',
+        confirmButtonColor: '#3085d6',
+        showLoaderOnConfirm: true,
+        preConfirm: (title) => {
+          if (title === '') {
+            Swal.showValidationMessage(
+            `title을 입력하세요 `
+            ) 
+          } else {
+            marker_arr.forEach(function(item, index) {
+              if (marker.getTitle() === item.getTitle()) {
+                s_index = index
+              } else if ( title === item.getTitle()) {
+                cnt += 1
+              }
+            })
+            if (cnt < 1) {
+              overlay_arr[s_index].setMap(null);
+              marker_arr[s_index].setTitle(title)
+              if (is_saved) {
+                store.saved_markers[s_index][0] = title
+              }
+              overlay_arr[s_index].setContent('<div class="customOverlay ">'+ title +'</div>')
+              overlay_arr[s_index].setMap(initMap.map, marker)
+            } else {
+              Swal.showValidationMessage(
+                '이미 존재하는 장소입니다'
+              ) 
+            }
+          }
+        }
+      }).then((title) => {
+        if (title.isConfirmed) {
+          Swal.fire(
+          '',
+          'title이 '+ title.value + ' 수정되었습니다',
+          'success'
+
+          )
+        } else {
+          Swal.fire(
+          '',
+          '취소되었습니다',
+          'error',
+          )
+        }
+      })
+    }
 		function click_delete_marker_and_overlay(marker, marker_arr, overlay_arr, is_saved) {
 			var s_index = 0
 			marker_arr.forEach(function(item, index) {
-				if (marker === item) {
+				if (marker.getTitle() === item.getTitle()) {
 					s_index = index
 				} 
 			})
@@ -278,46 +319,27 @@ export default {
 				}
 			})
 		}
-		function sweet_update_info() {
-			Swal.fire({
-				title: 'Submit your Github username',
-				input: 'text',
-				inputAttributes: {
-					autocapitalize: 'off'
-				},
-				showCancelButton: true,
-				confirmButtonText: 'Look up',
-				showLoaderOnConfirm: true,
-				preConfirm: (login) => {
-					return fetch(`//api.github.com/users/${login}`)
-						.then(response => {
-							if (!response.ok) {
-								throw new Error(response.statusText)
-							}
-							return response.json()
-						})
-						.catch(error => {
-							Swal.showValidationMessage(
-								`Request failed: ${error}`
-							)
-						})
-				},
-				allowOutsideClick: () => !Swal.isLoading()
-			}).then((result) => {
-				if (result.isConfirmed) {
-					Swal.fire({
-						title: `${result.value.login}'s avatar`,
-						imageUrl: result.value.avatar_url
-					})
-				}
-			})
-		}
+
+    function dragstart_move_marker(marker, marker_arr, overlay_arr) {
+      for (var d_m_m_i = 0; d_m_m_i < marker_arr.length;  d_m_m_i ++) {
+        if (marker.getTitle() === marker_arr[d_m_m_i].getTitle()) {
+          overlay_arr[d_m_m_i].setMap(null)
+          store.drag_update(d_m_m_i)
+          break
+        }
+      }
+    }
+    function dragend_move_marker(marker, overlay_arr) {
+      overlay_arr[store.drag_index].setPosition(marker.getPosition())
+      overlay_arr[store.drag_index].setMap(initMap.map, marker)
+    }
 		return {
 			initMap,
 			make_overlay,
-			click_update_addMarker,
-			click_update_savedMarker,
-			sweet_update_info
+      dragstart_move_marker,
+      dragend_move_marker,
+			click_update_Marker,
+      saved_markers
 		}
 	}
 }
