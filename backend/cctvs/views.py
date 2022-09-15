@@ -9,42 +9,52 @@ from backend.common import checkuser
 from cctvs.models import CCTV
 from .serializers import CCTVDetailSerializer
 
-# cctv crud api
-@api_view(["GET", "POST", "PUT", "DELETE"])
-def cctv_detail_or_create_or_update_or_delete(request):
-    token = request.META.get("HTTP_AUTHORIZATION")
-    user_id = checkuser(token)
-    user = get_object_or_404(get_user_model(), id=user_id)
-
+@api_view(["GET"])
+def cctv_list(request):
     if request.method == "GET":
+        token = request.META.get("HTTP_AUTHORIZATION")
+        user_id = checkuser(token)
+        user = get_object_or_404(get_user_model(), id=user_id)
+
         cctvs = CCTV.objects.order_by("id").filter(user=user_id)
         serializer = CCTVDetailSerializer(cctvs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_403_FORBIDDEN)
 
-    elif request.method == "POST":
+@api_view(["POST"])
+def cctv_create(request):
+    if request.method == "POST":
+        token = request.META.get("HTTP_AUTHORIZATION")
+        user_id = checkuser(token)
+        user = get_object_or_404(get_user_model(), id=user_id)
+
         serializer = CCTVDetailSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=user)
         return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_403_FORBIDDEN)
+
+# cctv crud api
+@api_view(["GET", "PUT", "DELETE"])
+def cctv_detail_or_update_or_delete(request):
+    token = request.META.get("HTTP_AUTHORIZATION")
+    user_id = checkuser(token)
+    user = get_object_or_404(get_user_model(), id=user_id)
+    cctv_id = request.data.get("id")
+    cctv = get_object_or_404(CCTV, id=cctv_id)
+    
+    if request.method == "GET":
+        serializer = CCTVDetailSerializer(cctv)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == "PUT":
-        cctv_id = request.data.get("id")
-        cctv = get_object_or_404(CCTV, id=cctv_id)
         serializer = CCTVDetailSerializer(instance=cctv, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=user)
         return Response(status=status.HTTP_200_OK)
 
     elif request.method == "DELETE":
-        cctv_id = request.data.get("id")
-        cctv = get_object_or_404(CCTV, id=cctv_id)
         cctv.delete()
         return Response(status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_403_FORBIDDEN)
-
-    # get - list
-
-    # post - create
-
-    # get,put,delete - detail,upadate,delete
