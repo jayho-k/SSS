@@ -99,7 +99,7 @@ export default {
 				// 마커를 생성합니다
 				var cnt = 0
         Swal.fire({
-        title: 'Submit your Github username',
+        title: 'title을 입력해 주세요',
         input: 'text',
         inputAttributes: {
           autocapitalize: 'off'
@@ -122,7 +122,7 @@ export default {
                 break
               }
             }
-            for (var a_m_i = 0; s_m_i < add_markers.length; a_m_i ++){
+            for (var a_m_i = 0; a_m_i < add_markers.length; a_m_i ++){
               if (title === add_markers[a_m_i].getTitle()){
                 cnt ++
               }
@@ -232,6 +232,27 @@ export default {
             `title을 입력하세요 `
             ) 
           } else {
+            for (var s_m_i = 0; s_m_i < saved_markers.length; s_m_i ++) {
+              if (marker.getTitle() === saved_markers[s_m_i].getTitle()){
+                s_index = s_m_i
+                
+              } else if (title === saved_markers[s_m_i].getTitle()) {
+                cnt ++
+              }
+              if (cnt != 0) {
+                break
+              }
+            }
+            for (var a_m_i = 0; a_m_i < add_markers.length; a_m_i ++){
+              if (marker.getTitle() === add_markers[a_m_i].getTitle()){
+                s_index = a_m_i
+              } else if (title === add_markers[a_m_i].getTitle()) {
+                cnt ++
+              }
+              if (cnt != 0) {
+                break
+              }
+            }
             marker_arr.forEach(function(item, index) {
               if (marker.getTitle() === item.getTitle()) {
                 s_index = index
