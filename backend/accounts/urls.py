@@ -18,7 +18,7 @@ urlpatterns = [
     path("user/signup/", views.signup),
     path("user/password/", views.password_change),
     path("user/find/id/", views.find_id),
-    path("user/find/password/", views.password_find),
+    # path("user/find/password/", views.password_find),
     # admin urls
     path("admin/reset/password/", views.password_reset),
     path("admin/approval/", views.user_activate),
