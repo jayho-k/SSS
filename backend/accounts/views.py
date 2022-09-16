@@ -67,6 +67,7 @@ def signup(request):
         if user.is_valid(raise_exception=True):
             user.save()
             return Response(status=status.HTTP_201_CREATED)
+    return Response(status=status.HTTP_403_FORBIDDEN)
 
         
 
@@ -92,6 +93,7 @@ def user_detail_or_update_or_delete(request):
         token.delete()
         user.delete()
         return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_403_FORBIDDEN)
 
 # 비밀번호 변경
 # curr_password가 기존 비밀번호와 일치히면 new_password로 변경
@@ -122,15 +124,15 @@ def find_id(request):
     return Response(data, status=status.HTTP_200_OK)
 
 # 비밀번호 초기화 요청
-@api_view(["POST"])
-def password_find(request):
-    name = request.data.get("name")
-    email = request.data.get("email")
-    username = request.data.get("username")
-    user = get_object_or_404(get_user_model(),username=username, name=name, email=email)
-    user.forget_password = True
-    user.save()
-    return Response(status=status.HTTP_200_OK)
+# @api_view(["POST"])
+# def password_find(request):
+#     name = request.data.get("name")
+#     email = request.data.get("email")
+#     username = request.data.get("username")
+#     user = get_object_or_404(get_user_model(),username=username, name=name, email=email)
+#     user.forget_password = True
+#     user.save()
+#     return Response(status=status.HTTP_200_OK)
     
     
 ###############################관리자 영역##########################################
@@ -196,6 +198,8 @@ def user_activate_list(request):
             users = get_user_model().objects.filter(activation=1, is_admin=False)
             serializers = UserListSerializer(users, many=True)
             return Response(serializers.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # Activation = False인 유저 리스트
 @api_view(["GET"])
@@ -208,6 +212,8 @@ def user_deactivate_list(request):
             users = get_user_model().objects.filter(activation=0, is_admin=False)
             serializers = UserListSerializer(users, many=True)
             return Response(serializers.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # 유저 검색
 @api_view(["POST"])
@@ -221,6 +227,8 @@ def user_search(request):
             search_user = get_user_model().objects.filter(Q(name__contains=res) | Q(email__contains=res))
             serializers = UserListSerializer(search_user, many=True)
             return Response(serializers.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
    
 

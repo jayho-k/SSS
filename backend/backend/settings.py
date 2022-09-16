@@ -164,9 +164,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = "/media/"
 
 # 이메일 전송 설정
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_POST = "587"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_POST = 587
 EMAIL_HOST_USER = secrets["EMAIL_HOST_USER"]
 EMAIL_HOST_PASSWORD = secrets["EMAIL_HOST_PASSWORD"]
 EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+# EMAIL_USE_SSL = False

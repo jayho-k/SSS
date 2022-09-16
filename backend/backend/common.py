@@ -6,6 +6,7 @@ import jwt
 from rest_framework.response import Response
 from .settings import SIMPLE_JWT
 from rest_framework import status
+import threading
 
 def file_upload_path(instance, filename):
     # ext = filename.split(".")[-1]
