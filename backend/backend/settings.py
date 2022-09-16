@@ -155,6 +155,14 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'AUTH_HEADER_TYPES': ('JWT',),
 }
+# 이미지 저장 루트 설정
 import os
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = "/media/"
+
+# 이메일 전송 설정
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_POST = '587'
+EMAIL_HOST_USER = 'jangjr98@gmail.com'
+EMAIL_HOST_PASSWORD = 'jangjh0112'
+EMAIL_USE_TLS = True

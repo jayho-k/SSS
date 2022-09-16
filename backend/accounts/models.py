@@ -9,3 +9,4 @@ class User(AbstractUser):
     department = models.CharField(max_length=20)
     is_admin = models.BooleanField(default=False)
     activation = models.IntegerField(default=0,validators=[MinValueValidator(-1), MaxValueValidator(1)])
+    forget_password = models.BooleanField(default=False)
