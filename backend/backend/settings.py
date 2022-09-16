@@ -9,9 +9,13 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import os
+import json
 import datetime
 from pathlib import Path
-
+secret_file = 'secrets.json'
+with open(secret_file) as f:
+    secrets = json.loads(f.read())
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-5it4z(3=vvjx*ybh9=xo%td=qcj_#+jms$%=atiz44*=gzr25q"
+SECRET_KEY = secrets["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -67,7 +71,7 @@ CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "http://127.0.0.1:8000"]
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [ BASE_DIR / "accounts" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -156,13 +160,13 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
 }
 # 이미지 저장 루트 설정
-import os
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = "/media/"
 
 # 이메일 전송 설정
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_POST = '587'
-EMAIL_HOST_USER = 'jangjr98@gmail.com'
-EMAIL_HOST_PASSWORD = 'jangjh0112'
+EMAIL_POST = "587"
+EMAIL_HOST_USER = secrets["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD = secrets["EMAIL_HOST_PASSWORD"]
 EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
