@@ -15,6 +15,7 @@ class CCTVDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = CCTV
         fields = (
+            "id",
             "name",
             "video",
             "latitude",
