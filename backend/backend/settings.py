@@ -155,8 +155,8 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=14),
-    'SIGNING_KEY': 'SECRET',
-    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': secrets["SIGNING_KEY"],
+    'ALGORITHM': secrets["ALGORITHM"],
     'AUTH_HEADER_TYPES': ('JWT',),
 }
 # 이미지 저장 루트 설정
