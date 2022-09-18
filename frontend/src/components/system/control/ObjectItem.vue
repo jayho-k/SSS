@@ -21,6 +21,9 @@ export default {
 
 <style>
 .ObjectItemBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 320px;
     height: 60px;
 }

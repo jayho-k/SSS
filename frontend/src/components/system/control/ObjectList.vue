@@ -4,7 +4,8 @@
         <ObjectMenu></ObjectMenu>
 		<ObjectItem v-for="(D_item, D_i) in DataSet"
     :key="D_i"
-    :D_item = D_item></ObjectItem>
+    :D_item = D_item
+    @click="mapCenter(D_i)"></ObjectItem>
 	</div>
 </template>
 
@@ -19,10 +20,14 @@ export default {
     },
     setup () {
       const kakaostore = useKakoStore()
-      const DataSet = kakaostore.saved_markers
+      const DataSet = kakaostore.saved_markers_info
+      function mapCenter (D_i) {
+        kakaostore.setMapCenter(D_i)
+      }
       return {
         kakaostore,
-        DataSet
+        DataSet,
+        mapCenter
       }
     }
   

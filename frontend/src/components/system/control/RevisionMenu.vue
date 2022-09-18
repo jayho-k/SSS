@@ -3,6 +3,7 @@
     <div class="Revisionbutton" @click="add">추가</div>
     <div class="Revisionbutton" @click="move">이동</div>
     <div class="Revisionbutton" @click="del">삭제</div>
+    <!-- <div class="Revisionbutton" @click="save">저장</div> -->
   </div>
 </template>
 
@@ -19,7 +20,7 @@ export default {
       }
     }
     function move () {
-      store.is_move = !store.is_move
+      store.setDrag()
     }
     function del () {
       if (store.mode === 3) {
@@ -28,11 +29,14 @@ export default {
         store.mode = 3
       }
     }
-
+    function save () {
+      store.saveMarkers()
+    }
     return {
       add,
       move,
-      del
+      del,
+      save
     }
   }
 }

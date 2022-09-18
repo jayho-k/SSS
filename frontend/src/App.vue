@@ -1,23 +1,16 @@
 <template>
   <div>
     <router-view></router-view>
-    <router-link to="/cctv">sadfsdfdasf</router-link>
-    <div>{{store.count}}</div>
+    <router-link to="/cctv">cctv 라우터 테스트</router-link>
   </div>
 </template>
 
 <script>
-import { useIndexStore } from "@/stores/index"
 export default {
   name: 'App',
   components: {
 },
   setup () {
-    const store = useIndexStore()
-    store.count ++
-    return {
-      store
-    }
   }
 }
 </script>
@@ -43,5 +36,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+::-webkit-scrollbar{
+  display: none;
 }
 </style>

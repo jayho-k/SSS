@@ -1,6 +1,6 @@
 <template>
   <div class="NavMenuBox">
-    <div>cctv</div>
+    <router-link to="/cctv">cctv</router-link>
     <div>분석</div>
     <img class="navMenu" src="@/assets/optionIcon.png" alt="옵션">
   </div>
