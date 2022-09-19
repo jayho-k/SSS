@@ -42,7 +42,7 @@ def login(request):
         error = {
             "message" : "이미 로그인중인 유저입니다." 
         }
-        return Response(error,status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(error,status=status.HTTP_406_NOT_ACCEPTABLE)
     
 
 
