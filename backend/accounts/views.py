@@ -34,6 +34,7 @@ def login(request):
                     data = {
                         "refresh": refresh_token,
                         "access": access_token,
+                        "is_admin" : user.is_admin
                     }
                     return Response(data, status=status.HTTP_200_OK)
             return Response(status=status.HTTP_403_FORBIDDEN)
