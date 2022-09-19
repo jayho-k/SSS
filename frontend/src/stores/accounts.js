@@ -43,6 +43,7 @@ export const useAccounts = defineStore({
             })
           }
         },
+        // asdfsdf
         login(credential) {
           console.log(credential)
           axios.post(SGSS.accounts.login(), credential)
