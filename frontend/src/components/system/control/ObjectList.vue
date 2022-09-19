@@ -2,12 +2,15 @@
 	<div class="ObjectListBox">
         <div class=""></div>
         <ObjectMenu></ObjectMenu>
-		<ObjectItem v-for="R_D in testData"
-    :key="R_D"></ObjectItem>
+		<ObjectItem v-for="(D_item, D_i) in DataSet"
+    :key="D_i"
+    :D_item = D_item
+    @click="mapCenter(D_i)"></ObjectItem>
 	</div>
 </template>
 
 <script>
+import { useKakoStore } from '@/stores/kakaoMap';
 import ObjectMenu from '@/components/system/control/ObjectMenu'
 import ObjectItem from '@/components/system/control/ObjectItem'
 export default {
@@ -15,13 +18,19 @@ export default {
         ObjectMenu,
         ObjectItem
     },
-    setup() {
-        const testData = [1, 2, 3, 4]
-        
-        return {
-            testData
-        }
+    setup () {
+      const kakaostore = useKakoStore()
+      const DataSet = kakaostore.saved_markers_info
+      function mapCenter (D_i) {
+        kakaostore.setMapCenter(D_i)
+      }
+      return {
+        kakaostore,
+        DataSet,
+        mapCenter
+      }
     }
+  
 
 }
 </script>

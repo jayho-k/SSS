@@ -1,14 +1,44 @@
 <template>
   <div class="RevisionMenuBox">
-    <div class="Revisionbutton">추가</div>
-    <div class="Revisionbutton">이동</div>
-    <div class="Revisionbutton">삭제</div>
+    <div class="Revisionbutton" @click="add">추가</div>
+    <div class="Revisionbutton" @click="move">이동</div>
+    <div class="Revisionbutton" @click="del">삭제</div>
+    <!-- <div class="Revisionbutton" @click="save">저장</div> -->
   </div>
 </template>
 
 <script>
+import { useKakoStore } from '@/stores/kakaoMap';
 export default {
-
+  setup() {
+    const store = useKakoStore()
+    function add () {
+      if (store.mode === 1) {
+      store.mode = 0}
+      else {
+        store.mode = 1
+      }
+    }
+    function move () {
+      store.setDrag()
+    }
+    function del () {
+      if (store.mode === 3) {
+      store.mode = 0}
+      else {
+        store.mode = 3
+      }
+    }
+    function save () {
+      store.saveMarkers()
+    }
+    return {
+      add,
+      move,
+      del,
+      save
+    }
+  }
 }
 </script>
 
