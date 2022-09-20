@@ -2,26 +2,25 @@
 	<div class="ObjectListBox">
         <div class=""></div>
         <ObjectMenu></ObjectMenu>
-		<ObjectItem v-for="R_D in testData"
-    :key="R_D"></ObjectItem>
+		<ObjectItem v-for="(D_item, D_i) in DataSet"
+    :key="D_i"
+    :D_item = D_item
+    @click="mapCenter(D_i)"></ObjectItem>
 	</div>
 </template>
 
 <script>
-import ObjectMenu from '@/components/system/control/ObjectMenu'
-import ObjectItem from '@/components/system/control/ObjectItem'
+import ObjectMenu from '@/components/system/control/realtime/ObjectMenu'
+import ObjectItem from '@/components/system/control/realtime/ObjectItem'
 export default {
     components: {
         ObjectMenu,
         ObjectItem
     },
-    setup() {
-        const testData = [1, 2, 3, 4]
-        
-        return {
-            testData
-        }
+    setup () {
+
     }
+  
 
 }
 </script>
@@ -32,4 +31,5 @@ export default {
     height: 480px;
     background-color: var(--main-color2);
 }
+
 </style>

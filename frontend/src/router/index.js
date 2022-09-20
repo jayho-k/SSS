@@ -16,6 +16,11 @@ const routes = [
     name: 'signup',
     component: () => import('@/views/account/signUpView.vue')
   },
+  {
+    path: '/upload',
+    name: 'upload',
+    component: () => import('@/views/uploadVideo/uploadVideoView.vue')
+  }
 ]
 
 const router = createRouter({
