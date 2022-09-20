@@ -1,6 +1,6 @@
 <template>
   <div class="RevisionMenuBox">
-    <div  @click="upload_add" class="Revisionbutton"><input  type="file" id="contract_file" style="opacity: 100%;" multiple @change="showTextFile"  accept=".mp4, .mkv"> Upload</div>
+    <label for="video_file"><div  @change="upload_add" class="Revisionbutton"><input  type="file" id="video_file" style="width: 0px; height: 0px;" multiple @change="showTextFile"  accept=".mp4, .mkv">Upload</div></label>
     <div class="Revisionbutton" @click="move">조건</div>
     <div class="Revisionbutton" @click="del">삭제</div>
 
@@ -12,8 +12,10 @@ import { useUploadVideoStore } from '@/stores/uploadVideo';
 export default {
   setup() {
     const uploadStore = useUploadVideoStore()
-    function upload_add () {
-      console.log(uploadStore.VideoList)
+    function upload_add (event) {
+      Object.values(event.target.files).forEach(element => {
+        uploadStore.uploadVideo(element)
+      })
     }
 
     return {

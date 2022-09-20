@@ -4,12 +4,17 @@ import { defineStore } from "pinia";
 export const useUploadVideoStore = defineStore("upload", {
   state: () => {
     return { 
-        VideoList: [],
+        video_list: [],
+        show_video: []
+        
     }
   },
   actions: {
-    uploadVideo (video_arr) {
-      this.VideoList.push(video_arr)
+    uploadVideo (video) {
+      this.video_list.push(video)
+    },
+    selectVideo (video) {
+      this.show_video = URL.createObjectURL(video)
     }
   }
 })
