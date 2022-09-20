@@ -1,6 +1,6 @@
 <template>
   <div class="RevisionMenuBox">
-    <div  @click="upload_add" class="Revisionbutton"><input  type="file" id="contract_file" style="opacity: 100%;" multiple @change="showTextFile"  accept=".mp4, .mkv">Upload</div>
+    <div  @click="upload_add" class="Revisionbutton"><input  type="file" id="contract_file" style="opacity: 100%;" multiple @change="showTextFile"  accept=".mp4, .mkv"> Upload</div>
     <div class="Revisionbutton" @click="move">조건</div>
     <div class="Revisionbutton" @click="del">삭제</div>
 
