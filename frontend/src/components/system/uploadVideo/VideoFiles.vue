@@ -4,7 +4,7 @@
         <source src="@/assets/movie.mp4" type="video/mp4" >
             해당 브라우저는 video 태그를 지원하지 않습니다.
         </video>
-        
+        <VideoPlayer></VideoPlayer>
         <button type="button" @click="showTextFile">asdfsdf</button>
     </div>
     
@@ -13,23 +13,12 @@
 <script>
 // import { ref } from 'vue'
 // import { useUploadVideoStore } from '@/stores/uploadVideo';
+import VideoPlayer from '@/components/system/control/uploadVideo/VideoPlayer.vue'
 export default {
-    components: { },
+    components: { VideoPlayer },
     setup() {
         // const uploadStore = useUploadVideoStore()
-        // function showTextFile(e) {
-        //     const input = ref(e.target.files)
-        //     console.log(input)
-            
-        //     const video = document.getElementById("video");
 
-        //     // const selectedFiles = input.files
-        //     const videourl = URL.createObjectURL(uploadStore.VideoList[0])
-        //     video.setAttribute("src", videourl);
-        //     video.play();
-        //     console.log(videourl)
-        //     // console.log(selectedFiles)}
-        // }
         return {
             // showTextFile
         }
@@ -43,8 +32,5 @@ export default {
     height:1040px;
     background-color: var(--main-color2);
 }
-.videoMainBox {
-    width: 300px;
-    height: 300px;
-}
+
 </style>

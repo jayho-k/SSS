@@ -1,5 +1,5 @@
 <template>
-  <div class="ObjectItemBox">{{items[0]}}</div>
+  <div class="ObjectItemBox">{{items.name}}</div>
 </template>
 
 <script>

@@ -25,7 +25,6 @@ export default {
         kakaostore.setMapCenter(D_i)
       }
       return {
-        kakaostore,
         DataSet,
         mapCenter
       }

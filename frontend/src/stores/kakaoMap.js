@@ -9,7 +9,7 @@ export const useKakaoStore = defineStore("Kakao", {
             saved_overlay:[],
             is_move: false,
             drag_index: -1,
-            mapCenter: [33.450705, 126.570677] 
+            map_center: [33.450705, 126.570677] 
             }
     },
     actions: {
@@ -25,7 +25,7 @@ export const useKakaoStore = defineStore("Kakao", {
             this.is_move = !this.is_move
         },
         setMapCenter(D_i) {
-            this.mapCenter = [this.saved_markers_info[D_i][1],this.saved_markers_info[D_i][2]]
+            this.map_center = [this.saved_markers_info[D_i][1],this.saved_markers_info[D_i][2]]
         }
     }
 })
