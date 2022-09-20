@@ -8,5 +8,8 @@ export const useUploadVideoStore = defineStore("upload", {
     }
   },
   actions: {
+    uploadVideo (video_arr) {
+      this.VideoList.push(video_arr)
+    }
   }
 })

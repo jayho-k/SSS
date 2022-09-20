@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import { useKakoStore } from '@/stores/kakaoMap';
 import ObjectMenu from '@/components/system/control/realtime/ObjectMenu'
 import ObjectItem from '@/components/system/control/realtime/ObjectItem'
 export default {
@@ -19,16 +18,7 @@ export default {
         ObjectItem
     },
     setup () {
-      const kakaostore = useKakoStore()
-      const DataSet = kakaostore.saved_markers_info
-      function mapCenter (D_i) {
-        kakaostore.setMapCenter(D_i)
-      }
-      return {
-        kakaostore,
-        DataSet,
-        mapCenter
-      }
+
     }
   
 
@@ -41,4 +31,5 @@ export default {
     height: 480px;
     background-color: var(--main-color2);
 }
+
 </style>

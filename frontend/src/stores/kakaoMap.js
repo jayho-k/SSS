@@ -1,7 +1,7 @@
 
 import { defineStore } from "pinia";
 
-export const useKakoStore = defineStore("Kakao", {
+export const useKakaoStore = defineStore("Kakao", {
     state: () => {
         return { mode : 0,
             saved_markers_info: [['카카오', 33.450705, 126.570677], ['생태연못', 33.450936, 126.569477], ['텃밭', 35.450879, 126.569940]],
@@ -13,7 +13,7 @@ export const useKakoStore = defineStore("Kakao", {
             }
     },
     actions: {
-        drag_update(idx) {
+        dragUpdate(idx) {
             this.drag_index = idx
         },
         setDrag() {

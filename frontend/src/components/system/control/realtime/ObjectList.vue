@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { useKakoStore } from '@/stores/kakaoMap';
+import { useKakaoStore } from '@/stores/kakaoMap';
 import ObjectMenu from '@/components/system/control/realtime/ObjectMenu'
 import ObjectItem from '@/components/system/control/realtime/ObjectItem'
 export default {
@@ -19,7 +19,7 @@ export default {
         ObjectItem
     },
     setup () {
-      const kakaostore = useKakoStore()
+      const kakaostore = useKakaoStore()
       const DataSet = kakaostore.saved_markers_info
       function mapCenter (D_i) {
         kakaostore.setMapCenter(D_i)

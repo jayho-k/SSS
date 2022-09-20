@@ -4,12 +4,12 @@
 
 <script>
 import { onMounted, watch } from 'vue'
-import { useKakoStore } from '@/stores/kakaoMap'
+import { useKakaoStore } from '@/stores/kakaoMap'
 import Swal from 'sweetalert2'
 
 export default {
 	setup() {
-		const store = useKakoStore()
+		const store = useKakaoStore()
 		/* global kakao */
 		const saved_markers = store.saved_markers
 		const saved_overlay = store.saved_overlay
@@ -343,7 +343,7 @@ export default {
         if (marker.getTitle() === marker_arr[d_m_m_i].getTitle()) {
           overlay_arr[d_m_m_i].setMap(null)
           
-          store.drag_update(d_m_m_i)
+          store.dragUpdate(d_m_m_i)
           break
         }
       }

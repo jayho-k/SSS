@@ -1,6 +1,6 @@
 <template>
   <div class="RevisionMenuBox">
-    <div class="Revisionbutton" @click="add">Upload</div>
+    <div  @click="upload_add" class="Revisionbutton"><input  type="file" id="contract_file" style="opacity: 0%;" multiple @change="showTextFile"  accept=".mp4, .mkv">Upload</div>
     <div class="Revisionbutton" @click="move">조건</div>
     <div class="Revisionbutton" @click="del">삭제</div>
 
@@ -8,32 +8,16 @@
 </template>
 
 <script>
-import { useKakoStore } from '@/stores/kakaoMap';
+import { useUploadVideoStore } from '@/stores/uploadVideo';
 export default {
   setup() {
-    const store = useKakoStore()
-    function add () {
-      if (store.mode === 1) {
-      store.mode = 0}
-      else {
-        store.mode = 1
-      }
-    }
-    function move () {
-      store.setDrag()
-    }
-    function del () {
-      if (store.mode === 3) {
-      store.mode = 0}
-      else {
-        store.mode = 3
-      }
+    const store = useUploadVideoStore()
+    function upload_add () {
+      console.log(store.VideoList)
     }
 
     return {
-      add,
-      move,
-      del
+      upload_add,
     }
   }
 }
@@ -57,5 +41,8 @@ export default {
     border-radius: 5px;
     align-items: center;
     justify-content: center;
+}
+::file-selector-button {
+  display: none;
 }
 </style>

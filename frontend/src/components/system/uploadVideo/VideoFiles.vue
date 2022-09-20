@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import 'video.js/dist/video-js.css'
 import { ref } from 'vue'
 export default {
     components: { },

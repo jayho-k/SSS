@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import { useKakoStore } from '@/stores/kakaoMap';
+import { useKakaoStore } from '@/stores/kakaoMap';
 export default {
   setup() {
-    const store = useKakoStore()
+    const store = useKakaoStore()
     function add () {
       if (store.mode === 1) {
       store.mode = 0}
