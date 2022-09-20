@@ -41,7 +41,6 @@ export default {
 			var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 
 //1. 저장된 마커 각 가져오기 및 생성
-		
 			for (var s_m_i = 0; s_m_i < store.saved_markers_info.length; s_m_i ++) {
 				savedMarker(s_m_i)
 			}
@@ -70,12 +69,12 @@ export default {
 				// 마커 클릭가능
 				marker.setClickable(true)
 				// 마커 저장
+        if (saved_markers.length < store.saved_markers_info.length) {
 				saved_markers.push(marker)
-				// 맵에 부착
-				marker.setMap(initMap.map)
-
+				
 				// 오버레이 생성 함수
 				make_overlay (store.saved_markers_info[i][0], new kakao.maps.LatLng(store.saved_markers_info[i][1], store.saved_markers_info[i][2]), saved_overlay, marker)
+        }
 				// saved  클릭 이벤트
 				kakao.maps.event.addListener(marker, 'click', function() {
 					if (store.mode === 1) {
@@ -84,6 +83,8 @@ export default {
 						click_delete_marker_and_overlay(marker, saved_markers, saved_overlay)
 					}
 				})
+        // 맵에 부착
+        marker.setMap(initMap.map)
         // saved  드래그 이벤트
         kakao.maps.event.addListener(marker, 'dragstart', function() {
           dragstart_move_marker(marker, saved_markers, saved_overlay)
