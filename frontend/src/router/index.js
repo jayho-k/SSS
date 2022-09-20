@@ -5,6 +5,11 @@ const routes = [
     path: '/cctv',
     name: 'cctv',
     component: () => import('@/views/cctv/cctvMainView.vue')
+  },
+  {
+    path: '/upload',
+    name: 'upload',
+    component: () => import('@/views/uploadVideo/uploadVideoView.vue')
   }
 ]
 

@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import { onMounted, watch } from 'vue';
-import { useKakoStore } from '@/stores/kakaoMap';
+import { onMounted, watch } from 'vue'
+import { useKakoStore } from '@/stores/kakaoMap'
 import Swal from 'sweetalert2'
 
 export default {
@@ -28,14 +28,14 @@ export default {
 		})
 		
 		const initMap = () => {
-			const container = document.getElementById("map");
+			const container = document.getElementById("map")
 			const options = {
 				center: new kakao.maps.LatLng(33.450701, 126.570667),
 				level: 5,
-			};
+			}
 			//지도 객체를 등록합니다.
 			//지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
-			initMap.map = new kakao.maps.Map(container, options);
+			initMap.map = new kakao.maps.Map(container, options)
 	
 			// 마커 이미지의 이미지 주소입니다
 			var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
@@ -59,7 +59,7 @@ export default {
 				var imageSize = new kakao.maps.Size(24, 35); 
 			
 				// 마커 이미지를 생성합니다    
-				var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+				var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)
 			
 				// 마커를 생성합니다
 				var marker = new kakao.maps.Marker({
@@ -72,7 +72,7 @@ export default {
 				// 마커 저장
 				saved_markers.push(marker)
 				// 맵에 부착
-				marker.setMap(initMap.map);
+				marker.setMap(initMap.map)
 
 				// 오버레이 생성 함수
 				make_overlay (store.saved_markers_info[i][0], new kakao.maps.LatLng(store.saved_markers_info[i][1], store.saved_markers_info[i][2]), saved_overlay, marker)
@@ -141,7 +141,7 @@ export default {
 
             marker.setClickable(true)
             // 마커가 지도 위에 표시되도록 설정합니다
-            marker.setMap(initMap.map);
+            marker.setMap(initMap.map)
             
             // 생성된 마커를 배열에 추가합니다
             saved_markers.push(marker);
@@ -197,7 +197,7 @@ export default {
 //3. move 시 드래그 가능
       watch(() => store.mapCenter, (after) => {
         var moveLatLng = new kakao.maps.LatLng(after[0], after[1]);   
-        initMap.map.panTo(moveLatLng);
+        initMap.map.panTo(moveLatLng)
       }) 
 		}
 		function make_overlay(title, position, overlay_arr, marker) {
@@ -210,7 +210,7 @@ export default {
 			})
 			overlay_arr.push(customOverlay)
 			// 커스텀 오버레이를 지도에 표시합니다
-			customOverlay.setMap(initMap.map, marker);
+			customOverlay.setMap(initMap.map, marker)
 		}
     
 		function click_update_Marker(marker, marker_arr, overlay_arr) {

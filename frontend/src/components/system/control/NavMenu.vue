@@ -1,14 +1,25 @@
 <template>
   <div class="NavMenuBox">
-    <router-link to="/cctv">cctv</router-link>
-    <div>분석</div>
+    <router-link to="/cctv" @click="change_view(1)">cctv</router-link>
+    <router-link to="/upload" @click="change_view(2)">upload</router-link>
     <img class="navMenu" src="@/assets/optionIcon.png" alt="옵션">
   </div>
 </template>
 
 <script>
+import { useIndexStore } from '@/stores/index'
 export default {
-
+  setup() {
+    const IndexStore = useIndexStore()
+    function change_view (inx) {
+      IndexStore.view_case = inx
+      console.log(IndexStore.view_case)
+    }
+    return {
+      IndexStore,
+      change_view
+    }
+  }
 }
 </script>
 

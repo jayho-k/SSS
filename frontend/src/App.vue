@@ -27,8 +27,6 @@ export default {
   --sweet-blue-bg:#9de0f6;
   --sweet-gray:#87adbd;
   --sweet-gray-bg:#c9dae1;
-
-
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

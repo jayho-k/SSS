@@ -11,8 +11,8 @@
 
 <script>
 import { useKakoStore } from '@/stores/kakaoMap';
-import ObjectMenu from '@/components/system/control/ObjectMenu'
-import ObjectItem from '@/components/system/control/ObjectItem'
+import ObjectMenu from '@/components/system/control/realtime/ObjectMenu'
+import ObjectItem from '@/components/system/control/realtime/ObjectItem'
 export default {
     components: {
         ObjectMenu,
