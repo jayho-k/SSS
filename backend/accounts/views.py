@@ -23,26 +23,21 @@ def login(request):
     username=request.data.get("username")
     password=request.data.get("password")
     user = get_user_model().objects.get(username=username)
-    is_login = OutstandingToken.objects.filter(user_id=user.id).exists()
-    if not is_login:
-        if user is not None:
-            if user.activation==True:
-                if check_password(password, user.password):
-                    token = TokenObtainPairSerializer.get_token(user)
-                    refresh_token = str(token)
-                    access_token = str(token.access_token)
-                    data = {
-                        "refresh": refresh_token,
-                        "access": access_token,
-                        "is_admin" : user.is_admin
-                    }
-                    return Response(data, status=status.HTTP_200_OK)
-            return Response(status=status.HTTP_403_FORBIDDEN)
-    else:
-        error = {
-            "message" : "이미 로그인중인 유저입니다." 
-        }
-        return Response(error,status=status.HTTP_406_NOT_ACCEPTABLE)
+
+    if user is not None:
+        if user.activation==True:
+            if check_password(password, user.password):
+                token = TokenObtainPairSerializer.get_token(user)
+                refresh_token = str(token)
+                access_token = str(token.access_token)
+                data = {
+                    "refresh": refresh_token,
+                    "access": access_token,
+                    "is_admin" : user.is_admin
+                }
+                return Response(data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+    return Response(status=status.HTTP_403_FORBIDDEN)
     
 
 
@@ -98,7 +93,7 @@ def user_detail_or_update_or_delete(request):
 
 # 비밀번호 변경
 # curr_password가 기존 비밀번호와 일치히면 new_password로 변경
-@api_view(["POST"])
+@api_view(["PUT"])
 def password_change(request):
     token = request.META.get("HTTP_AUTHORIZATION")
     user_id = checkuser(token)
@@ -181,10 +176,9 @@ def user_activate(request):
     user = get_object_or_404(get_user_model(), id=request.data.get("uid"))
     if (admin.is_admin):
         if request.method == "PATCH":
-            serializer = UserActiveSeriailzer(instance=user, data=request.data)
-            if serializer.is_valid(raise_exception=True):
-                serializer.save()
-                return Response(status=status.HTTP_200_OK)
+            user.activation = 1
+            user.save()
+            return Response(status=status.HTTP_200_OK)
     else:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
