@@ -1,8 +1,13 @@
-FROM python:3.7.9
-WORKDIR /var/jenkins_home/workspace/backend-deploy-test/backend/
-COPY requirements.txt ./
+FROM python:3.8.10
 
-RUN pip install --upgrade pip
+ENV PYTHONUNBUFFERED=1
+
+RUN apt-get -y update
+RUN apt-get -y install vim
+RUN mkdir -p /pjt/backend
+ADD . /pjt/backend
+
+WORKDIR /pjt/backend
+ADD ./requirements.txt /pjt/backend
+RUN python3 -m  pip install --upgrade pip
 RUN pip install -r requirements.txt
-COPY . .
-CMD ["gunicorn", "testproject.wsgi", "--bind", "0.0.0.0:8080"]
