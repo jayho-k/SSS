@@ -1,11 +1,14 @@
 <template>
 	<div class="ObjectListBox">
-        <div class=""></div>
-        <ObjectMenu></ObjectMenu>
+    
+    <ObjectMenu></ObjectMenu>
+    <div style="overflow-y:scroll; overflow-x:hidden; width:280px; height:420px;">
+
 		<ObjectItem v-for="(D_item, D_i) in DataSet"
     :key="D_i"
     :D_item = D_item
     @click="mapCenter(D_i)"></ObjectItem>
+    </div>
 	</div>
 </template>
 
@@ -36,7 +39,7 @@ export default {
 
 <style>
 .ObjectListBox {
-    width: 320px;
+    width: var(--controller-width);
     height: 480px;
     background-color: var(--main-color2);
 }

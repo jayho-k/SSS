@@ -2,7 +2,7 @@
   <div class="controllerBox">
     <NavMenu></NavMenu>
     <!-- 실시간 -->
-    <div v-if="view_case === 1">
+    <div v-if="view_case === 0">
       <RevisionMenu></RevisionMenu>
       <ObjectList></ObjectList>
       <AlarmList></AlarmList>
@@ -52,7 +52,8 @@ export default {
 
 <style>
 .controllerBox {
-  width: 320px;
+  width: var(--controller-width);
   margin-left: 32px;
 }
+
 </style>

@@ -5,7 +5,7 @@ export const useUploadVideoStore = defineStore("upload", {
   state: () => {
     return { 
         video_list: [],
-        show_video: []
+        show_video: '',
         
     }
   },
