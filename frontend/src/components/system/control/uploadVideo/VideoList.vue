@@ -38,7 +38,7 @@ export default {
 
 <style>
 .ObjectListBox {
-    width: 320px;
+    width: var(--controller-width);
     height: 480px;
     background-color: var(--main-color2);
 }

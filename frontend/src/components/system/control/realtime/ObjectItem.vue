@@ -24,7 +24,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 320px;
+    width: var(--controller-width);
     height: 60px;
 }
 </style>
