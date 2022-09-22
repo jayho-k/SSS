@@ -20,6 +20,11 @@ const routes = [
     path: '/upload',
     name: 'upload',
     component: () => import('@/views/uploadVideo/uploadVideoView.vue')
+  },
+  {
+    path: '/VideoPlayer',
+    name: 'VideoPlayer',
+    component: () => import('@/components/system/uploadVideo/VideoPlayer.vue')
   }
 ]
 

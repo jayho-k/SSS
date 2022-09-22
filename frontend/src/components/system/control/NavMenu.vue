@@ -1,6 +1,6 @@
 <template>
   <div class="NavMenuBox">
-    <router-link to="/cctv" @click="change_view(1)">cctv</router-link>
+    <router-link to="/cctv" @click="change_view(0)">cctv</router-link>
     <router-link to="/upload" @click="change_view(2)">upload</router-link>
     <img class="navMenu" src="@/assets/optionIcon.png" alt="옵션">
   </div>
@@ -26,8 +26,8 @@ export default {
 <style>
 .NavMenuBox {
   display: flex;
-  width: 320px;
-  height: 90px;
+  width: var(--controller-width);
+  height: 60px;
   background-color: var(--main-color2);
   border-radius: 5px;
   justify-content: space-around;

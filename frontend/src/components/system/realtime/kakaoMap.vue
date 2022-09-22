@@ -13,9 +13,9 @@ export default {
 		/* global kakao */
 		const saved_markers = store.saved_markers
 		const saved_overlay = store.saved_overlay
-		// const saved_markers = store.saved_markers
-		// const saved_overlay = store.saved_overlay
+    
 		onMounted(() => {
+      
 			if (window.kakao && window.kakao.maps) {
 				initMap();
 			} else {
@@ -26,7 +26,7 @@ export default {
 
 			}
 		})
-		
+
 		const initMap = () => {
 			const container = document.getElementById("map")
 			const options = {
@@ -36,45 +36,46 @@ export default {
 			//지도 객체를 등록합니다.
 			//지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
 			initMap.map = new kakao.maps.Map(container, options)
-	
 			// 마커 이미지의 이미지 주소입니다
 			var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 
 //1. 저장된 마커 각 가져오기 및 생성
-			for (var s_m_i = 0; s_m_i < store.saved_markers_info.length; s_m_i ++) {
-				savedMarker(s_m_i)
-			}
+
+      if (saved_markers.length > 0)
+        {
+          saved_markers.forEach((item,index) => {
+            saved_markers[index].setMap(initMap.map)
+            saved_overlay[index].setMap(initMap.map)
+          })
+        } else {
+          for (var s_m_i = 0; s_m_i < store.saved_markers_info.length; s_m_i ++) {
+            savedMarker(s_m_i)
+          }
+        }
+
 
 //2. 맵 클릭 이벤트 등록
 			kakao.maps.event.addListener(initMap.map, 'click', function(mouseEvent) {        
 				// 클릭시 조건
 				if (store.mode === 1) {
-					addMarker(mouseEvent.latLng) 
+          addMarker(mouseEvent.latLng) 
 				}
 			});
-
+//3. 저장된 마커 가져오기 및 저장 함수
 			function savedMarker(i) {
-				// 마커 이미지의 이미지 크기 입니다
-				var imageSize = new kakao.maps.Size(24, 35); 
-			
-				// 마커 이미지를 생성합니다    
-				var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)
-			
-				// 마커를 생성합니다
+				var imageSize = new kakao.maps.Size(24, 35)     // 마커 이미지의 이미지 크기
+				var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)     // 마커 이미지를 생성
+
+        // 마커를 생성
 				var marker = new kakao.maps.Marker({
-					position: new kakao.maps.LatLng(store.saved_markers_info[i][1], store.saved_markers_info[i][2]), // 마커를 표시할 위치
-					title : store.saved_markers_info[i][0], // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-					image : markerImage // 마커 이미지 
+					position: new kakao.maps.LatLng(store.saved_markers_info[i][1], store.saved_markers_info[i][2]),     // 마커를 표시할 위치
+					title : store.saved_markers_info[i][0],     // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+					image : markerImage      // 마커 이미지 
 				});
-				// 마커 클릭가능
-				marker.setClickable(true)
-				// 마커 저장
-        if (saved_markers.length < store.saved_markers_info.length) {
-				saved_markers.push(marker)
-				
-				// 오버레이 생성 함수
-				make_overlay (store.saved_markers_info[i][0], new kakao.maps.LatLng(store.saved_markers_info[i][1], store.saved_markers_info[i][2]), saved_overlay, marker)
-        }
+				marker.setClickable(true)      // 마커 클릭가능
+        marker.setMap(initMap.map)     //맵에 부착
+				saved_markers.push(marker)     // 마커 저장
+				make_overlay (store.saved_markers_info[i][0], new kakao.maps.LatLng(store.saved_markers_info[i][1], store.saved_markers_info[i][2]), saved_overlay, marker)     // 오버레이 생성 함수
 				// saved  클릭 이벤트
 				kakao.maps.event.addListener(marker, 'click', function() {
 					if (store.mode === 1) {
@@ -83,8 +84,7 @@ export default {
 						click_delete_marker_and_overlay(marker, saved_markers, saved_overlay)
 					}
 				})
-        // 맵에 부착
-        marker.setMap(initMap.map)
+        
         // saved  드래그 이벤트
         kakao.maps.event.addListener(marker, 'dragstart', function() {
           dragstart_move_marker(marker, saved_markers, saved_overlay)
@@ -196,7 +196,7 @@ export default {
 
 // ############################## 부분 함수 파트 ##############################
 //3. move 시 드래그 가능
-      watch(() => store.mapCenter, (after) => {
+      watch(() => store.map_center, (after) => {
         var moveLatLng = new kakao.maps.LatLng(after[0], after[1]);   
         initMap.map.panTo(moveLatLng)
       }) 
@@ -293,7 +293,8 @@ export default {
       })
     }
 		function click_delete_marker_and_overlay(marker, marker_arr, overlay_arr) {
-			var s_index = 0
+			var s_index = null
+
 			marker_arr.forEach(function(item, index) {
 				if (marker.getTitle() === item.getTitle()) {
 					s_index = index
