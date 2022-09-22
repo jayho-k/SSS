@@ -10,6 +10,7 @@ import Swal from 'sweetalert2'
 export default {
 	setup() {
 		const store = useKakaoStore()
+    store.getCctvList()
 		/* global kakao */
 		const saved_markers = store.saved_markers
 		const saved_overlay = store.saved_overlay
@@ -143,13 +144,14 @@ export default {
             marker.setClickable(true)
             // 마커가 지도 위에 표시되도록 설정합니다
             marker.setMap(initMap.map)
-            
+            createCctv(marker, title)
+
             // 생성된 마커를 배열에 추가합니다
             saved_markers.push(marker);
             store.saved_markers_info.push([marker.getTitle(), marker.getPosition().getLat(), marker.getPosition().getLng()])
             make_overlay (title, position, saved_overlay, marker)
 
-             // saved 클릭 이벤트
+             // add 클릭 이벤트
             kakao.maps.event.addListener(marker, 'click', function() {
               if (store.mode === 1) {
                 click_update_Marker(marker, saved_markers, saved_overlay)
@@ -180,7 +182,6 @@ export default {
           '',
           'title이 '+ title.value + ' 생성되었습니다',
           'success'
-
           )
         } else {
           Swal.fire(
@@ -326,6 +327,7 @@ export default {
 					overlay_arr[s_index].setMap(null)
 					marker_arr.splice(s_index,1)
 					overlay_arr.splice(s_index,1)
+          store.deleteCctv(store.saved_markers_info[s_index][4])
 					store.saved_markers_info.splice(s_index,1)
 				} else if (
 					/* Read more about handling dismissals below */
@@ -354,6 +356,17 @@ export default {
       store.saved_markers_info[store.drag_index] = [marker.getTitle(), marker.getPosition().getLat(), marker.getPosition().getLng()]
       overlay_arr[store.drag_index].setPosition(marker.getPosition())
       overlay_arr[store.drag_index].setMap(initMap.map, marker)
+    }
+    function createCctv(marker, title) {
+      const cctv_Data = {
+        name: title,
+        video : 'asdf',
+        latitude : marker.getPosition().getLat(),
+        longitude : marker.getPosition().getLng(),
+      }
+      store.createCctv(cctv_Data)
+
+
     }
 		return {
 			initMap,
