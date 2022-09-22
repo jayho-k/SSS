@@ -2,7 +2,7 @@
 # import socket # 소켓 프로그래밍에 필요한 API를 제공하는 모듈
 # import struct # 바이트(bytes) 형식의 데이터 처리 모듈
 # import pickle # 바이트(bytes) 형식의 데이터 변환 모듈
-import cv2 # OpenCV(실시간 이미지 프로세싱) 모듈]
+# import cv2 # OpenCV(실시간 이미지 프로세싱) 모듈]
 import threading
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth import get_user_model
