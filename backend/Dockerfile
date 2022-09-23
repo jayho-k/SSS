@@ -2,7 +2,7 @@ FROM python:3.8.10
 
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /var/jenkins_home/workspace/b302/backend
+WORKDIR /jenkins_home/workspace/b302/backend
 COPY requirements.txt ./
 
 RUN pip install --upgrade pip
