@@ -4,10 +4,11 @@ ENV PYTHONUNBUFFERED=1
 
 RUN apt-get -y update
 RUN apt-get -y install vim
-RUN mkdir -p /pjt/backend
-ADD . /pjt/backend
 
-WORKDIR /pjt/backend
-ADD ./requirements.txt /pjt/backend
-RUN python3 -m  pip install --upgrade pip
+WORKDIR /var/jenkins_home/workspace/b302/backend
+COPY requirements.txt ./
+
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+
+COPY . .
