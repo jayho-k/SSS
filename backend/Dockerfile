@@ -2,9 +2,6 @@ FROM python:3.8.10
 
 ENV PYTHONUNBUFFERED=1
 
-RUN apt-get -y update
-RUN apt-get -y install vim
-
 WORKDIR /var/jenkins_home/workspace/b302/backend
 COPY requirements.txt ./
 
