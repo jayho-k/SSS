@@ -2,6 +2,7 @@
 const HOST = "https://j7b302.p.ssafy.io/api/"
 const ACCOUNTS = "accounts/"
 const CCTV = "cctvs/"
+const MIA = "missingchilds/" 
 
 export default {
     accounts: {
@@ -23,8 +24,13 @@ export default {
     realtime: {
       cctv: () => HOST + CCTV,
       setCctv: () => HOST + CCTV + 'create/',
-      getCctvList:() => HOST + CCTV +'list/'
+      getCctvList:() => HOST + CCTV +'list/',
     },
+    mia: {
+      getMiaList: () => HOST + MIA + 'list/',
+      setMia: () => HOST + MIA + 'create/',
+      mia: () => HOST + MIA
+    }
   }
 
   // export default {

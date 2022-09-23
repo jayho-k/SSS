@@ -1,7 +1,7 @@
 <template>
   <div class="RevisionMenuBox">
 
-    <button class="metal hoverB linear" @click="add">추가</button>
+    <button class="metal1 hoverB linear" @click="add">추가</button>
     <button class="metal hoverY linear" @click="move">이동</button>
     <button class="metal hoverR linear" @click="del">삭제</button>
   </div>
@@ -56,11 +56,7 @@ export default {
 
 
 
-.metal {
-  position: relative;
-  outline: none;
-  
-  font: bold 6em/2em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+.metal1 {
   text-align: center;
   color: hsla(0,0%,20%,1);
   text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;
@@ -69,74 +65,23 @@ export default {
   box-shadow: inset hsla(0,0%,15%,  1) 0  0px 0px 4px, /* border */
     inset hsla(0,0%,15%, .8) 0 -1px 5px 4px, /* soft SD */
     inset hsla(0,0%,0%, .25) 0 -1px 0px 7px, /* bottom SD */
-    inset hsla(0,0%,100%,.7) 0  2px 1px 7px, /* top HL */
+    inset hsla(0,0%,100%,.7) 1px  1px 1px 7px, /* top HL */
     
     hsla(0,0%, 0%,.15) 0 -5px 6px 4px, /* outer SD */
-    hsla(0,0%,100%,.5) 0  5px 6px 4px; /* outer HL */ 
+    hsla(0,0%,100%,.5) 0  1px 4px 4px; /* outer HL */ 
   
   transition: color .2s;
 }
 
-
-
-/* Radial ------------------------- */
-
-.radial.metal {
-  width: 160px;
-  height: 160px;
-  line-height: 160px;
-  border-radius: 80px;
-}
-
-
-.metal.radial:before, .metal.radial:after {
-  content: "";
-  top: 0;
-  left: 0;
-  position: absolute;
-  width: inherit;
-  height: inherit;
-  border-radius: inherit;
-  
-  /* fake conical gradients */
-  background-image: -webkit-radial-gradient(  50%   0%, 10% 50%, hsla(0,0%,0%,.1) 0%, hsla(0,0%,0%,0) 100%),
-    -webkit-radial-gradient(  50% 100%, 10% 50%, hsla(0,0%,0%,.1) 0%, hsla(0,0%,0%,0) 100%),
-    -webkit-radial-gradient(   0%  50%, 50% 10%, hsla(0,0%,0%,.1) 0%, hsla(0,0%,0%,0) 100%),
-    -webkit-radial-gradient( 100%  50%, 50% 06%, hsla(0,0%,0%,.1) 0%, hsla(0,0%,0%,0) 100%);
-}
-.metal.radial:before { transform: rotate( 65deg); }
-.metal.radial:after { transform: rotate(-65deg); }
-
-
-
-
 /* Linear ------------------------- */
 
-.metal.linear {
+.metal1.linear {
   width: 100px;
   font-size: 1em;
   height: 80px;
   border-radius: .5em;
-  background-image: -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%, .1) 7.5%),
-    -webkit-repeating-linear-gradient(left, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   4%, hsla(0,0%,  0%,.03) 4.5%),
-    -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.15) 2.2%),
-    
 
 }
-
-
-/* Oval ------------------------- */
-
-.metal.linear.oval {
-
-  width: 70px;
-  height: 60px;
-  line-height: 60px !important;
-  border-radius: 50%;
-  font: italic bold 3em/50px Georgia, "Times New Roman", Times, serif;
-}
-
-
 
 
 /* active ------------------------- */
@@ -163,9 +108,9 @@ export default {
     inset hsla(43,100%,20%,.25) 0 -1px 0px 7px, /* bottom SD */
     inset hsla(43,100%,100%,.7) 0  2px 1px 7px, /* top HL */
     
-    hsla(210,100%,75%, .8) 0  0px 3px 2px, /* outer SD */
-    hsla(210,50%,40%, .25) 0 -5px 6px 4px, /* outer SD */
-    hsla(210,80%,95%,   1) 0  5px 6px 4px; /* outer HL */
+    hsla(43,100%,75%, .8) 0  0px 3px 2px, /* outer SD */
+    hsla(43,50%,40%, .25) 0 -5px 6px 4px, /* outer SD */
+    hsla(43,80%,95%,   1) 0  5px 6px 4px; /* outer HL */
 }
 .hoverR:active {
   color: hsl(0, 100%, 40%);

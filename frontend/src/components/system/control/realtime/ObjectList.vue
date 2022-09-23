@@ -43,4 +43,5 @@ export default {
     height: 480px;
     background-color: var(--main-color2);
 }
+
 </style>

@@ -36,7 +36,6 @@ export const useKakaoStore = defineStore("Kakao", {
 				Data,
 				{headers: {Authorization : 'Bearer ' + token}}
 			) .then (res => {
-				console.log('asdf')
 				console.log(res)
 
 			}) .catch(err => {
@@ -62,7 +61,6 @@ export const useKakaoStore = defineStore("Kakao", {
 				'id':id
 			}
 			const token = localStorage.getItem('token')
-			console.log(payload)
 			axios.delete(
 				SGSS.realtime.cctv(),
 				{ 

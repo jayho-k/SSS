@@ -393,6 +393,7 @@ export default {
 .customOverlay:hover {
   opacity: 100%;
 }
+
 .btn-success {
 	font-size: 20px;
 }
