@@ -21,4 +21,5 @@ urlpatterns = [
     path("admin/activate/", views.user_activate_list),
     path("admin/deactivate/", views.user_deactivate_list),
     path("admin/search/", views.user_search),
+    path("admin/user/delete/", views.user_delete)
 ]

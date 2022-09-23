@@ -225,6 +225,20 @@ def user_search(request):
         return Response(status=status.HTTP_403_FORBIDDEN)
     return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(["DELETE"])
+def user_delete(request):
+    token = request.META.get("HTTP_AUTHORIZATION")
+    admin_id = checkuser(token)
+    admin = get_object_or_404(get_user_model(), id=admin_id)
+    user = get_object_or_404(get_user_model(), id=request.data.get("uid"))
+    if (admin.is_admin):
+        if request.method == "DELETE":
+            user.delete()
+            return Response(status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
    
 
 
