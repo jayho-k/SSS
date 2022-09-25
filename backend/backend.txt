@@ -19,4 +19,4 @@ password:
 password(again):
 입력후 서버 실행
 http://localhost8000/admin 접속
-아까 입력해준 사용자(아이디)와 password입력
+아까 입력해준 사용자(아이디)와 password입력!
