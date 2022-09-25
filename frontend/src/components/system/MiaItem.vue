@@ -1,5 +1,18 @@
 <template>
-<button type="button" @click="getMiaDetail(7)"></button>
+<!-- <button type="button" @click="getMiaDetail(7)"></button> -->
+<div class="MiaItemBox">asd</div>
+<div class="MiaItemBox">asd</div>
+<div class="MiaItemBox">asd</div>
+<div class="MiaItemBox">asd</div>
+<div class="MiaItemBox">asd</div>
+<div class="MiaItemBox">asd</div>
+<div class="MiaItemBox">asd</div>
+<div class="MiaItemBox">asd</div>
+<div class="MiaItemBox">asd</div>
+<div class="MiaItemBox">asd</div>
+<div class="MiaItemBox">asd</div>
+<div class="MiaItemBox">asd</div>
+<div class="MiaItemBox">asd</div>
 </template>
 
 <script>
@@ -22,5 +35,14 @@ export default {
 </script>
 
 <style>
-
+.MiaItemBox {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: hsl(0,0%,95%);
+  width: 244px;
+  height: 40px;
+  margin-bottom: 1px;
+}
 </style>

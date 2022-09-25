@@ -2,23 +2,12 @@
   <div class="controllerBox">
     <NavMenu></NavMenu>
     <!-- 실시간 -->
-    <div v-if="view_case === 0">
-      <RevisionMenu></RevisionMenu>
-      <ObjectList class="metalList"></ObjectList>
-      <AlarmList class="metalList"></AlarmList>
-    </div>
-    <!-- 업로드 -->
-    <div v-if="view_case === 2">
-      <RevisionVideoMenu></RevisionVideoMenu>
-      <VideoList></VideoList>
-      <MiaList></MiaList>
-      
-      
-      
-    </div>
-    
-    
-  </div>  
+    <RevisionMenu></RevisionMenu>
+    <CctvList class="metalList"></CctvList>
+    <MiaList class="metalList"></MiaList>
+
+
+  </div>
 </template>
 
 <script>
@@ -26,21 +15,15 @@ import { useIndexStore } from '@/stores/index'
 import NavMenu from '@/components/system/control/NavMenu.vue'
 
 import RevisionMenu from '@/components/system/control/realtime/RevisionMenu.vue'
-import ObjectList from '@/components/system/control/realtime/ObjectList.vue'
-import AlarmList from '@/components/system/control/realtime/AlarmList.vue'
-import RevisionVideoMenu from '@/components/system/control/uploadVideo/RevisionVideoMenu.vue'
-
-import VideoList from '@/components/system/control/uploadVideo/VideoList.vue'
+import CctvList from '@/components/system/control/realtime/CctvList.vue'
+// import AlarmList from '@/components/system/control/realtime/AlarmList.vue'
 import MiaList from '@/components/system/MiaList.vue'
 export default {
   components: {
     NavMenu,
     RevisionMenu,
-    ObjectList,
-    AlarmList,
-
-    RevisionVideoMenu,
-    VideoList,
+    CctvList,
+    // AlarmList,
     MiaList,
   },
   setup () {
@@ -56,8 +39,8 @@ export default {
 
 <style>
 .controllerBox {
-  width: var(--controller-width);
-  margin-left: 32px;
+  width: 260px;
+  margin-left: 20px;
 }
 
 .metalList {

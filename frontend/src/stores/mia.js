@@ -60,7 +60,7 @@ export const useMiaStore = defineStore("MiaStore", {
       axios.delete(
         SGSS.mia.mia(),
         {
-          data:{'id':id},headers: {Authorization : 'Bearer ' + token}
+          data:{'id':id}, headers: {Authorization : 'Bearer ' + token}
         }
       ) .then ((res) => {
         console.log(res.data)

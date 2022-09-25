@@ -2,15 +2,15 @@
   <div class="cctvMain">
     
     <kakaoMap></kakaoMap>
-    <Controller></Controller>
+    <CctvController></CctvController>
   </div>
 </template>
 
 <script>
 import kakaoMap from '@/components/system/realtime/kakaoMap'
-import Controller from '@/components/system/control/ControllerBox'
+import CctvController from '@/components/system/control/realtime/CctvController'
 export default {
-    components: { kakaoMap, Controller }
+    components: { kakaoMap, CctvController }
 
 }
 </script>
@@ -19,7 +19,7 @@ export default {
 .cctvMain {
   display: flex;
   background-color: var(--main-color1);
-  padding: 20px 28px;
+  padding: 20px 20px;
 }
 
 </style>

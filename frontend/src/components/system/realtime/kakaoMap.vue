@@ -1,5 +1,5 @@
 <template>
-	<div id="map" style="width:1512px;height:1040px;"></div>
+	<div id="map" style="width:1620px;height:1040px;"></div>
 </template>
 
 <script>
@@ -39,7 +39,7 @@ export default {
 			initMap.map = new kakao.maps.Map(container, options)
 			// 마커 이미지의 이미지 주소입니다
 			var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-
+      //
 //1. 저장된 마커 각 가져오기 및 생성
 
       if (saved_markers.length > 0)
@@ -101,19 +101,20 @@ export default {
 				// 마커를 생성합니다
 				var cnt = 0
         Swal.fire({
-        title: 'title을 입력해 주세요',
+        title: '장소를 설정해주세요',
         input: 'text',
         inputAttributes: {
           autocapitalize: 'off'
         },
         showCancelButton: true,
-        confirmButtonText: 'Look up',
+        confirmButtonText: '생성',
         confirmButtonColor: '#3085d6',
         showLoaderOnConfirm: true,
+        cancelButtonText: '취소',
         preConfirm: (title) => {
           if (title === '') {
             Swal.showValidationMessage(
-            `title을 입력하세요 `
+            `장소를 입력하세요 `
             ) 
           } else {
             for (var s_m_i = 0; s_m_i < saved_markers.length; s_m_i ++) {
@@ -180,7 +181,7 @@ export default {
         if (title.isConfirmed) {
           Swal.fire(
           '',
-          'title이 '+ title.value + ' 생성되었습니다',
+          title.value + ' CCTV가 생성되었습니다',
           'success'
           )
         } else {
@@ -219,15 +220,16 @@ export default {
       var cnt = 0
       var s_index = null
       Swal.fire({
-        title: 'Submit your Github username',
+        title: '장소를 변경하시겠습니까?',
         input: 'text',
         inputAttributes: {
           autocapitalize: 'off'
         },
         showCancelButton: true,
-        confirmButtonText: 'Look up',
+        confirmButtonText: '수정',
         confirmButtonColor: '#3085d6',
         showLoaderOnConfirm: true,
+        cancelButtonText: '취소',
         preConfirm: (title) => {
           if (title === '') {
             Swal.showValidationMessage(
@@ -280,7 +282,7 @@ export default {
         if (title.isConfirmed) {
           Swal.fire(
           '',
-          'title이 '+ title.value + ' 수정되었습니다',
+          '장소가 '+ title.value + '로 수정되었습니다',
           'success'
 
           )

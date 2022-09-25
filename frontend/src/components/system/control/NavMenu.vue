@@ -1,5 +1,5 @@
 <template>
-  <div class="NavMenuBox metal">
+  <div class="NavMenuBox navMetal">
     <router-link to="/cctv" @click="change_view(0)">cctv</router-link>
     <router-link to="/upload" @click="change_view(2)">upload</router-link>
     <img class="navMenu" src="@/assets/optionIcon.png" alt="옵션">
@@ -26,7 +26,7 @@ export default {
 <style>
 .NavMenuBox {
   display: flex;
-  width: var(--controller-width);
+  width: 260px;
   height: 60px;
   background-color: var(--main-color2);
   border-radius: 5px;
@@ -34,11 +34,16 @@ export default {
   align-items: center;
 }
 .navMenu {
-  width: 33px;
-  height: 33px;
+  width: 28px;
+  height: 28px;
+  transition: all 0.5s linear
 }
 
-.metal {
+.navMenu:hover {
+  transform: rotate( 90deg )
+}
+
+.navMetal {
 
   text-align: center;
   color: hsla(0,0%,20%,1);
@@ -50,16 +55,9 @@ export default {
     inset hsla(0,0%,0%, .25) 0 -1px 0px 7px, /* bottom SD */
     inset hsla(0,0%,100%,.7) 0  2px 1px 7px, /* top HL */
     
-    hsla(0,0%, 0%,.15) 0 -5px 6px 4px, /* outer SD */
-    hsla(0,0%,100%,.5) 0  5px 6px 4px; /* outer HL */ 
+    hsla(0,0%, 0%,.15) 0 -2px 4px 4px, /* outer SD */
+    hsla(0,0%,100%,.5) 0  1px 4px 4px; /* outer HL */ 
   
   transition: color .2s;
-}
-.metal.linear {
-  width: 100px;
-  font-size: 0.5em;
-  height: 80px;
-  border-radius: .5em;
-
 }
 </style>

@@ -35,8 +35,9 @@ export const useKakaoStore = defineStore("Kakao", {
 				SGSS.realtime.setCctv(),
 				Data,
 				{headers: {Authorization : 'Bearer ' + token}}
-			) .then (res => {
-				console.log(res)
+			) .then (() => {
+				// 다시 리스트 세팅
+				this.getCctvList()
 
 			}) .catch(err => {
 				console.log(err)
@@ -49,7 +50,8 @@ export const useKakaoStore = defineStore("Kakao", {
 				SGSS.realtime.getCctvList(),
 				{headers: {Authorization : 'Bearer ' + token}}
 			) .then (res => {
-				res.data.forEach((item) => {this.saved_markers_info.push([item.name, item.latitude, item.longitude, item.video, item.id])})
+				this.saved_markers_info = []
+				res.data.forEach((item) => {this.saved_markers_info.push([item.name, item.latitude, item.longitude, item.video, item.id, false])})
 				console.log(res.data)
 
 			}) .catch(err => {
