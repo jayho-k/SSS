@@ -1,15 +1,15 @@
 <template>
   <div class="uploadVideoMain">
     <VideoFiles></VideoFiles>
-    <Controller></Controller>
+    <UploadController></UploadController>
   </div>
 </template>
 
 <script>
 import VideoFiles from '@/components/system/uploadVideo/VideoFiles.vue'
-import Controller from '@/components/system/control/ControllerBox'
+import UploadController from '@/components/system/control/uploadVideo/UploadController'
 export default {
-    components: { VideoFiles, Controller }
+    components: { VideoFiles, UploadController }
 
 }
 </script>
@@ -18,6 +18,6 @@ export default {
 .uploadVideoMain {
   display: flex;
   background-color: var(--main-color1);
-  padding: 20px 28px;
+  padding: 20px 20px;
 }
 </style>

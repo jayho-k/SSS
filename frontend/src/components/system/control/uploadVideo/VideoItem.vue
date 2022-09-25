@@ -1,5 +1,18 @@
 <template>
-  <router-link to="/VideoPlayer" class="ObjectItemBox">{{items.name}}</router-link>
+  <router-link to="/VideoPlayer" class="VideoItemBox">{{items.name}}</router-link>
+  <!-- <div class="CctvItemBox">test</div>
+  <div class="CctvItemBox">test</div>
+  <div class="CctvItemBox">test</div>
+  <div class="CctvItemBox">test</div>
+  <div class="CctvItemBox">test</div>
+  <div class="CctvItemBox">test</div>
+  <div class="CctvItemBox">test</div>
+  <div class="CctvItemBox">test</div>
+  <div class="CctvItemBox">test</div>
+  <div class="CctvItemBox">test</div>
+  <div class="CctvItemBox">test</div>
+  <div class="CctvItemBox">test</div> -->
+  
 
 </template>
 
@@ -21,11 +34,14 @@ export default {
 </script>
 
 <style>
-.ObjectItemBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: var(--controller-width);
-    height: 60px;
+.VideoItemBox {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: hsl(0,0%,95%);
+  width: 244px;
+  height: 40px;
+  margin-bottom: 1px;
 }
 </style>

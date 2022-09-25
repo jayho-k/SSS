@@ -1,5 +1,6 @@
 <template>
-    <div class="ObjectMenuBox">cctv List</div>
+    <div class="VideoMenuBox">&nbsp; VIDEO</div>
+    <div style="height:30px;"></div>
 </template>
   
 <script>
@@ -9,14 +10,14 @@
 </script>
   
 <style>
-  .ObjectMenuBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--main-color2);
-      width: var(--controller-width);
-      height: 60px;
+  .VideoMenuBox {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  color: #eee;
+  background-color: hsla(0,0%,20%,1);
+  width: 252px;
+  height: 30px;
   }
 
-  
 </style>
