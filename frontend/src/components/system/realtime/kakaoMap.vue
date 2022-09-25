@@ -1,5 +1,5 @@
 <template>
-	<div id="map" style="width:1512px;height:1040px;"></div>
+	<div id="map" style="width:1620px;height:1040px;"></div>
 </template>
 
 <script>
@@ -10,6 +10,7 @@ import Swal from 'sweetalert2'
 export default {
 	setup() {
 		const store = useKakaoStore()
+    store.getCctvList()
 		/* global kakao */
 		const saved_markers = store.saved_markers
 		const saved_overlay = store.saved_overlay
@@ -38,7 +39,7 @@ export default {
 			initMap.map = new kakao.maps.Map(container, options)
 			// 마커 이미지의 이미지 주소입니다
 			var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-
+      //
 //1. 저장된 마커 각 가져오기 및 생성
 
       if (saved_markers.length > 0)
@@ -100,19 +101,20 @@ export default {
 				// 마커를 생성합니다
 				var cnt = 0
         Swal.fire({
-        title: 'title을 입력해 주세요',
+        title: '장소를 설정해주세요',
         input: 'text',
         inputAttributes: {
           autocapitalize: 'off'
         },
         showCancelButton: true,
-        confirmButtonText: 'Look up',
+        confirmButtonText: '생성',
         confirmButtonColor: '#3085d6',
         showLoaderOnConfirm: true,
+        cancelButtonText: '취소',
         preConfirm: (title) => {
           if (title === '') {
             Swal.showValidationMessage(
-            `title을 입력하세요 `
+            `장소를 입력하세요 `
             ) 
           } else {
             for (var s_m_i = 0; s_m_i < saved_markers.length; s_m_i ++) {
@@ -143,13 +145,14 @@ export default {
             marker.setClickable(true)
             // 마커가 지도 위에 표시되도록 설정합니다
             marker.setMap(initMap.map)
-            
+            createCctv(marker, title)
+
             // 생성된 마커를 배열에 추가합니다
             saved_markers.push(marker);
             store.saved_markers_info.push([marker.getTitle(), marker.getPosition().getLat(), marker.getPosition().getLng()])
             make_overlay (title, position, saved_overlay, marker)
 
-             // saved 클릭 이벤트
+             // add 클릭 이벤트
             kakao.maps.event.addListener(marker, 'click', function() {
               if (store.mode === 1) {
                 click_update_Marker(marker, saved_markers, saved_overlay)
@@ -178,9 +181,8 @@ export default {
         if (title.isConfirmed) {
           Swal.fire(
           '',
-          'title이 '+ title.value + ' 생성되었습니다',
+          title.value + ' CCTV가 생성되었습니다',
           'success'
-
           )
         } else {
           Swal.fire(
@@ -218,15 +220,16 @@ export default {
       var cnt = 0
       var s_index = null
       Swal.fire({
-        title: 'Submit your Github username',
+        title: '장소를 변경하시겠습니까?',
         input: 'text',
         inputAttributes: {
           autocapitalize: 'off'
         },
         showCancelButton: true,
-        confirmButtonText: 'Look up',
+        confirmButtonText: '수정',
         confirmButtonColor: '#3085d6',
         showLoaderOnConfirm: true,
+        cancelButtonText: '취소',
         preConfirm: (title) => {
           if (title === '') {
             Swal.showValidationMessage(
@@ -279,7 +282,7 @@ export default {
         if (title.isConfirmed) {
           Swal.fire(
           '',
-          'title이 '+ title.value + ' 수정되었습니다',
+          '장소가 '+ title.value + '로 수정되었습니다',
           'success'
 
           )
@@ -326,6 +329,7 @@ export default {
 					overlay_arr[s_index].setMap(null)
 					marker_arr.splice(s_index,1)
 					overlay_arr.splice(s_index,1)
+          store.deleteCctv(store.saved_markers_info[s_index][4])
 					store.saved_markers_info.splice(s_index,1)
 				} else if (
 					/* Read more about handling dismissals below */
@@ -355,6 +359,17 @@ export default {
       overlay_arr[store.drag_index].setPosition(marker.getPosition())
       overlay_arr[store.drag_index].setMap(initMap.map, marker)
     }
+    function createCctv(marker, title) {
+      const cctv_Data = {
+        name: title,
+        video : 'asdf',
+        latitude : marker.getPosition().getLat(),
+        longitude : marker.getPosition().getLng(),
+      }
+      store.createCctv(cctv_Data)
+
+
+    }
 		return {
 			initMap,
 			make_overlay,
@@ -380,6 +395,7 @@ export default {
 .customOverlay:hover {
   opacity: 100%;
 }
+
 .btn-success {
 	font-size: 20px;
 }

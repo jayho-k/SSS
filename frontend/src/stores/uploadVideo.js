@@ -6,7 +6,7 @@ export const useUploadVideoStore = defineStore("upload", {
     return { 
         video_list: [],
         show_video: '',
-        
+        show_add_mia: 0,    
     }
   },
   actions: {
