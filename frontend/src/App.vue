@@ -1,8 +1,10 @@
 <template>
   <div>
-    <router-link to="/login"> account</router-link>
+    <router-link to="/login"> 로그인/회원가입</router-link>
     <br>
     <router-link to="/cctv">sadfsdfdasf</router-link>
+    <br>
+    <router-link to="/accountManage">회원관리</router-link>
     <br>
     <router-view></router-view>
   </div>

@@ -16,6 +16,11 @@ const routes = [
     name: 'signup',
     component: () => import('@/views/account/signUpView.vue')
   },
+  {
+    path: '/accountManage',
+    name: 'accountManage',
+    component: () => import('@/views/account/accountManage')
+  },
 ]
 
 const router = createRouter({

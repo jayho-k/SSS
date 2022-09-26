@@ -11,6 +11,9 @@ export const useAccounts = defineStore({
       currentUser: {},
       profile: {},
       authError: null,
+      activate_user: [],
+      deactivate_user: [],
+
     }),
     getters: {
       isLoggedIn: state => !!state.token,
@@ -43,16 +46,17 @@ export const useAccounts = defineStore({
             })
           }
         },
-        // asdfsdf
         login(credential) {
           console.log(credential)
           axios.post(SGSS.accounts.login(), credential)
           .then(res => {
-            localStorage.setItem('token', res.data.accessToken)
-            this.token = res.data.accessToken
+            console.log(res.data)
+            localStorage.setItem('token', res.data.access)
+            this.token = res.data.access
             this.fetchCurrentUser()
             if (res.data.is_admin) {
               // 관리자 페이지
+              router.push({name : 'accountManage'})
             } else {
               // 메인페이지
               router.push({name : 'cctv'})
@@ -76,6 +80,25 @@ export const useAccounts = defineStore({
           .catch(err => {
             console.error(err.data)
           })
-        },
+      },
+      activateList(){
+        axios.get(SGSS.managerLogin.activateList(), {headers: this.authHeader})
+        .then(res => {
+          this.activate_user = res.data 
+          console.log(this.activate_user)
+        })
+        .catch(err => {
+          console.error(err.data)
+        })
+      },
+      deactivateList(){
+        axios.get(SGSS.managerLogin.deactivateList(), {headers: this.authHeader})
+        .then(res => {
+          this.deactivate_user = res.data
+        })
+        .catch(err => {
+          console.error(err.data)
+        })
+      },
     }
   })
