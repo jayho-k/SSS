@@ -1,5 +1,5 @@
 <template>
-  <!-- <div class="CctvItemBox">{{tems[0]}}</div> -->
+  <!-- <div class="CctvItemBox">{{items[0]}}</div> -->
   <div class="CctvItemBox">asdf</div>
   <div class="CctvItemBox">asdf</div>
   <div class="CctvItemBox">asdf</div>
