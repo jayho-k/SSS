@@ -21,6 +21,16 @@ const routes = [
     name: 'accountManage',
     component: () => import('@/views/account/accountManage')
   },
+  {
+    path: '/upload',
+    name: 'upload',
+    component: () => import('@/views/uploadVideo/uploadVideoView.vue')
+  },
+  {
+    path: '/VideoPlayer',
+    name: 'VideoPlayer',
+    component: () => import('@/components/system/uploadVideo/VideoPlayer.vue')
+  }
 ]
 
 const router = createRouter({

@@ -19,6 +19,16 @@ export default {
       searchUserList: () => HOST + ACCOUNTS + "admin/search/",
       searchUser:()=> HOST + ACCOUNTS + "admin/search/",
     },
+    realtime: {
+      cctv: () => HOST + CCTV,
+      setCctv: () => HOST + CCTV + 'create/',
+      getCctvList:() => HOST + CCTV +'list/',
+    },
+    mia: {
+      getMiaList: () => HOST + MIA + 'list/',
+      setMia: () => HOST + MIA + 'create/',
+      mia: () => HOST + MIA
+    }
     
   }
 
