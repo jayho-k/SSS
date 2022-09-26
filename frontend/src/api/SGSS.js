@@ -1,6 +1,8 @@
 //const HOST = "http://localhost:8000/"
 const HOST = "https://j7b302.p.ssafy.io/api/"
 const ACCOUNTS = "accounts/"
+const CCTV = "cctvs/"
+const MIA = "missingchilds/"
 
 export default {
     accounts: {
