@@ -12,9 +12,9 @@ export default {
 		const store = useKakaoStore()
     store.getCctvList()
 		/* global kakao */
-		const saved_markers = store.saved_markers
-		const saved_overlay = store.saved_overlay
-    
+    const save_markers = []
+    const save_overlay = []
+    const save_marker_info = store.saved_markers_info
 		onMounted(() => {
       
 			if (window.kakao && window.kakao.maps) {
@@ -42,17 +42,13 @@ export default {
       //
 //1. 저장된 마커 각 가져오기 및 생성
 
-      if (saved_markers.length > 0)
-        {
-          saved_markers.forEach((item,index) => {
-            saved_markers[index].setMap(initMap.map)
-            saved_overlay[index].setMap(initMap.map)
-          })
-        } else {
-          for (var s_m_i = 0; s_m_i < store.saved_markers_info.length; s_m_i ++) {
-            savedMarker(s_m_i)
-          }
-        }
+      for (var s_m_i = 0; s_m_i < save_marker_info.length; s_m_i ++) {
+        savedMarker(s_m_i)
+      }
+      store.saved_markers = Object.assign([], save_markers)
+      console.log(save_markers)
+      store.saved_overlay = Object.assign([], save_overlay)
+
 
 
 //2. 맵 클릭 이벤트 등록
@@ -69,30 +65,30 @@ export default {
 
         // 마커를 생성
 				var marker = new kakao.maps.Marker({
-					position: new kakao.maps.LatLng(store.saved_markers_info[i][1], store.saved_markers_info[i][2]),     // 마커를 표시할 위치
-					title : store.saved_markers_info[i][0],     // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+					position: new kakao.maps.LatLng(save_marker_info[i][1], save_marker_info[i][2]),     // 마커를 표시할 위치
+					title : save_marker_info[i][0],     // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
 					image : markerImage      // 마커 이미지 
 				});
 				marker.setClickable(true)      // 마커 클릭가능
         marker.setMap(initMap.map)     //맵에 부착
-				saved_markers.push(marker)     // 마커 저장
-				make_overlay (store.saved_markers_info[i][0], new kakao.maps.LatLng(store.saved_markers_info[i][1], store.saved_markers_info[i][2]), saved_overlay, marker)     // 오버레이 생성 함수
+				save_markers.push(marker)     // 마커 저장
+				make_overlay (save_marker_info[i][0], new kakao.maps.LatLng(save_marker_info[i][1], save_marker_info[i][2]), save_overlay, marker)     // 오버레이 생성 함수
 				// saved  클릭 이벤트
 				kakao.maps.event.addListener(marker, 'click', function() {
 					if (store.mode === 1) {
-            click_update_Marker(marker, saved_markers, saved_overlay)
+            click_update_Marker(marker, store.saved_markers, store.saved_overlay)
 					} else if (store.mode === 3) {
-						click_delete_marker_and_overlay(marker, saved_markers, saved_overlay)
+						click_delete_marker_and_overlay(marker, store.saved_markers, store.saved_overlay)
 					}
 				})
         
         // saved  드래그 이벤트
         kakao.maps.event.addListener(marker, 'dragstart', function() {
-          dragstart_move_marker(marker, saved_markers, saved_overlay)
+          dragstart_move_marker(marker, store.saved_markers, store.saved_overlay)
         })
         
         kakao.maps.event.addListener(marker, 'dragend', function() {
-          dragend_move_marker(marker, saved_overlay)
+          dragend_move_marker(marker, store.saved_overlay)
         });
       }
 			
@@ -117,16 +113,16 @@ export default {
             `장소를 입력하세요 `
             ) 
           } else {
-            for (var s_m_i = 0; s_m_i < saved_markers.length; s_m_i ++) {
-              if (title === saved_markers[s_m_i].getTitle()){
+            for (var s_m_i = 0; s_m_i < store.saved_markers.length; s_m_i ++) {
+              if (title === store.saved_markers[s_m_i].getTitle()){
                 cnt ++
               }
               if (cnt != 0) {
                 break
               }
             }
-            for (var a_m_i = 0; a_m_i < saved_markers.length; a_m_i ++){
-              if (title === saved_markers[a_m_i].getTitle()){
+            for (var a_m_i = 0; a_m_i < store.saved_markers.length; a_m_i ++){
+              if (title === store.saved_markers[a_m_i].getTitle()){
                 cnt ++
               }
               if (cnt != 0) {
@@ -148,25 +144,25 @@ export default {
             createCctv(marker, title)
 
             // 생성된 마커를 배열에 추가합니다
-            saved_markers.push(marker);
-            store.saved_markers_info.push([marker.getTitle(), marker.getPosition().getLat(), marker.getPosition().getLng()])
-            make_overlay (title, position, saved_overlay, marker)
+            store.saved_markers.push(marker);
+            save_marker_info.push([marker.getTitle(), marker.getPosition().getLat(), marker.getPosition().getLng()])
+            make_overlay (title, position, store.saved_overlay, marker)
 
              // add 클릭 이벤트
             kakao.maps.event.addListener(marker, 'click', function() {
               if (store.mode === 1) {
-                click_update_Marker(marker, saved_markers, saved_overlay)
+                click_update_Marker(marker, store.saved_markers, store.saved_overlay)
               } 
               else if (store.mode === 3 ) {
-                click_delete_marker_and_overlay(marker, saved_markers, saved_overlay)
+                click_delete_marker_and_overlay(marker, store.saved_markers, store.saved_overlay)
               }  
             })
             // saved 드래그 이벤트
             kakao.maps.event.addListener(marker, 'dragstart', function() {
-              dragstart_move_marker(marker, saved_markers, saved_overlay)
+              dragstart_move_marker(marker, store.saved_markers, store.saved_overlay)
             })
             kakao.maps.event.addListener(marker, 'dragend', function() {
-              dragend_move_marker(marker, saved_overlay)
+              dragend_move_marker(marker, store.saved_overlay)
             });
 
             } else {
@@ -236,21 +232,21 @@ export default {
             `title을 입력하세요 `
             ) 
           } else {
-            for (var s_m_i = 0; s_m_i < saved_markers.length; s_m_i ++) {
-              if (marker.getTitle() === saved_markers[s_m_i].getTitle()){
+            for (var s_m_i = 0; s_m_i < store.saved_markers.length; s_m_i ++) {
+              if (marker.getTitle() === store.saved_markers[s_m_i].getTitle()){
                 s_index = s_m_i
                 
-              } else if (title === saved_markers[s_m_i].getTitle()) {
+              } else if (title === store.saved_markers[s_m_i].getTitle()) {
                 cnt ++
               }
               if (cnt != 0) {
                 break
               }
             }
-            for (var a_m_i = 0; a_m_i < saved_markers.length; a_m_i ++){
-              if (marker.getTitle() === saved_markers[a_m_i].getTitle()){
+            for (var a_m_i = 0; a_m_i < store.saved_markers.length; a_m_i ++){
+              if (marker.getTitle() === store.saved_markers[a_m_i].getTitle()){
                 s_index = a_m_i
-              } else if (title === saved_markers[a_m_i].getTitle()) {
+              } else if (title === store.saved_markers[a_m_i].getTitle()) {
                 cnt ++
               }
               if (cnt != 0) {
@@ -267,7 +263,7 @@ export default {
             if (cnt < 1) {
               overlay_arr[s_index].setMap(null);
               marker_arr[s_index].setTitle(title)
-                store.saved_markers_info[s_index][0] = title
+                save_marker_info[s_index][0] = title
               overlay_arr[s_index].setContent('<div class="customOverlay ">'+ title +'</div>')
               overlay_arr[s_index].setMap(initMap.map, marker)
             } else {
@@ -329,8 +325,8 @@ export default {
 					overlay_arr[s_index].setMap(null)
 					marker_arr.splice(s_index,1)
 					overlay_arr.splice(s_index,1)
-          store.deleteCctv(store.saved_markers_info[s_index][4])
-					store.saved_markers_info.splice(s_index,1)
+          store.deleteCctv(save_marker_info[s_index][4])
+					save_marker_info.splice(s_index,1)
 				} else if (
 					/* Read more about handling dismissals below */
 					result.dismiss === Swal.DismissReason.cancel
@@ -355,7 +351,7 @@ export default {
       }
     }
     function dragend_move_marker(marker, overlay_arr) {
-      store.saved_markers_info[store.drag_index] = [marker.getTitle(), marker.getPosition().getLat(), marker.getPosition().getLng()]
+      save_marker_info[store.drag_index] = [marker.getTitle(), marker.getPosition().getLat(), marker.getPosition().getLng()]
       overlay_arr[store.drag_index].setPosition(marker.getPosition())
       overlay_arr[store.drag_index].setMap(initMap.map, marker)
     }
@@ -367,8 +363,6 @@ export default {
         longitude : marker.getPosition().getLng(),
       }
       store.createCctv(cctv_Data)
-
-
     }
 		return {
 			initMap,
@@ -376,7 +370,6 @@ export default {
       dragstart_move_marker,
       dragend_move_marker,
 			click_update_Marker,
-      saved_markers
 		}
 	}
 }

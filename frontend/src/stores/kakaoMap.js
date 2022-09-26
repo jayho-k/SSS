@@ -9,20 +9,27 @@ export const useKakaoStore = defineStore("Kakao", {
 			saved_markers_info: [],
 			saved_markers:[],
 			saved_overlay:[],
+			is_marker_add: false,
+			is_marker_delete: false,
 			is_move: false,
 			drag_index: -1,
 			map_center: [33.450705, 126.570677] 
 			}
 	},
 	actions: {
+		// resetVariable() {
+
+		// }
 		dragUpdate(idx) {
 			this.drag_index = idx
 		},
 		setDrag() {
 			if (this.is_move) {
-				this.saved_markers.forEach(function(item) {item.setDraggable(true)})
+				// this.saved_markers.forEach(function(item) {item.setDraggable(true)})
+				this.is_marker_add = true
 			} else {
-				this.saved_markers.forEach(function(item) {item.setDraggable(false)})
+				this.is_marker_add = false
+				// this.saved_markers.forEach(function(item) {item.setDraggable(false)})
 			}
 			this.is_move = !this.is_move
 		},
@@ -41,7 +48,6 @@ export const useKakaoStore = defineStore("Kakao", {
 
 			}) .catch(err => {
 				console.log(err)
-
 			})
 		},
 		getCctvList() {
