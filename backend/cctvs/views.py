@@ -39,7 +39,7 @@ def cctv_create(request):
         serializer = CCTVDetailSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=user)
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_403_FORBIDDEN)
 
 # cctv crud api
