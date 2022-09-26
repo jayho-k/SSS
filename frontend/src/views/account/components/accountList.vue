@@ -4,7 +4,7 @@
   <div class="search">
             <div>
                 <input type="text" placeholder=" 이름 또는 아이디로 검색 " v-model="search">
-                <button @click="searchUser" class="searchUser" id="searchUser">
+                <button type="button" @click="searchUser" class="searchUser" id="searchUser">
                     <i class="fa fa-search" style="font-size: 18px;"> </i>
                 </button>
             </div>
@@ -94,8 +94,7 @@ import router from '@/router';
         router.push({name : 'loginView'})
       }
       const search = ref('')
-      function searchUser(search){
-        console.log(search)
+      function searchUser(){
         if(search.value === ''){
           if (toggle_box.value === true){
           userData.value = store.activate_user
@@ -103,7 +102,7 @@ import router from '@/router';
             userData.value = store.deactivate_user
           }
         }else{
-          userData.value = axios.post(SGSS.accounts.search(search.value), {headers: store.authHeader})
+          userData.value = store.searchUser(search.value)
         }
       }
       return {

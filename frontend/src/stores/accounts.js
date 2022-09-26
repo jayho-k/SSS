@@ -96,9 +96,21 @@ export const useAccounts = defineStore({
         .then(res => {
           this.deactivate_user = res.data
         })
-        .catch(err => {
-          console.error(err.data)
+        .catch(() => {
+          console.log('asdf')
+          // console.error(err.data)
         })
       },
+      searchUser(name){
+        const token = localStorage.getItem('token')
+        axios.post(
+          SGSS.managerLogin.searchUser(),
+          {search: name}, 
+          {headers: { Authorization: `Bearer ${token}`}}
+          ) .then((res) =>
+          console.log(res)
+          ) .catch((err) => 
+          console.log(err))
+      }
     }
   })
