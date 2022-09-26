@@ -91,7 +91,7 @@ import router from '@/router';
       }
       function logOutClick(){
         axios.post(SGSS.accounts.logout, {headers: store.authHeader})
-        router.push({name : 'loginView'})
+        router.push({name : 'login'})
       }
       const search = ref('')
       function searchUser(){
