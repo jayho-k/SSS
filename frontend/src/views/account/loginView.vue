@@ -33,6 +33,7 @@
             <p v-if="isPwError">{{errorMsg}}</p>
           </div>
           <input type="submit" class="modal-input-btn" value="로그인" />
+          <button @click="login.logout()">로그아웃</button>
           <!-- <div
             @click="login.login(credential)"
             style="border: none; cursor: pointer"
@@ -68,14 +69,7 @@ import { ref } from "vue"
 export default {
   name: "LoginView",
   components: {},
-  // data() {
-  //   return {
-  //     credential: {
-  //       id: "",
-  //       password: "",
-  //     },
-  //   };
-  // },
+
   setup() {
     const isError = ref(false)
     const errorMsg = ref('')
@@ -92,6 +86,7 @@ export default {
         isError.value = true
         errorMsg.value = "비밀번호를 입력해주세요"
       } else {
+        console.log(credential)
         login.login(credential.value)
       }
     }
