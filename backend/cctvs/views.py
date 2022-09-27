@@ -11,8 +11,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from backend.common import checkuser
 
-from cctvs.models import CCTV
-from .serializers import CCTVDetailSerializer
+from cctvs.models import CCTV, Upload
+from .serializers import (
+    CCTVDetailSerializer,
+    UploadSerializer
+)
 from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
 
@@ -104,4 +107,17 @@ def gen(camera):
     
     
     
-
+@api_view(["POST"])
+def upload(request):
+    token = request.META.get("HTTP_AUTHORIZATION")
+    user_id = checkuser(token)
+    user = get_object_or_404(get_user_model(), id=user_id)
+    if request.method == "POST":
+        upload = Upload.objects.create(video_file=request.FILES["video"],user=user)
+        upload.save()
+            
+        video = Upload.objects.filter(user=user_id)
+        idx = video.count()
+        seriailzer = UploadSerializer(instance=video[idx - 1])
+        return Response(seriailzer.data,status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_401_UNAUTHORIZED)

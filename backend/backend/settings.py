@@ -37,9 +37,8 @@ ALLOWED_HOSTS = ["j7b302.p.ssafy.io", "localhost", "127.0.0.1"]
 INSTALLED_APPS = [
     "accounts",
     "cctvs",
-    "uploads",
     "missingchilds",
-    
+    "uploads",
     "rest_framework",
     "rest_framework.authentication",
     "corsheaders",
