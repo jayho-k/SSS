@@ -1,18 +1,5 @@
 <template>
-<!-- <button type="button" @click="getMiaDetail(7)"></button> -->
-<div class="MiaItemBox">asd</div>
-<div class="MiaItemBox">asd</div>
-<div class="MiaItemBox">asd</div>
-<div class="MiaItemBox">asd</div>
-<div class="MiaItemBox">asd</div>
-<div class="MiaItemBox">asd</div>
-<div class="MiaItemBox">asd</div>
-<div class="MiaItemBox">asd</div>
-<div class="MiaItemBox">asd</div>
-<div class="MiaItemBox">asd</div>
-<div class="MiaItemBox">asd</div>
-<div class="MiaItemBox">asd</div>
-<div class="MiaItemBox">asd</div>
+<button type="button" @click="getMiaDetail(7)"></button>
 </template>
 
 <script>

@@ -16,12 +16,9 @@ export default {
       console.log(e.target)
       e.target.classList.toggle('activeB')
       e.target.classList.toggle('clickB')
-      if (store.mode === 1) {
-        
-      store.mode = 0}
-      else {
-        store.mode = 1
-      }
+
+      store.cctv_mode = 1
+    
     }
     function move (e) {
       store.setDrag()
@@ -32,9 +29,9 @@ export default {
       e.target.classList.toggle('activeR')
       e.target.classList.toggle('clickR')
       if (store.mode === 3) {
-      store.mode = 0}
+        store.cctv_mode = 2}
       else {
-        store.mode = 3
+        store.cctv_mode = 2
       }
     }
     function save () {

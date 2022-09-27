@@ -1,30 +1,28 @@
 <template>
 	<div class="CctvListBox">
-    
     <CctvMenu></CctvMenu>
     <div class="CctvItem">
-    <CctvItem></CctvItem>
-		<CctvItem v-for="(D_item, D_i) in DataSet"
+		<div v-for="(D_item, D_i) in DataSet"
     :key="D_i"
     :D_item = D_item
-    @click="mapCenter(D_i)"></CctvItem>
-    
+    @click="mapCenter(D_i)">
+      <div class="CctvItemBox">{{D_item[0]}}</div>
+    </div>
     </div>
 	</div>
 </template>
 
 <script>
 import { useKakaoStore } from '@/stores/kakaoMap';
+import { ref, computed } from 'vue'
 import CctvMenu from '@/components/system/control/realtime/CctvMenu'
-import CctvItem from '@/components/system/control/realtime/CctvItem'
 export default {
     components: {
         CctvMenu,
-        CctvItem
     },
     setup () {
       const kakaostore = useKakaoStore()
-      const DataSet = kakaostore.saved_markers_info
+      const DataSet = ref(computed(() => kakaostore.saved_markers_info))
       function mapCenter (D_i) {
         kakaostore.setMapCenter(D_i)
       }
@@ -33,8 +31,6 @@ export default {
         mapCenter
       }
     }
-  
-
 }
 </script>
 
@@ -58,6 +54,16 @@ export default {
   overflow-x: hidden;
 }
 
+.CctvItemBox {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: hsl(0,0%,95%);
+  width: 244px;
+  height: 40px;
+  margin-bottom: 1px;
+}
 
 /* 스크롤바 설정*/
 .CctvItem::-webkit-scrollbar{
