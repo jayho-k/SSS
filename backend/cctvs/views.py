@@ -83,7 +83,8 @@ def streaming(request):
 
 class video_camera(object):
     def __init__(self):
-        self.video = cv2.VideoCapture(0)
+        # self.video = cv2.VideoCapture('http://qwerasdf1234:1q2w3e4r@192.168.0.26:8080/video') # local
+        self.video = cv2.VideoCapture('http://qwerasdf1234:1q2w3e4r@192.168.0.26:8080/video') # server
         (self.grabbed, self.frame) = self.video.read()
         threading.Thread(target=self.update, args=()).start()
     
