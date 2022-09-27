@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CCTV
+from .models import CCTV, Upload
 
 class CCTVCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,4 +20,12 @@ class CCTVDetailSerializer(serializers.ModelSerializer):
             "video",
             "latitude",
             "longitude",
+        )
+class UploadSerializer(serializers.ModelSerializer):
+    video_file = serializers.FileField(required=False)
+    class Meta:
+        model = Upload
+        fields = (
+            "id",
+            "video_file",
         )
