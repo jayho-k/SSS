@@ -4,12 +4,13 @@
   <div class="search">
             <div>
                 <input type="text" placeholder=" 이름 또는 아이디로 검색 " v-model="search">
-                <button type="button" @click="searchUser" class="searchUser" id="searchUser">
-                    <i class="fa fa-search" style="font-size: 18px;"> </i>
+                <button type="button" @click="searchUser" class="searchButton" id="searchButton">
+                    검색
                 </button>
             </div>
         </div>
   <button @click="logOutClick" class="logOut" id="logOut">로그아웃</button>
+  <button @click="refresh" class="refresh" id="refresh">토큰재발급</button>
 </div>
 
   <div class="table">
@@ -31,7 +32,7 @@
         </th>
         <!-- <th>dfdf</th> -->
       </tr>
-      <tr v-for="user in userData"
+      <tr v-for="(user, index) in userData"
       :key="user.id">
         <td>{{user.name}}</td>
         <!-- <td>asdf</td> -->
@@ -40,10 +41,10 @@
         <td>{{user.email}}</td>
         <td>{{user.id}}</td>
         <td>
-          <button @click="resetPassword" class="deleteAccount" id="resetPassword">비밀번호 변경</button>
+          <button @click="resetPassword" class="resetPassword" id="resetPassword">비밀번호 변경</button>
         </td>
         <td>
-          <button @click="deleteAccount" class="deleteAccount" id="deleteAccount">삭제</button>
+          <button @click="deleteAccount(index)" class="deleteAccount" id="deleteAccount">삭제</button>
         </td>
       </tr>
     </table>
@@ -55,17 +56,15 @@
 
 
 <script>
-import { useAccounts } from "@/stores/accounts";
+import { manageAccounts } from "@/stores/accountManage";
 import { ref } from "vue"
 import axios from "axios"
 import SGSS from '@/api/SGSS';
-import router from '@/router';
   export default {
     name:'manageTable',
     async setup () {
-      const store = useAccounts()
+      const store = manageAccounts()
       const currentUser = axios.get(SGSS.accounts.userManage, {headers: store.authHeader})
-      // const isActivate = store.us
       await axios.get(SGSS.managerLogin.activateList(), {headers: store.authHeader})
         .then(res => {
           store.activate_user = res.data 
@@ -79,31 +78,31 @@ import router from '@/router';
       function changeList () {
         if (toggle_box.value === true){
           userData.value = store.activate_user
-        } else if(toggle_box.value === false) {
+        } else {
           userData.value = store.deactivate_user
         }
       }
-      function resetPassword(){
-        axios.put(SGSS.managerLogin.passwordChange(), {headers: store.authHeader})
-      }
-      function deleteAccount(){
-        axios.delete(SGSS.accounts.userManage(), {headers: store.authHeader})
-      }
       function logOutClick(){
-        axios.post(SGSS.accounts.logout, {headers: store.authHeader})
-        router.push({name : 'loginView'})
+        store.logout()
       }
       const search = ref('')
       function searchUser(){
-        if(search.value === ''){
-          if (toggle_box.value === true){
-          userData.value = store.activate_user
-          } else if(toggle_box.value === false) {
-            userData.value = store.deactivate_user
-          }
+        store.searchUser(search.value)
+        userData.value = store.search_users
+        console.log(store.search_users)
+      }
+      function deleteAccount(idx){
+        if(userData.value.length > 0 ){
+           console.log(userData.value[idx]['id'])
+          userData.value.splice(idx, 1)
+         
+          store.deleteAccount(userData.value[idx]['id'])
         }else{
-          userData.value = store.searchUser(search.value)
+          console.log(userData.value)
         }
+      }
+      function refresh(){
+        store.refreshToken()
       }
       return {
         store,
@@ -112,10 +111,10 @@ import router from '@/router';
         toggle_box,
         search,
         changeList,
-        resetPassword,
-        deleteAccount,
         logOutClick,
         searchUser,
+        deleteAccount,
+        refresh,
       }
     }
   }
@@ -217,7 +216,7 @@ import router from '@/router';
         margin:7px;
     }
          
-    .search button{
+    .searchButton{
         background-color: #0074D9;
         color: #f2f2f2;
         float: right;

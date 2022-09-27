@@ -13,7 +13,7 @@ export const useAccounts = defineStore({
       authError: null,
       activate_user: [],
       deactivate_user: [],
-
+      search_users: [],
     }),
     getters: {
       isLoggedIn: state => !!state.token,
@@ -23,18 +23,10 @@ export const useAccounts = defineStore({
       refreshToken(){
 
       },
-      removeToken() {
-        localStorage.setItem('token', '')
-        this.currentUser = {}
-        window.location.reload()
-      },
       fetchCurrentUser() {
         if (this.isLoggedIn) {
           axios.get(SGSS.accounts.userManage(), {
             headers: this.authHeader
-            // headers: {
-            //   Authorization : `Bearer ${this.token}`
-            // }
           })
             .then(res => {
               this.currentUser = res.data
@@ -45,72 +37,54 @@ export const useAccounts = defineStore({
               }
             })
           }
-        },
-        login(credential) {
-          console.log(credential)
-          axios.post(SGSS.accounts.login(), credential)
-          .then(res => {
-            console.log(res.data)
-            localStorage.setItem('token', res.data.access)
-            this.token = res.data.access
-            this.fetchCurrentUser()
-            if (res.data.is_admin) {
-              // 관리자 페이지
-              router.push({name : 'accountManage'})
-            } else {
-              // 메인페이지
-              router.push({name : 'cctv'})
-            }
-          })
-          .catch(err => {
-            console.error(err.data)
-          })
+      },
+      login(credential) {
+        axios.post(
+          SGSS.accounts.login(), 
+          credential
+        ).then(res => {
+          console.log(res.data)
+          localStorage.setItem('token', res.data.access)
+          localStorage.setItem('refresh', res.data.refresh)
+          this.token = res.data.access
+          this.fetchCurrentUser()
+          if (res.data.is_admin) {
+            // 관리자 페이지
+            router.push({name : 'accountManage'})
+          } else {
+            // 메인페이지
+            router.push({name : 'cctv'})
+          }
+        })
+        .catch(err => {
+          console.error(err.data)
+        })
+      },
+      logout(){
+        const token = localStorage.getItem('token')
+        axios.post(
+          SGSS.accounts.logout,
+          {headers: {Authorization : 'Bearer ' + token}}
+        ) .then((res) => {
+          localStorage.removeItem('token')
+          this.currentUser = {}
+          console.log(res)}
+        ) .catch((err) => {
+          console.log(err)}
+        )
+        router.push({name : 'login'})
       },
       signup(credential) {
         console.log(credential)
-        axios.post(SGSS.accounts.signup(), credential)
-        // axios({
-        //   url:SGSS.accounts.signup(),
-        //   method: 'post',
-        //   data: credential
-        // })
-          .then(res => {
+        axios.post(
+          SGSS.accounts.signup(), credential
+          ).then(res => {
             console.log(res);
           })
           .catch(err => {
             console.error(err.data)
           })
       },
-      activateList(){
-        axios.get(SGSS.managerLogin.activateList(), {headers: this.authHeader})
-        .then(res => {
-          this.activate_user = res.data 
-          console.log(this.activate_user)
-        })
-        .catch(err => {
-          console.error(err.data)
-        })
-      },
-      deactivateList(){
-        axios.get(SGSS.managerLogin.deactivateList(), {headers: this.authHeader})
-        .then(res => {
-          this.deactivate_user = res.data
-        })
-        .catch(() => {
-          console.log('asdf')
-          // console.error(err.data)
-        })
-      },
-      searchUser(name){
-        const token = localStorage.getItem('token')
-        axios.post(
-          SGSS.managerLogin.searchUser(),
-          {search: name}, 
-          {headers: { Authorization: `Bearer ${token}`}}
-          ) .then((res) =>
-          console.log(res)
-          ) .catch((err) => 
-          console.log(err))
-      }
+      
     }
-  })
+})
