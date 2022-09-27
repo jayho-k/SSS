@@ -30,7 +30,6 @@ export const useMiaStore = defineStore("MiaStore", {
       formData.append("name", Data.name)
       formData.append("child_img", Data.child_img)
       formData.append("age", Data.age)
-      console.log(Data)
       const token = localStorage.getItem('token')
       axios.post(
         SGSS.mia.setMia(),

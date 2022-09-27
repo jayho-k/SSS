@@ -13,10 +13,8 @@ export default {
   setup() {
     const store = useKakaoStore()
     function add (e) {
-      console.log(e.target)
       e.target.classList.toggle('activeB')
       e.target.classList.toggle('clickB')
-
       store.cctv_mode = 1
     
     }

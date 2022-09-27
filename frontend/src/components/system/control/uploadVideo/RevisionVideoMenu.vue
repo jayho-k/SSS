@@ -1,6 +1,6 @@
 <template>
   <div class="RevisionMenuBox">
-    <label for="video_file"><div  @change="upload_add" class="metalBtn hoverB linearBtn" style="--bg: hsl(19, 85%, 79%), hsl(17, 100%, 58%), hsl(52, 92%, 51%)">Upload<input  type="file" id="video_file" style="width: 0px; height: 0px;" multiple @change="showTextFile"  accept=".mp4, .mkv"></div></label>
+    <label for="video_file"><div  @change="upload_add" class="metalBtn hoverB linearBtn" >Upload<input  type="file" id="video_file" style="width: 0px; height: 0px;"  @change="showTextFile"  accept=".mp4, .mkv"></div></label>
     <div class="metalBtn hoverY linearBtn" @click="move">조건</div>
     <div class="metalBtn hoverR linearBtn" @click="del">삭제</div>
 
@@ -17,6 +17,7 @@ export default {
     const uploadStore = useUploadVideoStore()
     function upload_add (event) {
       Object.values(event.target.files).forEach(element => {
+        console.log(element)
         uploadStore.uploadVideo(element)
       })
     }

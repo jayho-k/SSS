@@ -75,20 +75,24 @@ export const useKakaoStore = defineStore("Kakao", {
 				}
 				) .then (() => {
 					this.getCctvList()
-				
-
 				}) .catch(err => {
 					console.log(err)
 				}
 			)
 		},
 		updateCctv(data) {
+			console.log(data)
 			const token = localStorage.getItem('token')
 			axios.put(
 				SGSS.realtime.cctv(),
-				{data:data},
+				data,
 				{headers: {Authorization : 'Bearer ' + token}}
-				)
+				) .then (() => {
+					this.getCctvList()
+				}) .catch(err => {
+					console.log(err)
+				}
+			)
 		}
 	}
 })
