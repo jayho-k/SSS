@@ -9,20 +9,26 @@ export const useKakaoStore = defineStore("Kakao", {
 			saved_markers_info: [],
 			saved_markers:[],
 			saved_overlay:[],
-			is_move: false,
+			cctv_mode: 2,
+			
 			drag_index: -1,
 			map_center: [33.450705, 126.570677] 
 			}
 	},
 	actions: {
+		// resetVariable() {
+
+		// }
 		dragUpdate(idx) {
 			this.drag_index = idx
 		},
 		setDrag() {
 			if (this.is_move) {
-				this.saved_markers.forEach(function(item) {item.setDraggable(true)})
+				// this.saved_markers.forEach(function(item) {item.setDraggable(true)})
+				this.is_marker_add = true
 			} else {
-				this.saved_markers.forEach(function(item) {item.setDraggable(false)})
+				this.is_marker_add = false
+				// this.saved_markers.forEach(function(item) {item.setDraggable(false)})
 			}
 			this.is_move = !this.is_move
 		},
@@ -41,7 +47,6 @@ export const useKakaoStore = defineStore("Kakao", {
 
 			}) .catch(err => {
 				console.log(err)
-
 			})
 		},
 		getCctvList() {
@@ -50,8 +55,7 @@ export const useKakaoStore = defineStore("Kakao", {
 				SGSS.realtime.getCctvList(),
 				{headers: {Authorization : 'Bearer ' + token}}
 			) .then (res => {
-				this.saved_markers_info = []
-				res.data.forEach((item) => {this.saved_markers_info.push([item.name, item.latitude, item.longitude, item.video, item.id, false])})
+				this.saved_markers_info = Object.assign([], res.data)
 				console.log(res.data)
 
 			}) .catch(err => {
@@ -77,6 +81,14 @@ export const useKakaoStore = defineStore("Kakao", {
 					console.log(err)
 				}
 			)
+		},
+		updateCctv(data) {
+			const token = localStorage.getItem('token')
+			axios.put(
+				SGSS.realtime.cctv(),
+				{data:data},
+				{headers: {Authorization : 'Bearer ' + token}}
+				)
 		}
 	}
 })
