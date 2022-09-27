@@ -11,7 +11,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 RUN apt-get update
-RUN apt-get install libgl1
-RUN apt-get install vim
+RUN apt-get install -y libgl1
+RUN apt-get install -y vim
 
 CMD ["bash", "-c", "python manage.py runserver 0.0.0.0:8000"]
