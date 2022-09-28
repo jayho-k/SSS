@@ -40,12 +40,19 @@
         <td>{{user.phone_number}}</td>
         <td>{{user.email}}</td>
         <td>{{user.id}}</td>
-        <td>
-          <button @click="resetPassword" class="resetPassword" id="resetPassword">비밀번호 변경</button>
-        </td>
-        <td>
-          <button @click="deleteAccount(index)" class="deleteAccount" id="deleteAccount">삭제</button>
-        </td>
+        <div v-if="toggle_box == true">
+          <td>
+            <button @click="resetPassword" class="resetPassword" id="resetPassword">비밀번호 변경</button>
+          </td>
+          <td>
+            <button @click="deleteAccount(index)" class="deleteAccount" id="deleteAccount">삭제</button>
+          </td>
+        </div>
+        <div v-else>
+          <td>
+            <button @click="activate(index)" class="activate" id="activate">사용자 활성화</button>
+          </td>
+        </div>
       </tr>
     </table>
 
@@ -64,7 +71,7 @@ import SGSS from '@/api/SGSS';
     name:'manageTable',
     async setup () {
       const store = manageAccounts()
-      const currentUser = axios.get(SGSS.accounts.userManage, {headers: store.authHeader})
+      const currentUser = axios.get(SGSS.accounts.userManage(), {headers: store.authHeader})
       await axios.get(SGSS.managerLogin.activateList(), {headers: store.authHeader})
         .then(res => {
           store.activate_user = res.data 
@@ -104,6 +111,10 @@ import SGSS from '@/api/SGSS';
       function refresh(){
         store.refreshToken()
       }
+      function activate(idx){
+        console.log(userData.value[idx]['id'])
+        store.userActviate(userData.value[idx]['id'])
+      }
       return {
         store,
         currentUser,
@@ -115,6 +126,7 @@ import SGSS from '@/api/SGSS';
         searchUser,
         deleteAccount,
         refresh,
+        activate,
       }
     }
   }
