@@ -33,9 +33,9 @@ export const useKakaoStore = defineStore("Kakao", {
 			this.is_move = !this.is_move
 		},
 		setMapCenter(D_i) {
-			this.map_center = [this.saved_markers_info[D_i][1],this.saved_markers_info[D_i][2]]
+			this.map_center = [this.saved_markers_info[D_i]['latitude'], this.saved_markers_info[D_i]['longitude']]
 		},
-		createCctv(Data) {
+		createCctv(Data, info) {
 			const token = localStorage.getItem('token')
 			axios.post(
 				SGSS.realtime.setCctv(),
@@ -44,6 +44,7 @@ export const useKakaoStore = defineStore("Kakao", {
 			) .then (() => {
 				// 다시 리스트 세팅
 				this.getCctvList()
+				info.push(this.saved_markers_info[-1])
 
 			}) .catch(err => {
 				console.log(err)
@@ -81,7 +82,6 @@ export const useKakaoStore = defineStore("Kakao", {
 			)
 		},
 		updateCctv(data) {
-			console.log(data)
 			const token = localStorage.getItem('token')
 			axios.put(
 				SGSS.realtime.cctv(),

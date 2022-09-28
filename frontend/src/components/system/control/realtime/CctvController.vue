@@ -1,8 +1,9 @@
 <template>
   <div class="controllerBox">
+    
     <NavMenu></NavMenu>
+    <WatchMenu></WatchMenu>
     <!-- 실시간 -->
-    <RevisionMenu></RevisionMenu>
     <CctvList class="metalList"></CctvList>
     <MiaList class="metalList"></MiaList>
 
@@ -13,16 +14,15 @@
 <script>
 import { useIndexStore } from '@/stores/index'
 import NavMenu from '@/components/system/control/NavMenu.vue'
-
-import RevisionMenu from '@/components/system/control/realtime/RevisionMenu.vue'
+import WatchMenu from '@/components/system/control/WatchMenu.vue'
 import CctvList from '@/components/system/control/realtime/CctvList.vue'
 // import AlarmList from '@/components/system/control/realtime/AlarmList.vue'
 import MiaList from '@/components/system/MiaList.vue'
 export default {
   components: {
     NavMenu,
-    RevisionMenu,
     CctvList,
+    WatchMenu,
     // AlarmList,
     MiaList,
   },

@@ -23,6 +23,7 @@ export const useUploadVideoStore = defineStore("upload", {
       ) .then ((res) => {
         this.video_list.push(video)
         console.log(res.data)
+        console.log(res)
       }).catch ((err) => {
         console.log(err)
       })

@@ -17,6 +17,7 @@ export const useMiaStore = defineStore("MiaStore", {
         SGSS.mia.getMiaList(),
         {headers: {Authorization : 'Bearer ' + token}}
       ) .then ((res) => {
+        this.mia_list = res.data
         console.log(res.data)
 
       }
