@@ -1,29 +1,45 @@
 <template>
   <div class="RevisionMenuBox">
-    <label for="video_file"><div  @change="upload_add" class="metalBtn hoverB linearBtn" >Upload<input  type="file" id="video_file" style="width: 0px; height: 0px;"  @change="showTextFile"  accept=".mp4, .mkv"></div></label>
-    <div class="metalBtn hoverY linearBtn" @click="move">조건</div>
-    <div class="metalBtn hoverR linearBtn" @click="del">삭제</div>
 
-
-
-
+    <button class="metalBtn hoverB linearBtn" @click="add">추가</button>
+    <button class="metalBtn hoverY linearBtn" @click="move">이동</button>
+    <button class="metalBtn hoverR linearBtn" @click="del">삭제</button>
   </div>
 </template>
 
 <script>
-import { useUploadVideoStore } from '@/stores/uploadVideo';
+import { useKakaoStore } from '@/stores/kakaoMap';
 export default {
   setup() {
-    const uploadStore = useUploadVideoStore()
-    function upload_add (event) { 
-      Object.values(event.target.files).forEach(item => {
-
-        uploadStore.uploadVideo(item)
-      })
+    const store = useKakaoStore()
+    function add (e) {
+      e.target.classList.toggle('activeB')
+      e.target.classList.toggle('clickB')
+      store.cctv_mode = 1
+    
     }
-
+    function move (e) {
+      store.setDrag()
+      e.target.classList.toggle('activeY')
+      e.target.classList.toggle('clickY')
+    }
+    function del (e) {
+      e.target.classList.toggle('activeR')
+      e.target.classList.toggle('clickR')
+      if (store.mode === 3) {
+        store.cctv_mode = 2}
+      else {
+        store.cctv_mode = 2
+      }
+    }
+    function save () {
+      store.saveMarkers()
+    }
     return {
-      upload_add,
+      add,
+      move,
+      del,
+      save
     }
   }
 }
@@ -31,13 +47,14 @@ export default {
 
 <style>
 
-
 .RevisionMenuBox {
-    display: flex;
-    width: 260px;
-    height: 40px;
-    border-radius: 5px;
-    align-items: center;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  width: 120px;
+  height: 40px;
+  border-radius: 5px;
+  align-items: center;
 }
 
 
@@ -45,17 +62,18 @@ export default {
 .metalBtn {
   display: flex;
   justify-content: center;
+  align-items: center;
   text-align: center;
   color: hsla(0,0%,20%,1);
   text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;
-  align-items: center;
+  
   background-color: hsl(0,0%,90%);
   box-shadow: inset hsla(0,0%,15%,  1) 0  0px 0px 4px, /* border */
     inset hsla(0,0%,15%, .8) 0 -1px 5px 4px, /* soft SD */
     inset hsla(0,0%,0%, .25) 0 -1px 0px 6px, /* bottom SD */
     inset hsla(0,0%,100%,.7) 1px  1px 1px 6px, /* top HL */
     
-    hsla(0,0%, 0%,.15) 0 -5px 6px 4px, /* outer SD */
+    hsla(0,0%, 0%,.15) 0 -3px 4px 4px, /* outer SD */
     hsla(0,0%,100%,.5) 0  1px 4px 4px; /* outer HL */ 
   
   transition: color .2s;

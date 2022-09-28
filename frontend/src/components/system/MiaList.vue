@@ -2,32 +2,45 @@
 <div class="miaListBox">
 
   <MiaMenu></MiaMenu>
-    <!-- <MiaAddForm></MiaAddForm> -->
-  <div class="miaListItem">
-    <MiaItem></MiaItem>
-  <MiaItem v-for="(D_item, D_i) in DataSet"
+  <div class="miaListItem" v-show="initData.is_show_mia">
+    <div v-for="(D_item, D_i) in DataSet"
     :key="D_i"
     :D_item = D_item
-  ></MiaItem>
+    @click="getMiaDetail(7)"
+    class="miaItemBox"
+    >{{D_item['name']}} + {{D_item['age']}}</div>
   </div>
+  <MiaAddForm v-show="!initData.is_show_mia"></MiaAddForm>  
+
 </div>
 </template>
 
 <script>
 import { useMiaStore } from '@/stores/mia.js'
-// import MiaAddForm from '@/components/system/MiaAddForm.vue'
+import { ref, computed } from 'vue'
+import MiaAddForm from '@/components/system/MiaAddForm.vue'
 import MiaMenu from '@/components/system/MiaMenu.vue'
-import MiaItem from '@/components/system/MiaItem.vue'
 export default {
   components: {
-    // MiaAddForm,
+    MiaAddForm,
     MiaMenu,
-    MiaItem,
-    },
+},
   setup() {
     const miaStore = useMiaStore()
+    const initData = {
+      is_show_mia: true,
+    }
     miaStore.getMiaList()
+    const DataSet = ref(computed(() => miaStore.mia_list))
     
+    function getMiaDetail(id) {
+      miaStore.getMiaDetail(id)
+    }
+    return {
+      initData,
+      DataSet,
+      getMiaDetail,
+    }
   }
 }
 </script>
@@ -38,7 +51,7 @@ export default {
   justify-content: center;
   align-items: center;
   width: var(--controller-width);
-  height: 60px;
+  height: 40px;
   background-color: var(--main-color2);
 }
 

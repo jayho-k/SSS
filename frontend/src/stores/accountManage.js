@@ -27,7 +27,7 @@ export const manageAccounts = defineStore({
         {
              refresh: refresh 
         }) .then ((res) => {
-            console.log(res.data.access)
+            // console.log(res.data.access)
             localStorage.setItem('token', res.data.access)
         }) .catch ((err) => {
             console.log(err)
@@ -52,7 +52,7 @@ export const manageAccounts = defineStore({
       logout(){
         const token = localStorage.getItem('token')
         axios.post(
-          SGSS.accounts.logout,
+          SGSS.accounts.logout(),
           {headers: {Authorization : 'Bearer ' + token}}
         ) .then((res) => {
           localStorage.removeItem('token')
@@ -74,6 +74,9 @@ export const manageAccounts = defineStore({
         })
         .catch(err => {
           console.error(err.data)
+          if(err.response.status === 500){
+            this.refreshToken()
+        }
         })
       },
       deactivateList(){
@@ -83,6 +86,9 @@ export const manageAccounts = defineStore({
           this.deactivate_user = res.data
           }).catch((err) => {
             console.error(err.data)
+            if(err.response.status === 500){
+                this.refreshToken()
+            }
           })
       },
       searchUser(name){
@@ -93,17 +99,23 @@ export const manageAccounts = defineStore({
           {headers: { Authorization: `Bearer ${token}`}}
         ) .then((res) => {
           this.search_users = res.data
-        }) .catch((err) => 
-          {if(err.response.status === 500){
-            this.refreshToken()
-          }}
-          ) 
+        }) .catch((err) => {
+            if(err.response.status === 500){
+                this.refreshToken()
+            }
+        }) 
           
       },
       resetPassword(){
         const token = localStorage.getItem('token')
         axios.put(SGSS.managerLogin.passwordChange(), 
-        {headers: {Authorization : 'Bearer ' + token}})
+        {headers: {Authorization : 'Bearer ' + token}}
+        ).catch((err) => {
+            if(err.response.status === 500){
+                this.refreshToken()
+            }
+        }) 
+
       },
       deleteAccount(uid){
         const userId = uid
@@ -112,8 +124,26 @@ export const manageAccounts = defineStore({
         {
             headers: {Authorization : 'Bearer ' + token},
             data:userId
-        })
+        }).catch((err) => {
+            if(err.response.status === 500){
+                this.refreshToken()
+            }
+        }) 
       },
+      userActviate(uid){
+        const userId = uid
+        const token = localStorage.getItem('token')
+        // console.log(userId)
+        axios.patch(SGSS.managerLogin.approveSignup(), 
+        
+            {'uid': userId},
+            {headers: {Authorization : 'Bearer ' + token}}
+        ).catch((err) => {
+            if(err.response.status === 500){
+                this.refreshToken()
+            }
+        }) 
+      }
 
       
     }
