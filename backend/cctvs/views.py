@@ -1,4 +1,3 @@
-
 # import socket # 소켓 프로그래밍에 필요한 API를 제공하는 모듈
 # import struct # 바이트(bytes) 형식의 데이터 처리 모듈
 # import pickle # 바이트(bytes) 형식의 데이터 변환 모듈
@@ -84,7 +83,7 @@ def streaming(request):
 class video_camera(object):
     def __init__(self):
         # self.video = cv2.VideoCapture('http://qwerasdf1234:1q2w3e4r@192.168.0.26:8080/video') # local
-        self.video = cv2.VideoCapture('http://qwerasdf1234:1q2w3e4r@192.168.0.26:8080/video') # server
+        self.video = cv2.VideoCapture('rtsp://192.0.0.2:8554/live') # server
         (self.grabbed, self.frame) = self.video.read()
         threading.Thread(target=self.update, args=()).start()
     
