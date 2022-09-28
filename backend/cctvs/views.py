@@ -138,7 +138,7 @@ def upload(request):
         project=TRACK,  # save results to project/name
         name=name_exp,  # save results to project/name
         save_vid=True,  # save confidences in --save-txt labels
-        classes=[0],  # filter by class: --class 0, or --class 0 2 3
+        classes=[0,1],  # filter by class: --class 0, or --class 0 2 3
         # show_vid=False,  # show results
         # yolo_weights=WEIGHTS / 'yolov5m.pt',  # model.pt path(s),
         # strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
