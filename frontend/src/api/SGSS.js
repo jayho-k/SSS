@@ -3,6 +3,7 @@ const HOST = "https://j7b302.p.ssafy.io/api/"
 const ACCOUNTS = "accounts/"
 const CCTV = "cctvs/"
 const MIA = "missingchilds/"
+const UPLOAD = "cctvs/upload/"
 
 export default {
     accounts: {
@@ -30,6 +31,10 @@ export default {
       getMiaList: () => HOST + MIA + 'list/',
       setMia: () => HOST + MIA + 'create/',
       mia: () => HOST + MIA
+    },
+    upload: {
+      upload: () => HOST + UPLOAD
+
     }
     
   }
