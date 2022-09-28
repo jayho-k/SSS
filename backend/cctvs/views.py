@@ -17,7 +17,7 @@ from .serializers import (
 )
 from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
-from Yolov7_StrongSORT_OSNet import yolo_api
+from yolo7deep import yolo_api
 from pathlib import Path
 
 
