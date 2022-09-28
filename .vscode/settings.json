@@ -1,5 +1,5 @@
 {
     "python.analysis.extraPaths": [
-        "./backend/Yolov7_StrongSORT_OSNet/strong_sort/deep/reid"
+        "./backend/yolo7deep/strong_sort/deep/reid"
     ]
 }
