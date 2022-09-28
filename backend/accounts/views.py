@@ -85,10 +85,17 @@ def user_detail_or_update_or_delete(request):
             return Response(status=status.HTTP_200_OK)
     # 회원 탈퇴(비활성화)
     elif request.method == "DELETE":
-        token = OutstandingToken.objects.filter(user_id=user_id)
-        token.delete()
-        user.delete()
-        return Response(status=status.HTTP_200_OK)
+        if user.is_admin == False:
+            tokens = OutstandingToken.objects.filter(user_id=user_id)
+            if tokens is not None:
+                for token in tokens:
+                    token.delete()
+            user.delete()
+            return Response(status=status.HTTP_200_OK)
+        msg = {
+            "message": "관리자는 삭제할 수 없습니다."
+        }
+        return Response(msg,status=status.HTTP_403_FORBIDDEN)
     return Response(status=status.HTTP_403_FORBIDDEN)
 
 # 비밀번호 변경
