@@ -123,7 +123,7 @@ def upload(request):
         upload.save()
 
         FILE = Path(__file__).resolve() 
-        ROOT = FILE.parents[0].parents[0] / 'Yolov7_StrongSORT_OSNet'  # yolov5 strongsort root directory
+        ROOT = FILE.parents[0].parents[0] / 'yolo7deep'  # yolov5 strongsort root directory
         WEIGHTS = ROOT / 'weights'
         TRACK = ROOT.parents[0] /'media/track'
         name_exp = 'exp'
