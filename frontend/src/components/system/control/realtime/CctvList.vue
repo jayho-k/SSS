@@ -5,8 +5,9 @@
 		<div v-for="(D_item, D_i) in DataSet"
     :key="D_i"
     :D_item = D_item
-    @click="mapCenter(D_i)">
-      <div class="CctvItemBox">{{D_item[0]}}</div>
+    @click="mapCenter(D_i)"
+    class="CctvItemBox">
+    {{D_item['name']}}
     </div>
     </div>
 	</div>

@@ -1,8 +1,8 @@
 <template>
   <div class="controllerBox">
     <NavMenu></NavMenu>
+    <WatchMenu></WatchMenu>
     <!-- 업로드 -->
-  <RevisionVideoMenu></RevisionVideoMenu>
   <VideoList class="metalList"></VideoList>
   <MiaList class="metalList"></MiaList>
 
@@ -18,8 +18,8 @@
 <script>
 import { useIndexStore } from '@/stores/index'
 import NavMenu from '@/components/system/control/NavMenu.vue'
+import WatchMenu from '@/components/system/control/WatchMenu.vue'
 // import AlarmList from '@/components/system/control/realtime/AlarmList.vue'
-import RevisionVideoMenu from '@/components/system/control/uploadVideo/RevisionVideoMenu.vue'
 
 import VideoList from '@/components/system/control/uploadVideo/VideoList.vue'
 import MiaList from '@/components/system/MiaList.vue'
@@ -27,8 +27,8 @@ export default {
   components: {
     NavMenu,
     // AlarmList,
+    WatchMenu,
 
-    RevisionVideoMenu,
     VideoList,
     MiaList,
   },
