@@ -63,7 +63,7 @@ export const useAccounts = defineStore({
       logout(){
         const token = localStorage.getItem('token')
         axios.post(
-          SGSS.accounts.logout,
+          SGSS.accounts.logout(),
           {headers: {Authorization : 'Bearer ' + token}}
         ) .then((res) => {
           localStorage.removeItem('token')
