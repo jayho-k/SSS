@@ -123,7 +123,7 @@ DATABASES = {
         'NAME': secrets["DBNAME"],
         'USER': secrets["DBUSER"],
         'PASSWORD': secrets["DBPASSWORD"],
-        'HOST': '172.17.0.1',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
