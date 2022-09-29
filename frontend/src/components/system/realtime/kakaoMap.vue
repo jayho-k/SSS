@@ -6,7 +6,7 @@
 import { onMounted, watch } from 'vue'
 import { useKakaoStore } from '@/stores/kakaoMap'
 import Swal from 'sweetalert2'
-
+import markerImg from '@/assets/marker.png'
 export default {
 	setup() {
 		const store = useKakaoStore()
@@ -15,6 +15,8 @@ export default {
     const save_markers = []
     const save_overlay = []
     var save_drag_index = null
+    store.saved_markers = save_markers
+		store.saved_overlay = save_overlay
 		onMounted(() => {
       
 			if (window.kakao && window.kakao.maps) {
@@ -37,7 +39,7 @@ export default {
 			//지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
 			initMap.map = new kakao.maps.Map(container, options)
 			// 마커 이미지의 이미지 주소입니다
-			var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+			var imageSrc = markerImg; 
       //
 //1. 저장된 마커 각 가져오기 및 생성
       for (var s_m_i = 0; s_m_i < store.saved_markers_info.length; s_m_i ++) {
@@ -53,7 +55,7 @@ export default {
 			});
 //3. 저장된 마커 가져오기 및 저장 함수
 			function savedMarker(i) {
-				var imageSize = new kakao.maps.Size(28, 40)
+				var imageSize = new kakao.maps.Size(32, 44)
 				var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)
 
         // 마커를 생성
@@ -66,7 +68,6 @@ export default {
 				});
 				marker.setClickable(true)
         marker.setMap(initMap.map)
-        marker.setDraggable(true)
 				save_markers.push(marker)
 
         var content = '<div class="customOverlay">'+ title +'</div>';
@@ -138,7 +139,6 @@ export default {
 
             marker.setClickable(true)
             // 마커가 지도 위에 표시되도록 설정합니다
-            marker.setDraggable(true)
             marker.setMap(initMap.map)
             // 커스텀 오버레이를 생성합니다
             var content = '<div class="customOverlay">'+ title +'</div>';
@@ -335,7 +335,6 @@ export default {
       }
     }
     function drag_end_move_marker(marker) {
-      console.log(save_drag_index)
       store.saved_markers_info[save_drag_index]['latitude'] = marker.getPosition().getLat()
       store.saved_markers_info[save_drag_index]['longitude'] = marker.getPosition().getLng()
       var title = store.saved_markers_info[save_drag_index]['name']

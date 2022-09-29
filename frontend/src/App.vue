@@ -52,4 +52,10 @@ a {
 body::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
 }
+body {
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
+}
 </style>

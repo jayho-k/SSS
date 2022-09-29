@@ -7,8 +7,6 @@ export const useKakaoStore = defineStore("Kakao", {
 	state: () => {
 		return { mode : 0,
 			saved_markers_info: [],
-			saved_markers:[],
-			saved_overlay:[],
 			cctv_mode: 2,
 			
 			drag_index: -1,
@@ -48,6 +46,9 @@ export const useKakaoStore = defineStore("Kakao", {
 
 			}) .catch(err => {
 				console.log(err)
+				if (err.response.status === 401) {
+					this.removeToken()
+				}
 			})
 		},
 		getCctvList() {
@@ -61,6 +62,9 @@ export const useKakaoStore = defineStore("Kakao", {
 
 			}) .catch(err => {
 				console.log(err)
+				if (err.response.status === 401) {
+					this.removeToken()
+				}
 			})
 		},
 		deleteCctv(id) {
@@ -78,6 +82,9 @@ export const useKakaoStore = defineStore("Kakao", {
 					this.getCctvList()
 				}) .catch(err => {
 					console.log(err)
+					if (err.response.status === 401) {
+						this.removeToken()
+					}
 				}
 			)
 		},
@@ -91,6 +98,9 @@ export const useKakaoStore = defineStore("Kakao", {
 					this.getCctvList()
 				}) .catch(err => {
 					console.log(err)
+					if (err.response.status === 401) {
+						this.removeToken()
+					}
 				}
 			)
 		}

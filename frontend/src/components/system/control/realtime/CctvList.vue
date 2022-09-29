@@ -2,13 +2,15 @@
 	<div class="CctvListBox">
     <CctvMenu></CctvMenu>
     <div class="CctvItem">
-		<div v-for="(D_item, D_i) in DataSet"
-    :key="D_i"
-    :D_item = D_item
-    @click="mapCenter(D_i)"
-    class="CctvItemBox">
-    {{D_item['name']}}
-    </div>
+      <div v-for="(D_item, D_i) in DataSet"
+      :key="D_i"
+      :D_item = D_item
+      @click="mapCenter(D_i)"
+      class="CctvItemBox">
+      {{D_item.name}} 
+      <span class="material-symbols-outlined" @click="unlock(D_i)">lock</span>
+      <span class="material-symbols-outlined">lock_open</span>
+      </div>
     </div>
 	</div>
 </template>
@@ -22,14 +24,20 @@ export default {
         CctvMenu,
     },
     setup () {
-      const kakaostore = useKakaoStore()
-      const DataSet = ref(computed(() => kakaostore.saved_markers_info))
+      const kakaoStore = useKakaoStore()
+      const DataSet = ref(computed(() => kakaoStore.saved_markers_info))
       function mapCenter (D_i) {
-        kakaostore.setMapCenter(D_i)
+        kakaoStore.setMapCenter(D_i)
       }
+      function unlock (m_i) {
+        kakaoStore.saved_markers[m_i].setDraggable(true)
+
+      }
+
       return {
         DataSet,
-        mapCenter
+        mapCenter,
+        unlock,
       }
     }
 }
@@ -58,7 +66,7 @@ export default {
 .CctvItemBox {
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: hsl(0,0%,95%);
   width: 244px;
