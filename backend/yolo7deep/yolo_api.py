@@ -40,6 +40,8 @@ from yolov7.utils.plots import plot_one_box
 from strong_sort.utils.parser import get_config
 from strong_sort.strong_sort import StrongSORT
 
+from django.http import StreamingHttpResponse
+
 
 VID_FORMATS = 'asf', 'avi', 'gif', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'ts', 'wmv'  # include video suffixes
 
@@ -264,8 +266,7 @@ def run(
 
             # Stream results
             if show_vid:
-                cv2.imshow(str(p), im0)
-                cv2.waitKey(1)  # 1 millisecond
+                return StreamingHttpResponse(im0, content_type="multipart/x-mixed-replace;boundary=frame")
 
             # Save results (image with detections)
             if save_vid:
