@@ -1,6 +1,7 @@
 # import socket # 소켓 프로그래밍에 필요한 API를 제공하는 모듈
 # import struct # 바이트(bytes) 형식의 데이터 처리 모듈
 # import pickle # 바이트(bytes) 형식의 데이터 변환 모듈
+from http.client import HTTPResponse
 import cv2 # OpenCV(실시간 이미지 프로세싱) 모듈]
 import threading
 from django.shortcuts import get_object_or_404, render
@@ -9,7 +10,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from backend.common import checkuser
-
+from wsgiref.util import FileWrapper
 from cctvs.models import CCTV, Upload
 from .serializers import (
     CCTVDetailSerializer,
@@ -207,8 +208,13 @@ def upload(request):
         video = videos[idx - 1]
         video_name = str(video.video_file)
         _,_, res = video_name.split("/")
-        data = {
-            "video_file": f"/media/track/exp/{res}"
-        }
-        return Response(data,status=status.HTTP_200_OK)
+
+        file = FileWrapper(open(f'media/track/exp/{res}', 'rb'))
+        response = HTTPResponse(file, content_type='video/mp4')
+        response['Content-Disposition'] = 'attachment; filename=result_video.mp4'
+        return response
+        # data = {
+        #     "video_file": f"/media/track/exp/{res}"
+        # }
+        # return Response(data,status=status.HTTP_200_OK)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
