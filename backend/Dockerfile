@@ -10,7 +10,7 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-VOLUME /home/ubuntu/S07P22B302/etc/media /jenkins_home/workspace/b302/backend/media
+VOLUME /home/ubuntu/S07P22B302/etc/media:/jenkins_home/workspace/b302/backend/media
 
 RUN apt-get update
 RUN apt-get install -y libgl1
