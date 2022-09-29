@@ -9,4 +9,9 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 COPY . .
-CMD ["bash", "-c", "python manage.py runserver 0.0.0.0:8000"]
+
+RUN apt-get update
+RUN apt-get install -y libgl1
+RUN apt-get install -y vim
+
+CMD ["bash", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]

@@ -4,7 +4,11 @@
       <div class="modal-content-left"></div>
       <div class="modal-content-right">
         <div @click="$emit('loginClose')" class="close-btn">&times;</div>
-        <form @submit.prevent="checklogin()" class="modal-form" id="form">
+        <form
+          @submit.prevent="checklogin()"
+          class="modal-form"
+          id="form"
+        >
           <h1 class="font-weight-bold">로그인</h1>
           <div class="form-validation">
             <input
@@ -26,21 +30,10 @@
               name="password"
               placeholder="비밀번호를 입력하세요"
             />
-            <p v-if="isPwError">{{ errorMsg }}</p>
+            <p v-if="isPwError">{{errorMsg}}</p>
           </div>
-          <input
-            v-if="!isLogin"
-            type="submit"
-            class="modal-input-btn"
-            value="로그인"
-          />
-          <input
-            v-if="isLogin"
-            type="submit"
-            class="modal-input-btn"
-            value="로그아웃"
-          />
-
+          <input type="submit" class="modal-input-btn" value="로그인" />
+          <button @click="login.logout()">로그아웃</button>
           <!-- <div
             @click="login.login(credential)"
             style="border: none; cursor: pointer"
@@ -72,38 +65,32 @@
 
 <script>
 import { useAccounts } from "@/stores/accounts";
-import { ref } from "vue";
+import { ref } from "vue"
 export default {
   name: "LoginView",
   components: {},
-  // data() {
-  //   return {
-  //     credential: {
-  //       id: "",
-  //       password: "",
-  //     },
-  //   };
-  // },
+
   setup() {
-    const isError = ref(false);
-    const errorMsg = ref("");
+    const isError = ref(false)
+    const errorMsg = ref('')
     const credential = ref({
       username: "",
       password: "",
-    });
+    })
     const login = useAccounts();
-    function checklogin() {
-      if (credential.value.username === "") {
-        isError.value = true;
-        errorMsg.value = "아이디를 입력해주세요";
+    function checklogin () {
+      if(credential.value.username === "") {
+        isError.value = true
+        errorMsg.value = "아이디를 입력해주세요"
       } else if (credential.value.password === "") {
-        isError.value = true;
-        errorMsg.value = "비밀번호를 입력해주세요";
+        isError.value = true
+        errorMsg.value = "비밀번호를 입력해주세요"
       } else {
-        login.login(credential.value);
+        console.log(credential)
+        login.login(credential.value)
       }
     }
-    function checkPassword() {
+    function checkPassword(){
       // 특수문자, 몇글자 등등
     }
     return {
@@ -112,42 +99,42 @@ export default {
       isError,
       errorMsg,
       checklogin,
-      checkPassword,
-    };
+      checkPassword
+    }
   },
   methods: {},
 };
 </script>
 
 <style>
-/* .modal{
+  /* .modal{
     background-image: url("@/assets/account/background.png");
     background-size: cover;
   } */
-body {
-  background-image: url("@/assets/account/background.png");
-  background-size: cover;
-}
-/* Modal */
-.modal-findIdPwBtn,
-.overlay {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-}
-.overlay {
-  opacity: 0.5;
-  background-color: black;
-}
-.modal-card {
-  position: relative;
-  max-width: 30%;
-  margin: auto;
-  padding: 20px;
-  background-color: white;
-  z-index: 10;
-  opacity: 1;
-}
+  body {
+    background-image: url("@/assets/account/background.png");
+    background-size: cover;
+  }
+  /* Modal */
+  .modal-findIdPwBtn,
+  .overlay{
+    width : 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+  }
+  .overlay{
+    opacity: 0.5;
+    background-color: black;
+  }
+  .modal-card{
+    position: relative;
+    max-width: 30%;
+    margin: auto;
+    padding: 20px;
+    background-color: white;
+    z-index: 10;
+    opacity: 1;
+  }
 </style>

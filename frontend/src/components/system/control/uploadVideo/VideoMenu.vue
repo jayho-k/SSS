@@ -1,22 +1,33 @@
 <template>
-    <div class="ObjectMenuBox">cctv List</div>
+  <div>
+    <div class="VideoMenuBox">&nbsp;
+      <div>VIDEO</div> 
+      <RevisionVideoMenu></RevisionVideoMenu>
+    </div>
+    <div style="height:30px;"></div>
+  </div>
 </template>
   
 <script>
+import RevisionVideoMenu from '@/components/system/control/uploadVideo/RevisionVideoMenu.vue'
   export default {
+    components: {
+      RevisionVideoMenu
+    }
 
   }
 </script>
   
 <style>
-  .ObjectMenuBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--main-color2);
-      width: var(--controller-width);
-      height: 60px;
+  .VideoMenuBox {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #eee;
+  background-color: hsla(0,0%,20%,1);
+  width: 252px;
+  height: 30px;
   }
 
-  
 </style>

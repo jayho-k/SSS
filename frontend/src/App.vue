@@ -1,19 +1,28 @@
 <template>
   <div>
-    <router-link to="/login"> account</router-link>
+    <router-link to="/login"> 로그인/회원가입</router-link>
     <br>
     <router-link to="/cctv">sadfsdfdasf</router-link>
+    <br>
+    <router-link to="/accountManage">회원관리</router-link>
     <br>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-
+import { useIndexStore } from "@/stores/index"
 export default {
   name: 'App',
   components: {
 },
+  setup () {
+    const store = useIndexStore()
+    store.count ++
+    return {
+      store
+    }
+  }
 }
 </script>
 
@@ -36,5 +45,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+a {
+  text-decoration:none !important
+}
+body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
 }
 </style>

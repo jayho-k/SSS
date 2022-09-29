@@ -1,15 +1,78 @@
+# Usage: pip install -r requirements.txt
+
+# Base ----------------------------------------
+
 asgiref==3.5.2
 Django==3.2.15
 django-cors-headers==3.13.0
 djangorestframework==3.13.1
 djangorestframework-simplejwt==5.2.0
-numpy==1.23.3
-opencv-python==4.6.0.66
 pickle-mixin==1.0.2
-Pillow==9.2.0
 python-decouple==3.6
 pytz==2022.2.1
 sockets==1.0.0
 sqlparse==0.4.2
 typing_extensions==4.3.0
 tzdata==2022.2
+matplotlib>=3.2.2
+numpy>=1.18.5
+opencv-python>=4.1.1
+Pillow>=7.1.2
+PyYAML>=5.3.1
+requests>=2.23.0
+scipy>=1.4.1
+torch>=1.7.0,!=1.12.0
+torchvision>=0.8.1,!=0.13.0
+tqdm>=4.41.0
+protobuf<4.21.3
+psycopg2==2.9.3
+# Logging -------------------------------------
+
+tensorboard>=2.4.1
+
+# plotting ------------------------------------
+
+pandas>=1.1.4
+seaborn>=0.11.0
+
+# deep_sort -----------------------------------
+
+easydict
+
+# torchreid -----------------------------------
+
+Cython
+h5py
+six
+tb-nightly
+future
+yacs
+gdown
+flake8
+yapf
+isort==4.3.21
+imageio
+
+# Extras --------------------------------------
+ipython  # interactive notebook
+psutil  # system utilization
+thop  # FLOPs computation
+# albumentations>=1.0.3
+# pycocotools>=2.0  # COCO mAP
+# roboflow
+
+# Export --------------------------------------
+#onnx>=1.9.0  # ONNX export
+#onnx-simplifier>=0.4.1  # ONNX simplifier
+#tensorflow>=2.4.1  # TFLite export (or tensorflow-cpu, tensorflow-aarch64)
+#openvino-dev  # OpenVINO export
+#git+https://github.com/PINTO0309/openvino2tensorflow #OpenVINO to TFLite export
+
+# Export --------------------------------------
+# coremltools>=4.1  # CoreML export
+# onnx>=1.9.0  # ONNX export
+# onnx-simplifier>=0.3.6  # ONNX simplifier
+# scikit-learn==0.19.2  # CoreML quantization
+# tensorflow>=2.4.1  # TFLite export
+# tensorflowjs>=3.9.0  # TF.js export
+# openvino-dev  # OpenVINO export

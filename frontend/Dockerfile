@@ -1,17 +1,9 @@
-FROM node:16.15.0 as build-stage
+FROM node:12.18
+WORKDIR .
 
-WORKDIR /var/jenkins_home/workspace/b302/frontend
+COPY package.json .
 
-COPY package*.json ./
-
+ADD . .
 RUN npm install
-COPY . .
-RUN npm run build
 
-FROM nginx:stable-alpine as production-stage
-
-COPY --from=build-stage /var/jenkins_home/workspace/b302/frontend/dist /usr/share/nginx/html
-COPY --from=build-stage /var/jenkins_home/workspace/b302/frontend/deploy_conf/nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 8077
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "run", "serve"]

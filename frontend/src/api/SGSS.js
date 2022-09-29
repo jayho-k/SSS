@@ -1,6 +1,9 @@
 //const HOST = "http://localhost:8000/"
 const HOST = "https://j7b302.p.ssafy.io/api/"
 const ACCOUNTS = "accounts/"
+const CCTV = "cctvs/"
+const MIA = "missingchilds/"
+const UPLOAD = "cctvs/upload/"
 
 export default {
     accounts: {
@@ -17,8 +20,22 @@ export default {
       activateList:()=> HOST + ACCOUNTS + "admin/activate/",
       deactivateList:()=> HOST + ACCOUNTS + "admin/deactivate/",
       searchUserList: () => HOST + ACCOUNTS + "admin/search/",
-      // resetPassWord:()=> HOST + ACCOUNTS + "admin/reset/password",
+      searchUser:()=> HOST + ACCOUNTS + "admin/search/",
     },
+    realtime: {
+      cctv: () => HOST + CCTV,
+      setCctv: () => HOST + CCTV + 'create/',
+      getCctvList:() => HOST + CCTV +'list/',
+    },
+    mia: {
+      getMiaList: () => HOST + MIA + 'list/',
+      setMia: () => HOST + MIA + 'create/',
+      mia: () => HOST + MIA
+    },
+    upload: {
+      upload: () => HOST + UPLOAD
+
+    }
     
   }
 
