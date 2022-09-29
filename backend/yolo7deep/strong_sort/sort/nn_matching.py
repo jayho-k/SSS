@@ -2,7 +2,7 @@
 import numpy as np
 import sys
 import torch
-sys.path.append('Yolov7_StrongSORT_OSNet/strong_sort/deep/reid')
+sys.path.append('yolo7deep/strong_sort/deep/reid')
 from torchreid.metrics.distance import compute_distance_matrix
 
 
