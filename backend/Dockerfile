@@ -12,8 +12,8 @@ RUN mim install mmcv-full
 RUN mim install mmdet
 RUN pip install -r requirements.txt
 
-#WORKDIR /jenkins_home/workspace/b302/backend/mmaction2
-#pip install -e .
+WORKDIR /jenkins_home/workspace/b302/backend/mmaction2
+pip install -e .
 
 VOLUME /home/ubuntu/S07P22B302/etc/media:/jenkins_home/workspace/b302/backend/media
 
