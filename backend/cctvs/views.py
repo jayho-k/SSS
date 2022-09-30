@@ -19,7 +19,7 @@ from django.http import HttpResponse
 from django.views.decorators import gzip
 from yolo7deep import yolo_api
 from pathlib import Path
-
+from mmaction2.demo import test_run
 
 
 @api_view(["GET"])
@@ -159,6 +159,24 @@ def upload(request):
         print(type(request.FILES["video"]))
         print(upload.video_file.path.split("\\")[-1])
         upload.save()
+
+        '''
+        upload = Upload.objects.create(video_file=request.FILES["video"],user=user)
+        file=request.FILES["video"]
+        upload.save()
+
+        if 공공(mmaction):
+            test_run.run(video='upload.video_file.path') => 일단은 mmaction2/output 에 저장됨
+            data = {
+                "video_file": f"/mmaction2/output/result.mp4"
+            }
+            만들고 결과 반환했으면 삭제 하는 로직 만들어줌 = 그럼 파일이름이 여러개 만들어질 필요없음
+        else:
+            미아(deepsort)
+
+        return Response(data,status=status.HTTP_200_OK)
+
+        '''
 
         FILE = Path(__file__).resolve() 
         ROOT = FILE.parents[0].parents[0] / 'yolo7deep'  # yolov5 strongsort root directory
