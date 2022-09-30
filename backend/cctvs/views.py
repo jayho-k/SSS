@@ -19,7 +19,7 @@ from django.http import HttpResponse
 from django.views.decorators import gzip
 from yolo7deep import yolo_api
 from pathlib import Path
-
+from mmaction2.demo import test_run
 
 
 @api_view(["GET"])
