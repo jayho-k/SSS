@@ -6,6 +6,7 @@
     <br>
     <router-link to="/accountManage">회원관리</router-link>
     <br>
+    <router-link to="/please/Login">회원관리</router-link>
     <router-view></router-view>
   </div>
 </template>
@@ -51,5 +52,11 @@ a {
 }
 body::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
+}
+body {
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
 }
 </style>

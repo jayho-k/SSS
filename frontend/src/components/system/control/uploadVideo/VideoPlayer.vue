@@ -1,8 +1,7 @@
 <template>
     <div class="VideoFilesView">
         <video controls=1 class="videoMainBox" id="video">
-        <source :src="show_video" type="video/mp4" >
-            해당 브라우저는 video 태그를 지원하지 않습니다.
+        <source :src="`${process.env.VUE_APP_VIDEO_API}media/track/exp/e492c3864351431e9f1555fb346b41d7.mp4`" type="video/mp4" >
         </video>
 
 

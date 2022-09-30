@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="CctvMenuBox"> &nbsp;
-      <div class="name">CCTV</div>
-      <CctvMenuVue></CctvMenuVue>
+    <div class="CctvMenuBox"> &nbsp;&nbsp;
+      <div style="text-align:left; width:200px;">CCTV</div>
+      <CctvMenu></CctvMenu>
     </div>
 
     <div style="height:30px;"></div>
@@ -10,25 +10,20 @@
 </template>
   
 <script>
-import CctvMenuVue from '@/components/system/control/realtime/RevisionCctvMenu.vue'
+import CctvMenu from '@/components/system/control/realtime/RevisionCctvMenu.vue'
   export default {
     components: {
-      CctvMenuVue,
+      CctvMenu,
     }
 
   }
 </script>
   
 <style>
-  .name {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+
   .CctvMenuBox {
     position: absolute;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     color: #eee;
     background-color: hsla(0,0%,20%,1);
