@@ -5,7 +5,7 @@
     <VideoItem v-for="(D_item, D_i) in DataSet"
     :key="D_i"
     :D_item = D_item
-    @click="selectVideo(D_item)"></VideoItem>
+    @click="selectVideo(D_item)">{{D_item.name}}</VideoItem>
     </div>
   </div>
 </template>
@@ -13,11 +13,9 @@
 <script>
 import { useUploadVideoStore } from '@/stores/uploadVideo';
 import VideoMenu from '@/components/system/control/uploadVideo/VideoMenu'
-import VideoItem from '@/components/system/control/uploadVideo/VideoItem'
 export default {
   components: {
     VideoMenu,
-    VideoItem
   },
   setup () {
     const uploadStore = useUploadVideoStore()

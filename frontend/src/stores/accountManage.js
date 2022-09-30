@@ -11,8 +11,9 @@ export const manageAccounts = defineStore({
       currentUser: {},
       profile: {},
       authError: null,
-      activate_user: [],
-      deactivate_user: [],
+      user_list_mode: 1, //activate, deactivate, serah 순으로 123
+      activate_users: [],
+      deactivate_users: [],
       search_users: [],
     }),
     getters: {
@@ -56,6 +57,7 @@ export const manageAccounts = defineStore({
           {headers: {Authorization : 'Bearer ' + token}}
         ) .then((res) => {
           localStorage.removeItem('token')
+          localStorage.removeItem('refresh')
           this.currentUser = {}
           console.log(res)}
         ) .then(
@@ -69,11 +71,10 @@ export const manageAccounts = defineStore({
         axios.get(
           SGSS.managerLogin.activateList(), {headers: this.authHeader}
           ).then(res => {
-          this.activate_user = res.data 
-          console.log(this.activate_user)
+          this.activate_users = res.data 
+          console.log(this.activate_users)
         })
         .catch(err => {
-          console.error(err.data)
           if(err.response.status === 500){
             this.refreshToken()
         }
@@ -83,9 +84,8 @@ export const manageAccounts = defineStore({
         axios.get(
           SGSS.managerLogin.deactivateList(), {headers: this.authHeader}
           ).then(res => {
-          this.deactivate_user = res.data
+          this.deactivate_users = res.data
           }).catch((err) => {
-            console.error(err.data)
             if(err.response.status === 500){
                 this.refreshToken()
             }
@@ -106,7 +106,8 @@ export const manageAccounts = defineStore({
         }) 
           
       },
-      resetPassword(){
+      changePassword(){
+        
         const token = localStorage.getItem('token')
         axios.put(SGSS.managerLogin.passwordChange(), 
         {headers: {Authorization : 'Bearer ' + token}}
@@ -120,7 +121,7 @@ export const manageAccounts = defineStore({
       deleteAccount(uid){
         const userId = uid
         const token = localStorage.getItem('token')
-        axios.delete(SGSS.accounts.userManage(), 
+        axios.delete(SGSS.accounts.deleteAccount(), 
         {
             headers: {Authorization : 'Bearer ' + token},
             data:userId

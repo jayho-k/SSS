@@ -67,6 +67,7 @@ export const useAccounts = defineStore({
           {headers: {Authorization : 'Bearer ' + token}}
         ) .then((res) => {
           localStorage.removeItem('token')
+          localStorage.removeItem('refresh')
           this.currentUser = {}
           console.log(res)}
         ) .catch((err) => {

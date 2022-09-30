@@ -71,13 +71,14 @@ export default {
   components: {},
 
   setup() {
+    const login = useAccounts();
     const isError = ref(false)
     const errorMsg = ref('')
     const credential = ref({
       username: "",
       password: "",
     })
-    const login = useAccounts();
+
     function checklogin () {
       if(credential.value.username === "") {
         isError.value = true

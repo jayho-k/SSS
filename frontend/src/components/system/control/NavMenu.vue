@@ -1,23 +1,20 @@
 <template>
   <div class="NavMenuBox navMetal">
-    <router-link to="/cctv" @click="change_view(0)">cctv</router-link>
-    <router-link to="/upload" @click="change_view(2)">upload</router-link>
+    <router-link to="/cctv">cctv</router-link>
+    <router-link to="/upload">upload</router-link>
+    <button type="button" @click="accountStore.logout">logout</button>
     <img class="navMenu" src="@/assets/optionIcon.png" alt="옵션">
   </div>
 </template>
 
 <script>
-import { useIndexStore } from '@/stores/index'
+import { useAccounts } from '@/stores/accounts'
 export default {
   setup() {
-    const IndexStore = useIndexStore()
-    function change_view (inx) {
-      IndexStore.view_case = inx
-      console.log(IndexStore.view_case)
-    }
+    const accountStore = useAccounts()
+
     return {
-      IndexStore,
-      change_view
+      accountStore,
     }
   }
 }
