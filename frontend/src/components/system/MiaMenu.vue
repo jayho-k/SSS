@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="MiaMenuBox">
-      <div class="ListMenuName">&nbsp; MIA </div>
+    <div class="MiaMenuBox">&nbsp;&nbsp;
+      <div style="text-align:left; width:180px;">MIA</div>
       <MiaMenu></MiaMenu>
     </div>
     <div style="height:30px;"></div>
@@ -17,11 +17,6 @@ import MiaMenu from '@/components/system/RevisionMiaMenu.vue'
 </script>
   
 <style>
-  .ListMenuName {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
   .MiaMenuBox {
     position: absolute;
     display: flex;

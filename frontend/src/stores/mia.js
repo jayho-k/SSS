@@ -4,9 +4,19 @@ import { defineStore } from "pinia";
 
 export const useMiaStore = defineStore("MiaStore", {
   state: () => {
-    return {
-      mia_list: [],
+    const miaData = {
+      name:'',
+      child_img: {name: '이미지를 추가해 주세요'},
+      age: 0,
     }
+    return {
+      is_add_mia: false,
+      mia_list: [],
+      mia_update_id: -1,
+      miaData,
+
+    }
+
 
   },
   actions: {
@@ -20,40 +30,32 @@ export const useMiaStore = defineStore("MiaStore", {
         this.mia_list = res.data
         console.log(res.data)
 
-      }
-       ) .catch ((err) => {
+      }) .catch ((err) => {
         console.log(err)
+        if (err.response.status === 401) {
+          this.removeToken()
+        }
 
-       })
+      })
     },
-    setMiaData (Data) {
+    setMiaData () {
       const formData = new FormData()
-      formData.append("name", Data.name)
-      formData.append("child_img", Data.child_img)
-      formData.append("age", Data.age)
+      formData.append("name", this.miaData.name)
+      formData.append("child_img", this.miaData.child_img)
+      formData.append("age", this.miaData.age)
       const token = localStorage.getItem('token')
       axios.post(
         SGSS.mia.setMia(),
         formData,
         {headers: {Authorization : 'Bearer ' + token}}
-      ) .then ((res) => {
-        console.log(res.data)
+      ) .then (() => {
+        this.getMiaList ()
       }).catch ((err) => {
         console.log(err)
-      })
-    },
-    getMiaDetail (id) {
-      const token = localStorage.getItem('token')
-      axios.get(
-        SGSS.mia.mia(),
-        {
-          data:{'id':id},headers: {Authorization : 'Bearer ' + token}
+        if (err.response.status === 401) {
+          this.removeToken()
         }
-      ) .then ((res) => {
-        console.log(res.data)
-      }).catch ((err) => {
-        console.log(err)
-      })// 버그
+      })
     },
     deleteMia (id) {
       const token = localStorage.getItem('token')
@@ -66,10 +68,33 @@ export const useMiaStore = defineStore("MiaStore", {
         console.log(res.data)
       }).catch ((err) => {
         console.log(err)
-      })
-      
+        if (err.response.status === 401) {
+          this.removeToken()
+        }
+      }) 
+    },
+    updateMia () {
+      const formData = new FormData()
+      formData.append("id", this.mia_update_id)
+      formData.append("name", this.miaData.name)
+      formData.append("child_img", this.miaData.child_img)
+      formData.append("age", this.miaData.age)
+      const token = localStorage.getItem('token')
+      axios.put(
+        SGSS.mia.mia(),
+        formData,
+        {
+          headers: {Authorization : 'Bearer ' + token}
+        }
+      ) .then ((res) => {
+        console.log(res.data)
+        console.log('updateMia')
+      }).catch ((err) => {
+        console.log(err)
+        if (err.response.status === 401) {
+          this.removeToken()
+        }
+      }) 
     }
-
-
   },
 })

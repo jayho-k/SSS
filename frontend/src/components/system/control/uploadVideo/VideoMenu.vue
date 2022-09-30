@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="VideoMenuBox">&nbsp;
-      <div>VIDEO</div> 
+    <div class="VideoMenuBox">&nbsp;&nbsp;
+      <div style="text-align:left; width:200px;">VIDEO</div>
       <RevisionVideoMenu></RevisionVideoMenu>
     </div>
     <div style="height:30px;"></div>
