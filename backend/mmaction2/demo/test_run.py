@@ -205,63 +205,6 @@ class parse_api:
         self.output_fps=10
         self.cfg_options=dict()
 
-
-# def parse_api(
-#     video='',
-#     config='../file/slowfast_kinetics_pretrained_r50_4x16x1_20e_ava_rgb_custom_classes.py',
-#     checkpoint='../file/latest.pth',
-#     det_config='../file/faster_rcnn_r50_fpn_2x_coco.py',
-#     det_checkpoint='../file/faster_rcnn_r50_fpn_2x_coco_bbox_mAP-0.384_20200504_210434-a5d8aa15.pth',
-#     det_score_thr=0.9,
-#     action_score_thr=0.5,
-#     label_map='../file/label_map.txt',
-#     device='CPU',
-#     out_filename='../file/output/result.mp4',
-#     predict_stepsize=8,
-#     output_stepsize=4,
-#     output_fps=6,
-#     cfg_options={},
-#     # video,
-#     # config='configs/detections/ava/slowfast_kinetics_pretrained_r50_4x16x1_20e_ava_rgb_custom_classes.py',
-#     # checkpoint='work_dirs/ava/slowfast_kinetics_pretrained_r50_4x16x1_20e_ava_rgb_custom3/best_mAP@0.5IOU_epoch_1.pth',
-#     # det_config='demo/faster_rcnn_r50_fpn_2x_coco.py',
-#     # det_checkpoint='http://download.openmmlab.com/mmdetection/v2.0/faster_rcnn/'
-#     #                 'faster_rcnn_r50_fpn_2x_coco/'
-#     #                 'faster_rcnn_r50_fpn_2x_coco_'
-#     #                 'bbox_mAP-0.384_20200504_210434-a5d8aa15.pth',
-#     # det_score_thr=0.9,
-#     # action_score_thr=0.5,
-#     # label_map='tools/data/ava/label_map.txt',
-#     # device='CPU',
-#     # out_filename='demo/stdet_demo.mp4',
-#     # predict_stepsize=8,
-#     # output_stepsize=4,
-#     # output_fps=6,
-#     # cfg_options={},
-# ):
-#     api={}
-    
-#     api['video']=video,
-#     api['config']=config,
-#     api['checkpoint']=checkpoint,
-#     api['det_config']=det_config,
-#     api['det_checkpoint']=det_checkpoint,
-#     api['det_score_thr']=det_score_thr,
-#     api['action_score_thr']=action_score_thr,
-#     api['label_map']=label_map,
-#     api['device']=device,
-#     api['out_filename']=out_filename,
-#     api['predict_stepsize']=predict_stepsize,
-#     api['output_stepsize']=output_stepsize,
-#     api['output_fps']=output_fps,
-#     api['cfg_options']=cfg_options,
-
-#     return api
-
-# def slowfast_detect_api(**kwargs):
-#     api = parse_api(**kwargs)
-
-
 def frame_extraction(video_path):
     """Extract frames given video_path.
 
