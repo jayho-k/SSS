@@ -204,7 +204,7 @@ def upload(request):
             pass
         elif request.data.get("class") == "safety":
             # 공공안전
-            pass
+            test_run.run(upload.video_file.path)
 
 
             
