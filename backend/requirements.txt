@@ -28,7 +28,7 @@ h5py==3.7.0
 idna==3.4
 imageio==2.22.0
 imageio-ffmpeg==0.4.7
-importlib-metadata==4.2.0
+importlib-metadata
 ipython==7.34.0
 isort==4.3.21
 jedi==0.18.1
