@@ -13,7 +13,7 @@ RUN mim install mmdet
 RUN pip install -r requirements.txt
 
 WORKDIR /jenkins_home/workspace/b302/backend/mmaction2
-pip install -e .
+RUN pip install -e .
 
 VOLUME /home/ubuntu/S07P22B302/etc/media:/jenkins_home/workspace/b302/backend/media
 
