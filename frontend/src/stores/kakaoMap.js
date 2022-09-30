@@ -48,6 +48,9 @@ export const useKakaoStore = defineStore("Kakao", {
 
 			}) .catch(err => {
 				console.log(err)
+				if (err.response.status === 401) {
+					this.removeToken()
+				}
 			})
 		},
 		getCctvList() {
@@ -61,6 +64,9 @@ export const useKakaoStore = defineStore("Kakao", {
 
 			}) .catch(err => {
 				console.log(err)
+				if (err.response.status === 401) {
+					this.removeToken()
+				}
 			})
 		},
 		deleteCctv(id) {
@@ -78,6 +84,9 @@ export const useKakaoStore = defineStore("Kakao", {
 					this.getCctvList()
 				}) .catch(err => {
 					console.log(err)
+					if (err.response.status === 401) {
+						this.removeToken()
+					}
 				}
 			)
 		},
@@ -91,6 +100,9 @@ export const useKakaoStore = defineStore("Kakao", {
 					this.getCctvList()
 				}) .catch(err => {
 					console.log(err)
+					if (err.response.status === 401) {
+						this.removeToken()
+					}
 				}
 			)
 		}

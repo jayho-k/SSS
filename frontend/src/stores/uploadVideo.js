@@ -13,6 +13,7 @@ export const useUploadVideoStore = defineStore("upload", {
   },
   actions: {
     uploadVideo (video) {
+      console.log(video)
       const formData = new FormData()
       formData.append("video", video)
       const token = localStorage.getItem('token')
@@ -22,8 +23,9 @@ export const useUploadVideoStore = defineStore("upload", {
         {headers: {Authorization : 'Bearer ' + token}}
       ) .then ((res) => {
         this.video_list.push(video)
-        console.log(res.data)
         console.log(res)
+        console.log(res.value)
+
       }).catch ((err) => {
         console.log(err)
       })
