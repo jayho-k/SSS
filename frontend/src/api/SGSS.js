@@ -21,6 +21,7 @@ export default {
       deactivateList:()=> HOST + ACCOUNTS + "admin/deactivate/",
       searchUserList: () => HOST + ACCOUNTS + "admin/search/",
       searchUser:()=> HOST + ACCOUNTS + "admin/search/",
+      deleteAccount:()=> HOST + ACCOUNTS + "admin/user/delete/",
     },
     realtime: {
       cctv: () => HOST + CCTV,
