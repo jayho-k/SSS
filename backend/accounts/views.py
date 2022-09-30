@@ -12,8 +12,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.hashers import check_password
 from django.db.models import Q
 from .serializers import (
-    UserSignupSerializer, 
-    UserActiveSeriailzer, 
+    UserSignupSerializer,
     UserDetailSerializer,
     UserListSerializer,
 )

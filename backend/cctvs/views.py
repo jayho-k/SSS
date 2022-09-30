@@ -215,7 +215,7 @@ def upload(request):
         # response['Content-Disposition'] = 'attachment; filename=result_video.mp4'
 
         data = {
-            "video_file": f"media/track/exp/{res}"
+            "video_file": f"/media/track/exp/{res}"
         }
         return Response(data,status=status.HTTP_200_OK)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
