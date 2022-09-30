@@ -6,6 +6,7 @@
     <br>
     <router-link to="/accountManage">회원관리</router-link>
     <br>
+    <router-link to="/please/Login">회원관리</router-link>
     <router-view></router-view>
   </div>
 </template>
