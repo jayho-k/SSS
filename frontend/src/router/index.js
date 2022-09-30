@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+
 const routes = [
   {
     path: '/cctv',
@@ -22,6 +23,11 @@ const routes = [
     component: () => import('@/views/account/accountManage')
   },
   {
+    path: '/myPage',
+    name: 'myPage',
+    component: () => import('@/views/account/components/myPage.vue')
+  },
+  {
     path: '/upload',
     name: 'upload',
     component: () => import('@/views/uploadVideo/uploadVideoView.vue')
@@ -30,6 +36,11 @@ const routes = [
     path: '/VideoPlayer',
     name: 'VideoPlayer',
     component: () => import('@/components/system/uploadVideo/VideoPlayer.vue')
+  },
+  {
+    path: '/please/Login',
+    name: 'plzLogin',
+    component: () => import('@/views/LoginErrorPage.vue')
   }
 ]
 
@@ -38,5 +49,21 @@ const router = createRouter({
   routes
   
 })
+router.beforeEach(function (to, from, next) {
+  // to: 이동할 url에 해당하는 라우팅 객체
+
+  console.log(from)
+  if (localStorage.getItem('token') === '' || localStorage.getItem('token') === null) {
+    if (to.path === '/login' || to.path === '/'|| to.path === '/please/Login') {
+      next()
+    } else {
+      console.log('not Login')
+      next('/please/Login')
+    }
+    // router.replace('VideoPlayer')
+  }  else {
+    next(); // 페이지 전환
+  }
+});
 // 로우터가드 to, from, next
 export default router
