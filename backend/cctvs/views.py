@@ -9,13 +9,13 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from backend.common import checkuser
-
+from wsgiref.util import FileWrapper
 from cctvs.models import CCTV, Upload
 from .serializers import (
     CCTVDetailSerializer,
     UploadSerializer
 )
-from django.http import StreamingHttpResponse
+from django.http import HttpResponse
 from django.views.decorators import gzip
 from yolo7deep import yolo_api
 from pathlib import Path
@@ -167,37 +167,37 @@ def upload(request):
         name_exp = 'exp'
         print(WEIGHTS)
         yolo_api.yolo_detect_api(
-        source=upload.video_file.path,
-        yolo_weights= WEIGHTS / 'yolov7.pt',  # model.pt path(s),
-        strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
-        config_strongsort=ROOT / 'strong_sort/configs/strong_sort.yaml',
-        device='cpu',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
-        deepsort=True, ########### MOT or not custumized variable ########################
-        project=TRACK,  # save results to project/name
-        name=name_exp,  # save results to project/name
-        save_vid=True,  # save confidences in --save-txt labels
-        classes=[0,1],  # filter by class: --class 0, or --class 0 2 3
-        # line_thickness=3,  # bounding box thickness (pixels)
-        # conf_thres=0.25,  # confidence threshold
-        # iou_thres=0.45,  # NMS IOU threshold
-        # save_crop=False,  # save cropped prediction boxes
-        ###############################################################
-        # show_vid=False,  # show results
-        # imgsz=(640, 640),  # inference size (height, width)
-        # max_det=1000,  # maximum detections per image
-        # save_txt=False,  # save results to *.txt
-        # save_conf=False,  # save confidences in --save-txt labels
-        # nosave=False,  # do not save images/videos
-        # agnostic_nms=False,  # class-agnostic NMS
-        # augment=False,  # augmented inference
-        # visualize=False,  # visualize features
-        # update=False,  # update all models
-        # exist_ok=False,  # existing project/name ok, do not increment
-        # hide_labels=False,  # hide labels
-        # hide_conf=False,  # hide confidences
-        # hide_class=False,  # hide IDs
-        # half=False,  # use FP16 half-precision inference
-        # dnn=False,  # use OpenCV DNN for ONNX inference
+            source=upload.video_file.path,
+            yolo_weights= WEIGHTS / 'yolov7.pt',  # model.pt path(s),
+            strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
+            config_strongsort=ROOT / 'strong_sort/configs/strong_sort.yaml',
+            device='cpu',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
+            deepsort=True, ########### MOT or not custumized variable ########################
+            project=TRACK,  # save results to project/name
+            name=name_exp,  # save results to project/name
+            save_vid=True,  # save confidences in --save-txt labels
+            classes=[0,1],  # filter by class: --class 0, or --class 0 2 3
+            # line_thickness=3,  # bounding box thickness (pixels)
+            # conf_thres=0.25,  # confidence threshold
+            # iou_thres=0.45,  # NMS IOU threshold
+            # save_crop=False,  # save cropped prediction boxes
+            ###############################################################
+            # show_vid=False,  # show results
+            # imgsz=(640, 640),  # inference size (height, width)
+            # max_det=1000,  # maximum detections per image
+            # save_txt=False,  # save results to *.txt
+            # save_conf=False,  # save confidences in --save-txt labels
+            # nosave=False,  # do not save images/videos
+            # agnostic_nms=False,  # class-agnostic NMS
+            # augment=False,  # augmented inference
+            # visualize=False,  # visualize features
+            # update=False,  # update all models
+            # exist_ok=False,  # existing project/name ok, do not increment
+            # hide_labels=False,  # hide labels
+            # hide_conf=False,  # hide confidences
+            # hide_class=False,  # hide IDs
+            # half=False,  # use FP16 half-precision inference
+            # dnn=False,  # use OpenCV DNN for ONNX inference
         )
 
 
@@ -207,8 +207,15 @@ def upload(request):
         video = videos[idx - 1]
         video_name = str(video.video_file)
         _,_, res = video_name.split("/")
+
+        file = FileWrapper(open(f'media/track/exp/{res}', mode='rb'))
+        print('ddddddddddddddddddddd', file)
+        # file = FileWrapper(open(f'media/video/20220930/{res}', mode='rb'))
+        response = HttpResponse(file, content_type='video/mp4')
+        # response['Content-Disposition'] = 'attachment; filename=result_video.mp4'
+
         data = {
-            "video_file": f"/media/track/exp/{res}"
+            "video_file": f"media/track/exp/{res}"
         }
         return Response(data,status=status.HTTP_200_OK)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
