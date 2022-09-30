@@ -106,7 +106,8 @@ export const manageAccounts = defineStore({
         }) 
           
       },
-      resetPassword(){
+      changePassword(){
+        
         const token = localStorage.getItem('token')
         axios.put(SGSS.managerLogin.passwordChange(), 
         {headers: {Authorization : 'Bearer ' + token}}
@@ -120,7 +121,7 @@ export const manageAccounts = defineStore({
       deleteAccount(uid){
         const userId = uid
         const token = localStorage.getItem('token')
-        axios.delete(SGSS.accounts.userManage(), 
+        axios.delete(SGSS.accounts.deleteAccount(), 
         {
             headers: {Authorization : 'Bearer ' + token},
             data:userId
