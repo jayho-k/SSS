@@ -7,6 +7,8 @@ export const useKakaoStore = defineStore("Kakao", {
 	state: () => {
 		return { mode : 0,
 			saved_markers_info: [],
+			saved_markers:[],
+			saved_overlay:[],
 			cctv_mode: 2,
 			
 			drag_index: -1,

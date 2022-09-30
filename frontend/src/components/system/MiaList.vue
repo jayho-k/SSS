@@ -58,6 +58,11 @@ export default {
   width: var(--controller-width);
   height: 40px;
   background-color: var(--main-color2);
+  background: rgb(245,246,246); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(245,246,246,1) 0%, rgba(219,220,226,1) 10%, rgba(219,220,226,1) 85%, rgba(184,186,198,1) 95%, rgba(221,223,227,1) 98%, rgba(221,223,227,1) 98%, rgba(245,246,246,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 95%,rgba(221,223,227,1) 98%,rgba(221,223,227,1) 98%,rgba(245,246,246,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 95%,rgba(221,223,227,1) 98%,rgba(221,223,227,1) 98%,rgba(245,246,246,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=0 ); /* IE6-9 */
 }
 
 .miaListBox {
@@ -78,6 +83,7 @@ export default {
   height:405px;
 	overflow-y: scroll;
   overflow-x: hidden;
+  
 }
 
 
