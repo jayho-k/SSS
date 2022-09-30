@@ -11,6 +11,8 @@
         </div>
   <button @click="logOutClick" class="logOut" id="logOut">로그아웃</button>
   <button @click="refresh" class="refresh" id="refresh">토큰재발급</button>
+  <button @click="myPage" class="myPage" id="myPage">마이페이지</button>
+  
 </div>
 
   <div class="table">
@@ -42,7 +44,8 @@
         <td>{{user.id}}</td>
         <div v-if="toggle_box == true">
           <td>
-            <button @click="resetPassword" class="resetPassword" id="resetPassword">비밀번호 변경</button>
+            <!-- <button @click="changePassword(index)" class="changePassword" id="changePassword">비밀번호 변경</button> -->
+            <button @click="ismModalViewed = true" class="changePassword" id="changePassword">비밀번호 변경</button>
           </td>
           <td>
             <button @click="deleteAccount(index)" class="deleteAccount" id="deleteAccount">삭제</button>
@@ -55,11 +58,9 @@
         </div>
       </tr>
     </table>
-
   </div>
 
 </template>
-
 
 
 <script>
@@ -67,6 +68,7 @@ import { manageAccounts } from "@/stores/accountManage";
 import { ref } from "vue"
 import axios from "axios"
 import SGSS from '@/api/SGSS';
+import router from '@/router';
   export default {
     name:'manageTable',
     async setup () {
@@ -79,8 +81,15 @@ import SGSS from '@/api/SGSS';
         })
         .catch(() => {
         })
-      store.deactivateList()
-      const userData = ref(store.activate_user)
+      let userData = ref(store.activate_user)
+      console.log(userData)
+      await axios.get(SGSS.managerLogin.deactivateList(), {headers: store.authHeader})
+        .then(res => {
+          store.deactivate_user = res.data 
+        })
+        .catch(() => {
+        })
+
       const toggle_box = ref(true)
       function changeList () {
         if (toggle_box.value === true){
@@ -95,9 +104,11 @@ import SGSS from '@/api/SGSS';
       const search = ref('')
       function searchUser(){
         store.searchUser(search.value)
-        userData.value = store.search_users
-        console.log(store.search_users)
+        userData.value = ref(store.search_users)
+        // userData = ref(store.search_users)
+        console.log(userData)
       }
+      
       function deleteAccount(idx){
         if(userData.value.length > 0 ){
            console.log(userData.value[idx]['id'])
@@ -115,6 +126,16 @@ import SGSS from '@/api/SGSS';
         console.log(userData.value[idx]['id'])
         store.userActviate(userData.value[idx]['id'])
       }
+      function changePassword(idx){
+        router
+        store.changePassword(userData.value[idx]['id'])
+      }
+      function myPage(){
+        router.push({name : 'myPage'})
+      }
+
+      
+      
       return {
         store,
         currentUser,
@@ -127,6 +148,8 @@ import SGSS from '@/api/SGSS';
         deleteAccount,
         refresh,
         activate,
+        changePassword,
+        myPage,
       }
     }
   }
@@ -238,5 +261,6 @@ import SGSS from '@/api/SGSS';
         border: none;
         cursor: pointer;
     }
+
 
 </style>

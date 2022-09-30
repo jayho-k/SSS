@@ -22,6 +22,11 @@ const routes = [
     component: () => import('@/views/account/accountManage')
   },
   {
+    path: '/myPage',
+    name: 'myPage',
+    component: () => import('@/views/account/components/myPage.vue')
+  },
+  {
     path: '/upload',
     name: 'upload',
     component: () => import('@/views/uploadVideo/uploadVideoView.vue')
