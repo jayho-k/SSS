@@ -15,7 +15,6 @@ WORKDIR /jenkins_home/workspace/b302/backend/mmaction2
 RUN pip install -e .
 
 WORKDIR /jenkins_home/workspace/b302/backend
-VOLUME /home/ubuntu/S07P22B302/etc/media:/jenkins_home/workspace/b302/backend/media
 
 RUN apt-get update
 RUN apt-get install -y libgl1
