@@ -1,5 +1,6 @@
 //const HOST = "http://localhost:8000/"
-const HOST = "https://j7b302.p.ssafy.io/api/"
+// const HOST = "https://j7b302.p.ssafy.io/api/"
+const HOST = process.env.VUE_APP_MAIN_API
 const ACCOUNTS = "accounts/"
 const CCTV = "cctvs/"
 const MIA = "missingchilds/"
@@ -21,6 +22,7 @@ export default {
       deactivateList:()=> HOST + ACCOUNTS + "admin/deactivate/",
       searchUserList: () => HOST + ACCOUNTS + "admin/search/",
       searchUser:()=> HOST + ACCOUNTS + "admin/search/",
+      deleteAccount:()=> HOST + ACCOUNTS + "admin/user/delete/",
     },
     realtime: {
       cctv: () => HOST + CCTV,

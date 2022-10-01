@@ -3,12 +3,18 @@ FROM python:3.8.10
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /jenkins_home/workspace/b302/backend
-COPY requirements.txt ./
+COPY . .
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-COPY . .
+RUN mim install mmcv-full
+RUN mim install mmdet
+
+WORKDIR /jenkins_home/workspace/b302/backend/mmaction2
+RUN pip install -e .
+
+WORKDIR /jenkins_home/workspace/b302/backend
 
 RUN apt-get update
 RUN apt-get install -y libgl1

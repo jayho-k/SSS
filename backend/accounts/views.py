@@ -12,8 +12,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.hashers import check_password
 from django.db.models import Q
 from .serializers import (
-    UserSignupSerializer, 
-    UserActiveSeriailzer, 
+    UserSignupSerializer,
     UserDetailSerializer,
     UserListSerializer,
 )
@@ -23,22 +22,20 @@ def login(request):
     username=request.data.get("username")
     password=request.data.get("password")
     user = get_user_model().objects.get(username=username)
-
-    if user is not None:
+    
+    if user is not None and check_password(password, user.password):
         if user.activation==True:
-            if check_password(password, user.password):
-                token = TokenObtainPairSerializer.get_token(user)
-                refresh_token = str(token)
-                access_token = str(token.access_token)
-                data = {
-                    "refresh": refresh_token,
-                    "access": access_token,
-                    "is_admin" : user.is_admin
-                }
-                return Response(data, status=status.HTTP_200_OK)
+            token = TokenObtainPairSerializer.get_token(user)
+            refresh_token = str(token)
+            access_token = str(token.access_token)
+            data = {
+                "refresh": refresh_token,
+                "access": access_token,
+                "is_admin" : user.is_admin
+            }
+            return Response(data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
     return Response(status=status.HTTP_403_FORBIDDEN)
-    
 
 
 # 로그아웃

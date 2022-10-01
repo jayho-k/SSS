@@ -1,18 +1,18 @@
 <template>
-<div class="miaListBox">
+  <div class="miaListBox">
 
-  <MiaMenu></MiaMenu>
-  <div class="miaListItem" v-show="initData.is_show_mia">
-    <div v-for="(D_item, D_i) in DataSet"
-    :key="D_i"
-    :D_item = D_item
-    @click="getMiaDetail(7)"
-    class="miaItemBox"
-    >{{D_item['name']}} + {{D_item['age']}}</div>
+    <MiaMenu></MiaMenu>
+    <div class="miaListItem" v-show="!is_add_mia">
+      <div v-for="(D_item, D_i) in DataSet"
+      :key="D_i"
+      :D_item = D_item
+      @click="update_or_getDetail(D_item['id'])"
+      class="miaItemBox"
+      >{{D_item['name']}} + {{D_item['age']}}   <button type="button" @click="deleteMia(D_item['id'])">delete</button></div>
+    </div>
+    <MiaAddForm v-show="is_add_mia"></MiaAddForm>  
+
   </div>
-  <MiaAddForm v-show="!initData.is_show_mia"></MiaAddForm>  
-
-</div>
 </template>
 
 <script>
@@ -27,19 +27,24 @@ export default {
 },
   setup() {
     const miaStore = useMiaStore()
-    const initData = {
-      is_show_mia: true,
-    }
+    const is_add_mia = ref(computed(() => miaStore.is_add_mia))
     miaStore.getMiaList()
     const DataSet = ref(computed(() => miaStore.mia_list))
     
-    function getMiaDetail(id) {
-      miaStore.getMiaDetail(id)
+    function update_or_getDetail(idx) {
+      miaStore.is_add_mia = !miaStore.is_add_mia
+      miaStore.mia_update_idx = idx
+      miaStore.getMiaDetail()
+    }
+    function deleteMia (id) {
+      miaStore.deleteMia(id)
+
     }
     return {
-      initData,
+      is_add_mia,
       DataSet,
-      getMiaDetail,
+      deleteMia,
+      update_or_getDetail,
     }
   }
 }
@@ -53,6 +58,11 @@ export default {
   width: var(--controller-width);
   height: 40px;
   background-color: var(--main-color2);
+  background: rgb(245,246,246); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(245,246,246,1) 0%, rgba(219,220,226,1) 10%, rgba(219,220,226,1) 85%, rgba(184,186,198,1) 95%, rgba(221,223,227,1) 98%, rgba(221,223,227,1) 98%, rgba(245,246,246,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 95%,rgba(221,223,227,1) 98%,rgba(221,223,227,1) 98%,rgba(245,246,246,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 95%,rgba(221,223,227,1) 98%,rgba(221,223,227,1) 98%,rgba(245,246,246,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=0 ); /* IE6-9 */
 }
 
 .miaListBox {
@@ -73,6 +83,7 @@ export default {
   height:405px;
 	overflow-y: scroll;
   overflow-x: hidden;
+  
 }
 
 
