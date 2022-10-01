@@ -96,7 +96,7 @@ def streaming(request):
         classes=[0,1],  # filter by class: --class 0, or --class 0 2 3
         show_vid=True,  # show results
         # line_thickness=3,  # bounding box thickness (pixels)
-        # conf_thres=0.25,  # confidence threshold
+        conf_thres=0.5,  # confidence threshold
         # iou_thres=0.45,  # NMS IOU threshold
         # save_crop=False,  # save cropped prediction boxes
         ###############################################################
@@ -168,17 +168,18 @@ def upload(request):
         print(WEIGHTS)
         yolo_api.yolo_detect_api(
         source=upload.video_file.path,
-        yolo_weights= WEIGHTS / 'yolov7.pt',  # model.pt path(s),
+        # yolo_weights= WEIGHTS / 'yolov7.pt',  # model.pt path(s),
+        yolo_weights= WEIGHTS / 'fire.pt',  # model.pt path(s),
         strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
         config_strongsort=ROOT / 'strong_sort/configs/strong_sort.yaml',
         device='cpu',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
-        deepsort=True, ########### MOT or not custumized variable ########################
+        deepsort=False, ########### MOT or not custumized variable ########################
         project=TRACK,  # save results to project/name
         name=name_exp,  # save results to project/name
         save_vid=True,  # save confidences in --save-txt labels
-        classes=[0,1],  # filter by class: --class 0, or --class 0 2 3
+        # classes=[0,1],  # filter by class: --class 0, or --class 0 2 3
         # line_thickness=3,  # bounding box thickness (pixels)
-        # conf_thres=0.25,  # confidence threshold
+        conf_thres=0.5,  # confidence threshold
         # iou_thres=0.45,  # NMS IOU threshold
         # save_crop=False,  # save cropped prediction boxes
         ###############################################################
