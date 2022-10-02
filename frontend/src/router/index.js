@@ -49,20 +49,20 @@ const router = createRouter({
   routes
   
 })
-router.beforeEach(function (to, from, next) {
-  // to: 이동할 url에 해당하는 라우팅 객체
+// router.beforeEach(function (to, from, next) {
+//   // to: 이동할 url에 해당하는 라우팅 객체
 
-  console.log(from)
-  if (localStorage.getItem('token') === '' || localStorage.getItem('token') === null) {
-    if ( to.path === '/'|| to.path === '/please/Login') {
-      next()
-    } else {
-      console.log('not Login')
-      next('/please/Login')
-    }
-    // router.replace('VideoPlayer')
-  }  else {
-    next(); // 페이지 전환
-  }
-});
+//   console.log(from)
+//   if (localStorage.getItem('token') === '' || localStorage.getItem('token') === null) {
+//     if ( to.path === '/'|| to.path === '/please/Login') {
+//       next()
+//     } else {
+//       console.log('not Login')
+//       next('/please/Login')
+//     }
+//     // router.replace('VideoPlayer')
+//   }  else {
+//     next(); // 페이지 전환
+//   }
+// });
 export default router
