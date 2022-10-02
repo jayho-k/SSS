@@ -1,5 +1,8 @@
 <template>
-	<div id="map" style="width:1620px;height:1040px;"></div>
+
+  <div v-show="store.is_kakao_view" id="map" style="width:1620px;height:1040px;"></div>
+  <Streaming v-if="!store.is_kakao_view" style="width:1620px;height:1040px;"></Streaming>
+
 </template>
 
 <script>
@@ -7,7 +10,9 @@ import { onMounted, watch } from 'vue'
 import { useKakaoStore } from '@/stores/kakaoMap'
 import Swal from 'sweetalert2'
 import markerImg from '@/assets/marker.png'
+import Streaming from '@/components/system/control/realtime/CctvStreaming.vue'
 export default {
+  components: {Streaming},
 	setup() {
 		const store = useKakaoStore()
     store.getCctvList()
@@ -289,18 +294,18 @@ export default {
 				buttonsStyling: false
 			})
 			swalWithBootstrapButtons.fire({
-				title: 'Are you sure?',
-				text: "You won't be able to revert this!",
+				title: '삭제하시겠습니까?',
+				
 				icon: 'warning',
 				showCancelButton: true,
-				confirmButtonText: 'Yes, delete it!',
-				cancelButtonText: 'No, cancel!',
+				confirmButtonText: '삭제',
+				cancelButtonText: '취소',
 				reverseButtons: true
 			}).then((result) => {
 				if (result.isConfirmed) {
 					swalWithBootstrapButtons.fire(
-						'Deleted!',
-						'Your file has been deleted.',
+						'삭제',
+						'삭제되었습니다.',
 						'success'
 					)
 					save_markers[s_index].setMap(null)
@@ -314,8 +319,8 @@ export default {
 					result.dismiss === Swal.DismissReason.cancel
 				) {
 					swalWithBootstrapButtons.fire(
-						'Cancelled',
-						'Your imaginary file is safe :)',
+						'취소',
+						'취소되었습니다.',
 						'error'
 					)
 				}
@@ -361,6 +366,7 @@ export default {
       store.createCctv(cctv_Data, info)
     }
 		return {
+      store,
       save_markers,
       save_overlay,
 			initMap,

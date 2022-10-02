@@ -1,13 +1,23 @@
 <template>
   <form @submit.prevent="add_or_update" method="POST" class="MiaAddform">
-    <div>
-      이름: <input type="text" name="name" v-model="miaStore.miaData.name" required><br>
+    <div class="addInfo"><div>이름</div> <div>나이</div></div>
+    <div class="addInfo">
+      <div></div>
+      <input type="text" name="name" class="inputBox" v-model="miaStore.miaData.name" required><br>
 
-      나이: <input type="number" name="age" v-model="miaStore.miaData.age" required>
+      <input type="number" name="age" class="inputBox" v-model="miaStore.miaData.age" required>
+      <div></div>
     </div>
-    이미지: <div class="addImgBox"><label class="imgLabel" for="img"><img src="@/assets/add_img.png" style="width:120px; height:120px;" alt=""><input type="file" id="img" name="child_img" @change="fileUpload()" required></label></div>
+    <br>
+     <div class="addImgBox">
+      <label class="imgLabel" for="img">
+        <img src="@/assets/add_img.png" style="width:120px; height:120px;" alt="">
+        <input type="file" id="img" name="child_img" @change="fileUpload()"  accept=".png" required>
+        </label>
+      </div>
+      <br>
     <div>{{miaStore.miaData.child_img['name']}}</div>
-  <button type="submit">등록</button>
+  <button type="submit"><div v-if="miaStore.mia_update_id === -1">등록</div> <div v-if="miaStore.mia_update_id !== -1">수정</div></button>
 
   </form>
 
@@ -30,6 +40,7 @@ export default {
       } else {
         miaStore.updateMia()
       }
+      miaStore.is_add_mia = !miaStore.is_add_mia
     }
   
   return {
@@ -53,6 +64,7 @@ export default {
 }
 .addImgBox {
   display: flex;
+  margin-left: 22px;
   justify-content: center;
   align-items: center;
   width: 200px;
@@ -65,6 +77,15 @@ export default {
 .imgLabel:hover {
   cursor: pointer;
 
+}
+.addInfo {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.inputBox {
+  width: 80px;
+  height: 30px;
 }
 input[type="file"] {
     position: absolute;

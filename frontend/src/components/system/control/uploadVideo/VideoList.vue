@@ -5,7 +5,10 @@
     <VideoItem v-for="(D_item, D_i) in DataSet"
     :key="D_i"
     :D_item = D_item
-    @click="selectVideo(D_item)">{{D_item.name}}</VideoItem>
+    @click="deleteVideo(D_i)"
+    class="VideoItemBox"><span class="material-symbols-outlined">
+image_search
+</span><div @click="selectVideo(D_item)">{{D_item.name}}</div></VideoItem>
     </div>
   </div>
 </template>
@@ -25,9 +28,15 @@ export default {
       uploadStore.selectVideo(video)
 
     }
+    function deleteVideo(idx) {
+      if (uploadStore.video_list_mode === false) {
+      uploadStore.video_list.splice(idx,1)
+      }
+    }
     return {
       DataSet,
-      selectVideo
+      selectVideo,
+      deleteVideo
     }
   }
   
@@ -43,9 +52,26 @@ export default {
   height: 400px;
   background-color: var(--main-color2);
   padding: 4px;
+  
 
 }
+.VideoItemBox {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: hsl(0,0%,95%);
+  width: 244px;
+  height: 40px;
+  margin-bottom: 1px;
 
+  background: rgb(245,246,246); 
+background: -moz-linear-gradient(top, rgba(245,246,246,1) 0%, rgba(219,220,226,1) 10%, rgba(219,220,226,1) 85%, rgba(184,186,198,1) 96%, rgba(221,223,227,1) 99%, rgba(245,246,246,1) 100%); 
+background: -webkit-linear-gradient(top, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 96%,rgba(221,223,227,1) 99%,rgba(245,246,246,1) 100%); 
+background: linear-gradient(to bottom, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 96%,rgba(221,223,227,1) 99%,rgba(245,246,246,1) 100%); 
+
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=0 ); 
+}
 
 /* 영역 설정*/
 .VideoItem{
