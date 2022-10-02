@@ -2,7 +2,7 @@
   <div class="modal" id="login-modal">
     <div class="modal-content">
       <!-- 아이디 찾기 -->
-      <div class="findIdBox centerBox">
+      <!-- <div class="findIdBox centerBox">
         <div>
           <input type="text" v-model="findIdData.name">
         </div>
@@ -10,7 +10,7 @@
           <input type="email" v-model="findIdData.email">
         </div>
         <div class="findIdBotton">아이디 찾기</div>
-      </div>
+      </div> -->
 
       <div class="loginBox">
         <form
@@ -28,7 +28,7 @@
               name="name"
               placeholder="아이디를 입력하세요"
             />
-            <div v-if="isError">{{ errorMsg }}</div>
+            <div v-if="isError" style="color: red;">{{ errorMsg }}</div>
           </div>
           <div class="">
             <input
@@ -39,34 +39,11 @@
               name="password"
               placeholder="비밀번호를 입력하세요"
             />
-            <div v-if="isPwError">{{errorPwMsg}}</div>
+            <div v-if="isPwError" style="color: red;">{{errorPwMsg}}</div>
           </div>
           <input type="submit" class="modal-input-btn" value="로그인" />
-          <div @click="findId">아이디 찾기</div>
-          <!-- <div
-            @click="login.login(credential)"
-            style="border: none; cursor: pointer"
-            class="my-2"
-          >
-            회원가입
-          </div> -->
-          <!-- <router-link></router-link> -->
-          <!-- <div class="modal-findIdPwBtn">
-            <div class="overlay" @click="$emit('close-modal')"></div>
-            <div class="modal-card">
-              <slot name="body">
-                관리자에게 문의 부탁드립니다.<br>
-                Tel : 042-123-4567
-              </slot>
-            </div>
-            <footer class="modal-footer">
-              <slot name="footer">
-                <button @click="$emit('close')">Close</button>
-              </slot>
-            </footer>
-          </div> -->
         </form>
-        <router-link to="/signup">회원가입</router-link>
+        <button @click="signup()" class="sign-btn">회원가입</button>
       </div>
     </div>
   </div>
@@ -75,6 +52,7 @@
 <script>
 import { useAccounts } from "@/stores/accounts";
 import { ref } from "vue"
+import router from '@/router';
 export default {
   name: "LoginView",
   components: {},
@@ -109,6 +87,9 @@ export default {
     function checkPassword(){
       // 특수문자, 몇글자 등등
     }
+    function signup() {
+      router.push({name:"signup"})
+    }
     return {
       login,
       credential,
@@ -119,6 +100,7 @@ export default {
       findIdData,
       checklogin,
       checkPassword,
+      signup
     }
   },
   methods: {},
@@ -136,6 +118,38 @@ export default {
     background-color: rgba( 255, 255, 255, 0.2 );
     border-radius: 15px;
     transition: all 1s;
+  }
+  .modal-input-btn{
+    margin: 15px;
+    width: 210px;
+    height: 30px;
+    background: radial-gradient(95% 60% at 50% 75%, #005FD6 0%, #209BFF 100%);
+    border: 1px solid #54A1FD;
+    box-shadow: 0px 8px 20px -8px #1187FF, inset 0px 1px 8px -4px #FFFFFF;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    transition: all .2s ease;
+    -webkit-tap-highlight-color: rgba(255,255,255,0);
+  }
+  .sign-btn{
+    margin: 15px;
+    width: 210px;
+    height: 30px;
+    background: radial-gradient(95% 60% at 50% 75%, #005FD6 0%, #209BFF 100%);
+    border: 1px solid #54A1FD;
+    box-shadow: 0px 8px 20px -8px #1187FF, inset 0px 1px 8px -4px #FFFFFF;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    transition: all .2s ease;
+    -webkit-tap-highlight-color: rgba(255,255,255,0);
   }
   .loginBox {
     position: absolute;
@@ -204,15 +218,19 @@ export default {
     z-index: 10;
     opacity: 1;
   }
-  input { 
+  .modal-input { 
+    margin: 15px 30px;
+    border-radius: 5px;
+    height: 30px;
+  }
+  .modal-input::placeholder {
+    text-align: center;
+  }
+  .gosign {
+    color: black;
+  }
 
--webkit-appearance : none;
-
--moz-appearance:none;
-
-appearance:none;
-
-}
-
-
+  .font-weight-bold {
+    color: #000000;
+  }
 </style>
