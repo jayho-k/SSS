@@ -1,39 +1,48 @@
 <template>
   <div class="modal" id="login-modal">
     <div class="modal-content">
-      <div class="modal-content-left"></div>
-      <div class="modal-content-right">
-        <div @click="$emit('loginClose')" class="close-btn">&times;</div>
+      <!-- 아이디 찾기 -->
+      <div class="findIdBox centerBox">
+        <div>
+          <input type="text" v-model="findIdData.name">
+        </div>
+        <div>
+          <input type="email" v-model="findIdData.email">
+        </div>
+        <div class="findIdBotton">아이디 찾기</div>
+      </div>
+
+      <div class="loginBox">
         <form
           @submit.prevent="checklogin()"
           class="modal-form"
           id="form"
         >
           <h1 class="font-weight-bold">로그인</h1>
-          <div class="form-validation">
+          <div class="">
             <input
               v-model="credential.username"
               type="text"
-              class="modal-input"
+              class="modal-input form-validation"
               id="name"
               name="name"
               placeholder="아이디를 입력하세요"
             />
-            <p v-if="isError">{{ errorMsg }}</p>
+            <div v-if="isError">{{ errorMsg }}</div>
           </div>
-          <div class="form-validation">
+          <div class="">
             <input
               v-model="credential.password"
               type="password"
-              class="modal-input"
+              class="modal-input form-validation"
               id="password1"
               name="password"
               placeholder="비밀번호를 입력하세요"
             />
-            <p v-if="isPwError">{{errorMsg}}</p>
+            <div v-if="isPwError">{{errorPwMsg}}</div>
           </div>
           <input type="submit" class="modal-input-btn" value="로그인" />
-          <button @click="login.logout()">로그아웃</button>
+          <div @click="findId">아이디 찾기</div>
           <!-- <div
             @click="login.login(credential)"
             style="border: none; cursor: pointer"
@@ -73,19 +82,25 @@ export default {
   setup() {
     const login = useAccounts();
     const isError = ref(false)
+    const isPwError = ref(false)
     const errorMsg = ref('')
+    const errorPwMsg = ref('')
     const credential = ref({
       username: "",
       password: "",
     })
+    const findIdData = {
+      name: '',
+      email: '',
+    }
 
     function checklogin () {
       if(credential.value.username === "") {
         isError.value = true
         errorMsg.value = "아이디를 입력해주세요"
       } else if (credential.value.password === "") {
-        isError.value = true
-        errorMsg.value = "비밀번호를 입력해주세요"
+        isPwError.value = true
+        errorPwMsg.value = "비밀번호를 입력해주세요"
       } else {
         console.log(credential)
         login.login(credential.value)
@@ -98,9 +113,12 @@ export default {
       login,
       credential,
       isError,
+      isPwError,
+      errorPwMsg,
       errorMsg,
+      findIdData,
       checklogin,
-      checkPassword
+      checkPassword,
     }
   },
   methods: {},
@@ -108,11 +126,59 @@ export default {
 </script>
 
 <style>
-  /* .modal{
-    background-image: url("@/assets/account/background.png");
-    background-size: cover;
-  } */
+  .centerBox {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    top: calc(50% - 200px);
+    left: calc(50% - 200px);
+    border: 3px;
+    background-color: rgba( 255, 255, 255, 0.2 );
+    border-radius: 15px;
+    transition: all 1s;
+  }
+  .loginBox {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    top: calc(50% - 200px);
+    left: calc(50% - 200px);
+    border: 3px;
+    background-color: rgba( 255, 255, 255, 0.2 );
+    border-radius: 15px;
+    transition: all 1s;
+  }
+  .centerBox:hover {
+    width: 400px;
+    height: 400px;
+    top: calc(50% - 200px);
+    left: 50%;
+    border: 3px solid white;
+    background-color: white;
+    border-radius: 15px;
+
+  }
+
+  .form-validation {
+    border: 3px solid rgba(87, 55, 18, 0.6);
+    font-size: 16px;
+  }
+  .findIdBox {
+    width: 200px;
+    height: 400px;
+    top: calc(50% - 200px);
+    left: calc(50% - 200px);
+    border: 3px solid white;
+    background-color: white;
+    border-radius: 15px;
+
+  }
+  .findIdBox:before {
+  content: "«";
+  color: blue;
+  }
   body {
+    background-color: #000000;
     background-image: url("@/assets/account/background.png");
     background-size: cover;
   }
@@ -138,4 +204,15 @@ export default {
     z-index: 10;
     opacity: 1;
   }
+  input { 
+
+-webkit-appearance : none;
+
+-moz-appearance:none;
+
+appearance:none;
+
+}
+
+
 </style>
