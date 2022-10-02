@@ -280,6 +280,11 @@ import router from '@/router';
         border: none;
         cursor: pointer;
     }
+    body {
+    background-color: #000000;
+    background-image: url("@/assets/account/background.png");
+    background-size: cover;
+  }
 
 
 </style>
