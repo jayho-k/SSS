@@ -8,7 +8,7 @@ const routes = [
     component: () => import('@/views/cctv/cctvMainView.vue')
   },
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     component: () => import('@/views/account/loginView.vue')
   },
@@ -20,7 +20,7 @@ const routes = [
   {
     path: '/accountManage',
     name: 'accountManage',
-    component: () => import('@/views/account/accountManage')
+    component: () => import('@/views/account/components/accountList.vue')
   },
   {
     path: '/myPage',
@@ -54,7 +54,7 @@ router.beforeEach(function (to, from, next) {
 
   console.log(from)
   if (localStorage.getItem('token') === '' || localStorage.getItem('token') === null) {
-    if (to.path === '/login' || to.path === '/'|| to.path === '/please/Login') {
+    if ( to.path === '/'|| to.path === '/please/Login') {
       next()
     } else {
       console.log('not Login')
@@ -65,5 +65,4 @@ router.beforeEach(function (to, from, next) {
     next(); // 페이지 전환
   }
 });
-// 로우터가드 to, from, next
 export default router

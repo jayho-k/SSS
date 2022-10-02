@@ -1,9 +1,10 @@
 <template>
   <div class="NavMenuBox navMetal">
-    <router-link to="/cctv">cctv</router-link>
-    <router-link to="/upload">upload</router-link>
-    <button type="button" @click="accountStore.logout">logout</button>
-    <img class="navMenu" src="@/assets/optionIcon.png" alt="옵션">
+    <router-link to="/cctv" v-if="accountStore.is_nav_mode">CCTV</router-link>
+    <router-link to="/upload" v-if="accountStore.is_nav_mode">UPLOAD</router-link>
+    <router-link to="/upload" v-if="!accountStore.is_nav_mode">MyPage</router-link>
+    <div @click="accountStore.logout" v-if="!accountStore.is_nav_mode">logout</div>
+    <img class="navMenu" src="@/assets/optionIcon.png" alt="옵션" @click="toggle_mode">
   </div>
 </template>
 
@@ -12,9 +13,14 @@ import { useAccounts } from '@/stores/accounts'
 export default {
   setup() {
     const accountStore = useAccounts()
+    function toggle_mode() {
+      accountStore.is_nav_mode = !accountStore.is_nav_mode 
+
+    }
 
     return {
       accountStore,
+      toggle_mode,
     }
   }
 }

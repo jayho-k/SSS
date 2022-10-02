@@ -8,21 +8,22 @@ export const useUploadVideoStore = defineStore("upload", {
     return { 
         video_list: [],
         show_video: '',
-        show_add_mia: 0,    
+        show_add_mia: 0,
+        analysis_case:'',
+        video_list_mode: true //false 는 del
     }
   },
   actions: {
-    uploadVideo (video) {
-      console.log(video)
+    uploadVideo () {
       const formData = new FormData()
-      formData.append("video", video)
+      formData.append("video", this.video_list[0])
+      formData.append("class", this.analysis_case)
       const token = localStorage.getItem('token')
       axios.post(
         SGSS.upload.upload(),
         formData,
         {headers: {Authorization : 'Bearer ' + token}}
       ) .then ((res) => {
-        this.video_list.push(video)
         console.log(res)
         console.log(res.value)
 
