@@ -1,6 +1,6 @@
 <template>
 
-  <div v-show="store.is_kakao_view" id="map" class="mapView"></div>
+  <div v-show="store.is_kakao_view" id="map" class="mapView"  style="min-height: 680px;"></div>
   <Streaming v-if="!store.is_kakao_view" class="mapView"></Streaming>
 
 </template>
@@ -19,6 +19,7 @@ export default {
 		/* global kakao */
     const save_markers = []
     const save_overlay = []
+    store.cctv_mode = 0
     var save_drag_index = null
     store.saved_markers = save_markers
 		store.saved_overlay = save_overlay

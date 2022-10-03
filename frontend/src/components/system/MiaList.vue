@@ -75,7 +75,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 .miaListBox {
   position: relative;
   width: var(--controller-width);
-  height: 440px;
+  height: calc((100vh - 210px)/2);
+  min-height: 285px;
   background-color: var(--main-color2);
   padding: 4px;
   margin-top: 20px;
@@ -86,7 +87,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 .miaListItem{
   padding: 0px 4px;
   width:244px;
-  height:405px;
+  height:calc(100% - 35px);
 	overflow-y: scroll;
   overflow-x: hidden;
   
