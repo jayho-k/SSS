@@ -49,7 +49,8 @@ export default {
 .VideoListBox {
   position: relative;
   width: var(--controller-width);
-  height: calc(100vh - 656px);
+  height: calc((100vh - 220px)/2);
+  min-height: 220px;
   background-color: var(--main-color2);
   padding: 4px;
   
@@ -77,7 +78,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 .VideoItem{
   padding: 0px 4px;
   width:244px;
-  height:365px;
+  height:calc(100% - 35px);
 	overflow-y: scroll;
   overflow-x: hidden;
 }
