@@ -1,10 +1,14 @@
 <template>
   <div class="NavMenuBox navMetal">
-    <router-link to="/cctv" v-if="accountStore.is_nav_mode">CCTV</router-link>
-    <router-link to="/upload" v-if="accountStore.is_nav_mode">UPLOAD</router-link>
-    <router-link to="/upload" v-if="!accountStore.is_nav_mode">MyPage</router-link>
-    <div @click="accountStore.logout" v-if="!accountStore.is_nav_mode">logout</div>
-    <img class="navMenu" src="@/assets/optionIcon.png" alt="옵션" @click="toggle_mode">
+    <router-link class="cursor navItem" to="/cctv" v-if="accountStore.is_nav_mode">CCTV</router-link>
+    <router-link class="cursor navItem" to="/upload" v-if="accountStore.is_nav_mode">UPLOAD</router-link>
+    <router-link class="cursor navItem" to="/upload" v-if="!accountStore.is_nav_mode">MY</router-link>
+    <div class="cursor navItem" @click="accountStore.logout" v-if="!accountStore.is_nav_mode">LOGOUT</div>
+    <!-- <img class="navMenu cursor" src="@/assets/optionIcon.png" alt="옵션" @click="toggle_mode"> -->
+    <span v-if="accountStore.is_nav_mode" @click="toggle_mode" class=" navMenu cursor material-symbols-outlined">arrow_back_ios</span>
+    <span  v-if="!accountStore.is_nav_mode" @click="toggle_mode" class="navMenu cursor material-symbols-outlined">
+arrow_forward_ios
+</span>
   </div>
 </template>
 
@@ -26,25 +30,24 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .NavMenuBox {
   display: flex;
   width: 260px;
   height: 60px;
   background-color: var(--main-color2);
   border-radius: 5px;
-  justify-content: space-around;
   align-items: center;
 }
+.navItem {
+  width: 100px;
+}
 .navMenu {
+  margin-left: 12px;
   width: 28px;
   height: 28px;
-  transition: all 0.5s linear
 }
 
-.navMenu:hover {
-  transform: rotate( 90deg )
-}
 
 .navMetal {
 
@@ -62,5 +65,9 @@ export default {
     hsla(0,0%,100%,.5) 0  1px 4px 4px; /* outer HL */ 
   
   transition: color .2s;
+}
+
+.cursor:hover {
+  cursor: pointer;
 }
 </style>

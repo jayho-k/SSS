@@ -44,12 +44,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .VideoListBox {
   position: relative;
   width: var(--controller-width);
-  height: 400px;
+  height: calc(100vh - 656px);
   background-color: var(--main-color2);
   padding: 4px;
   

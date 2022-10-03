@@ -1,6 +1,6 @@
 <template>
 	<div class="VideoFilesView">
-		<!-- <video v-if="idx" controls=1 class="videoMainBox" id="video">
+		<video v-if="idx" controls=1 class="videoMainBox" id="video">
 		
 		<source :src="uploadStore.show_video" type="video/mp4">
 				해당 브라우저는 video 태그를 지원하지 않습니다.
@@ -13,8 +13,8 @@
 			<option value="mia">미아탐색</option>
 			<option value="safety">야생동물보호</option>
 		</select>
-		<button type="button" @click="uploadStore.uploadVideo">이거 누르면 분석</button> -->
-		<img :src="`${URL}/api/cctvs/streaming/`" width="400" height="300"/>
+		<button type="button" @click="uploadStore.uploadVideo">이거 누르면 분석</button>
+		<!-- <img :src="`${URL}/api/cctvs/streaming/`" width="400" height="300"/> -->
 		
 		<!-- <video controls=1 class="videoMainBox" id="video">
 		<source :src="`${URL}media/track/exp/eca944b5a9fe46b281315cfd2e833bfa.mp4`" type="video/mp4" muted >
@@ -60,10 +60,9 @@ export default {
 
 <style>
 .VideoFilesView {
-    width:1620px;
-    height:1040px;
-
-    background-color: var(--main-color2);
+	width: 1620px;
+	height: calc(100vh - 40px);
+	background-color: var(--main-color2);
 }
 .videoMainBox {
   width:800px;
