@@ -3,8 +3,8 @@
     
     <div @click="toggle_view"><span class="material-symbols-outlined">live_tv</span></div>
       <div class="menuIcons">
-      <button class="metalBtn linearBtn" @click="add"><span class="material-symbols-outlined">add_location_alt</span></button>
-      <button class="metalBtn linearBtn" @click="del"><span class="material-symbols-outlined">delete</span></button>
+      <button class="metalBtn linearBtn" @click="add"><span id="C_blue" class="material-symbols-outlined">add_location_alt</span></button>
+      <button class="metalBtn linearBtn" @click="del"><span id="C_Red" class="material-symbols-outlined">delete</span></button>
     </div>
   </div>
 </template>
@@ -16,13 +16,22 @@ export default {
     const store = useKakaoStore()
     function add (e) {
       e.target.classList.toggle('clickB')
-      store.cctv_mode = 1
+      console.log(document.getElementById('C_Red').classList)
+      document.getElementById('C_Red').classList.remove('clickR')
+      if (store.cctv_mode === 1) {
+        store.cctv_mode = 0
+      } else {
+        store.cctv_mode = 1
+      }
+
+
     
     }
     function del (e) {
       e.target.classList.toggle('clickR')
-      if (store.mode === 3) {
-        store.cctv_mode = 2}
+      document.getElementById('C_blue').classList.remove('clickB')
+      if (store.cctv_mode === 2) {
+        store.cctv_mode = 0}
       else {
         store.cctv_mode = 2
       }

@@ -9,7 +9,7 @@ export const useKakaoStore = defineStore("Kakao", {
 			saved_markers_info: [],
 			saved_markers:[],
 			saved_overlay:[],
-			cctv_mode: 2,
+			cctv_mode: 0,
 			
 			drag_index: -1,
 			map_center: [33.450705, 126.570677],
