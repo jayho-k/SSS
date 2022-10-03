@@ -9,15 +9,15 @@
       <div></div>
     </div>
     <br>
-     <div class="addImgBox">
+     <div class="addImgBox" id="add_img">
       <label class="imgLabel" for="img">
-        <img src="@/assets/add_img.png" style="width:120px; height:120px;" alt="">
+        <img src="@/assets/add_img.png" style="width:120px; height:120px;  opacity:50%; " alt="">
         <input type="file" id="img" name="child_img" @change="fileUpload()"  accept=".png" required>
         </label>
       </div>
       <br>
-    <div>{{miaStore.miaData.child_img['name']}}</div>
-  <button type="submit"><div v-if="miaStore.mia_update_id === -1">등록</div> <div v-if="miaStore.mia_update_id !== -1">수정</div></button>
+    <div id="miafile">{{miaStore.miaData.child_img['name']}}</div>
+  <button type="submit"><div v-if="miaStore.mia_update_id === -1">미아등록</div> <div v-if="miaStore.mia_update_id !== -1">수정</div></button>
 
   </form>
 
@@ -32,7 +32,7 @@ export default {
     const miaStore = useMiaStore()
     const fileUpload = () =>{
       miaStore.miaData.child_img = ref(document.getElementById('img').files[0])
-      console.log(miaStore.miaData.child_img['name'])
+      document.getElementById('add_img').style.backgroundImage= "url(" +URL.createObjectURL(miaStore.miaData.child_img) +")"
     }
     function add_or_update () {
       if (miaStore.mia_update_id === -1) {
@@ -64,7 +64,7 @@ export default {
 }
 .addImgBox {
   display: flex;
-  margin-left: 22px;
+  margin-left: 20px;
   justify-content: center;
   align-items: center;
   width: 200px;
@@ -73,6 +73,9 @@ export default {
   border-radius: 10px;
   box-shadow: 2px 2px 1px 1px;
   background-color: #ffffff;
+  background-size:contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .imgLabel:hover {
   cursor: pointer;
@@ -85,7 +88,7 @@ export default {
 }
 .inputBox {
   width: 80px;
-  height: 30px;
+  height: 20px;
 }
 input[type="file"] {
     position: absolute;

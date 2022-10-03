@@ -15,7 +15,7 @@
   </div>  
 </template>
 
-<script>
+<script scoped>
 import { useIndexStore } from '@/stores/index'
 import NavMenu from '@/components/system/control/NavMenu.vue'
 import WatchMenu from '@/components/system/control/WatchMenu.vue'

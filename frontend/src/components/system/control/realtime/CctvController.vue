@@ -37,7 +37,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .controllerBox {
   width: 260px;
   margin-left: 20px;
