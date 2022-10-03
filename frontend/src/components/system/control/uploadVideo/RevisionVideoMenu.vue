@@ -39,7 +39,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .RevisionMenuBox {
   justify-content: center;
@@ -84,7 +84,7 @@ export default {
 
   box-shadow: 
     inset hsla(210,100%,30%,  1) 0  0px 0px 2px, /* border */
-    inset rgba(255, 255, 255, 0.7) 0  2px 1px 12px, /* top HL */
+    inset rgba(255, 255, 255, 0.862) 0  2px 1px 12px, /* top HL */
     
     hsla(210 ,100%,55%, .8) 0  0px 1px 1px, /* outer SD */
     hsla(210 ,80%,95%, 1) 0px  0px 0px 0px; /* outer HL */
@@ -94,7 +94,7 @@ export default {
 
   box-shadow: 
     inset rgb(212, 176, 84) 0  0px 0px 2px, /* border */
-    inset rgba(255, 255, 255, 0.7) 0  2px 1px 12px, /* top HL */
+    inset rgba(255, 255, 255, 0.862) 0  2px 1px 12px, /* top HL */
     
     hsla(43,100%,75%, .8) 0  0px 1px 1px, /* outer SD */
     hsla(210 ,80%,95%, 1) 0px  0px 0px 0px; /* outer HL */
@@ -104,7 +104,7 @@ export default {
 
   box-shadow: 
     inset hsla(0,100%,30%,  1) 0  0px 0px 2px, /* border */
-    inset rgba(255, 255, 255, 0.7) 0  2px 1px 12px, /* top HL */
+    inset rgba(255, 255, 255, 0.862) 0  2px 1px 12px, /* top HL */
     
     hsla(0,100%,75%, .8) 0  0px 1px 1px, /* outer SD */
     hsla(210 ,80%,95%, 1) 0px  0px 0px 0px; /* outer HL */

@@ -43,7 +43,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .CctvListBox {
   position: relative;
   width: var(--controller-width);
@@ -59,7 +59,7 @@ export default {
 .CctvItem{
   padding: 0px 4px;
   width:244px;
-  height:365px;
+  height:calc(100vh - 660px);;
 	overflow-y: scroll;
   overflow-x: hidden;
 }

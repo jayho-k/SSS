@@ -1,7 +1,7 @@
 <template>
 
-  <div v-show="store.is_kakao_view" id="map" style="width:1620px;height:1040px;"></div>
-  <Streaming v-if="!store.is_kakao_view" style="width:1620px;height:1040px;"></Streaming>
+  <div v-show="store.is_kakao_view" id="map" class="mapView"></div>
+  <Streaming v-if="!store.is_kakao_view" class="mapView"></Streaming>
 
 </template>
 
@@ -391,7 +391,10 @@ export default {
 .customOverlay:hover {
   opacity: 100%;
 }
-
+.mapView {
+  width:1620px;
+  height:calc(100vh - 40px);
+}
 .btn-success {
 	font-size: 20px;
 }
