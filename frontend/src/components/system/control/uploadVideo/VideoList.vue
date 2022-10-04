@@ -1,42 +1,48 @@
 <template>
   <div class="VideoListBox">
       <VideoMenu></VideoMenu>
+      <VideoForm></VideoForm>
     <div class="VideoItem">
-    <VideoItem v-for="(D_item, D_i) in DataSet"
+    <div v-for="(D_item, D_i) in DataSet"
     :key="D_i"
     :D_item = D_item
-    @click="deleteVideo(D_i)"
-    class="VideoItemBox"><span class="material-symbols-outlined">
-image_search
-</span><div @click="selectVideo(D_item)">{{D_item.name}}</div></VideoItem>
+    @click="selectVideo(D_i, D_item)"
+    class="VideoItemBox">
+    <span class="material-symbols-outlined">image_search</span>
+  <div @click="toggle_form()">{{D_item.name}}</div>
+  </div>
     </div>
   </div>
 </template>
 
 <script>
-import { useUploadVideoStore } from '@/stores/uploadVideo';
+import { useUploadVideoStore } from '@/stores/uploadVideo'
 import VideoMenu from '@/components/system/control/uploadVideo/VideoMenu'
+import VideoForm from '@/components/system/control/uploadVideo/VideoAnalysisForm.vue'
 export default {
   components: {
     VideoMenu,
+    VideoForm
   },
   setup () {
     const uploadStore = useUploadVideoStore()
     const DataSet = uploadStore.video_list
-
-    function selectVideo(video) {
-      uploadStore.selectVideo(video)
-
-    }
-    function deleteVideo(idx) {
+    function selectVideo(idx, video) {
       if (uploadStore.video_list_mode === false) {
       uploadStore.video_list.splice(idx,1)
+      } else {
+        uploadStore.analysis_video_idx = idx
+        uploadStore.selectVideo(video)
       }
+    }
+    function toggle_form () {
+      uploadStore.is_analysis_video = !uploadStore.is_analysis_video
     }
     return {
       DataSet,
       selectVideo,
-      deleteVideo
+      toggle_form,
+  
     }
   }
   
