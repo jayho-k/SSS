@@ -33,11 +33,6 @@ const routes = [
     component: () => import('@/views/uploadVideo/uploadVideoView.vue')
   },
   {
-    path: '/VideoPlayer',
-    name: 'VideoPlayer',
-    component: () => import('@/views/uploadVideo/VideoPlayView.vue')
-  },
-  {
     path: '/please/Login',
     name: 'plzLogin',
     component: () => import('@/views/LoginErrorPage.vue')

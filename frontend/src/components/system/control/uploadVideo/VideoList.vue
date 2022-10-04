@@ -2,14 +2,17 @@
   <div class="VideoListBox">
       <VideoMenu></VideoMenu>
       <VideoForm></VideoForm>
-    <div class="VideoItem">
+    <div class="VideoItem" v-if="!uploadStore.is_analysis_video">
     <div v-for="(D_item, D_i) in DataSet"
     :key="D_i"
     :D_item = D_item
-    @click="selectVideo(D_i, D_item)"
+    @click="deleteVideo(D_i)"
     class="VideoItemBox">
-    <span class="material-symbols-outlined">image_search</span>
-  <div @click="toggle_form()">{{D_item.name}}</div>
+    <span  @click="show_analysis(D_i, D_item)" class="material-symbols-outlined">image_search</span>
+  <div @click="show_local(D_i, D_item)">{{D_item.name}}</div>
+  <span v-if="uploadStore.analysis_url_list[D_i]['fire']" class="material-symbols-outlined">local_fire_department</span>
+  <span v-if="uploadStore.analysis_url_list[D_i]['mia']" class="material-symbols-outlined">face</span>
+  <span v-if="uploadStore.analysis_url_list[D_i]['safety']" class="material-symbols-outlined">cruelty_free</span>
   </div>
     </div>
   </div>
@@ -27,21 +30,31 @@ export default {
   setup () {
     const uploadStore = useUploadVideoStore()
     const DataSet = uploadStore.video_list
-    function selectVideo(idx, video) {
+    function deleteVideo(idx) {
       if (uploadStore.video_list_mode === false) {
       uploadStore.video_list.splice(idx,1)
-      } else {
-        uploadStore.analysis_video_idx = idx
-        uploadStore.selectVideo(video)
+      uploadStore.analysis_url_list.splice(idx,1)
       }
     }
-    function toggle_form () {
+    function show_analysis (idx, video) {
+      uploadStore.analysis_video_idx = idx
+      uploadStore.selectVideo(video)
       uploadStore.is_analysis_video = !uploadStore.is_analysis_video
     }
+    function show_local (idx, video) {
+      uploadStore.is_local_view = false
+      uploadStore.analysis_video_idx = idx
+      uploadStore.selectVideo(video)
+      uploadStore.is_local_view
+      setTimeout(()=>{ uploadStore.is_local_view = true}, 1)
+
+    }
     return {
+      uploadStore,
       DataSet,
-      selectVideo,
-      toggle_form,
+      deleteVideo,
+      show_analysis,
+      show_local,
   
     }
   }

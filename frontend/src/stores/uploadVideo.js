@@ -15,8 +15,10 @@ export const useUploadVideoStore = defineStore("upload", {
         analysis_case:null,
         analysis_url_list: [],
         analysis_video_idx: null,
+        analysis_video: null,
         is_analysis_video: false,
         is_result_view: true,
+        is_local_view:false,
         video_list_mode: true //false 는 del
     }
   },
@@ -33,11 +35,12 @@ export const useUploadVideoStore = defineStore("upload", {
         formData,
         {headers: {Authorization : 'Bearer ' + token}}
       ) .then ((res) => {
-        this.analysis_url_list[idx] = res.data
+        this.analysis_url_list[idx][this.analysis_case] = res.data
+        this.analysis_video = res.data['video_file']
         this.analysis_video_idx = idx
-        router.push({name : 'VideoPlayer'})
         console.log('분석끝')
-      }).catch ((err) => {
+      }) .then (() => router.push({name : 'upload'}))
+      .catch ((err) => {
         console.log(err)
       })
     },
