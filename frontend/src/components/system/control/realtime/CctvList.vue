@@ -9,7 +9,6 @@
       class="CctvItemBox">&nbsp;&nbsp;
       {{D_item.name}} 
       <span class="material-symbols-outlined" @click="unlock($event, D_i)">lock</span>
-      <!-- <span class="material-symbols-outlined">lock_open</span> -->
       </div>
     </div>
 	</div>

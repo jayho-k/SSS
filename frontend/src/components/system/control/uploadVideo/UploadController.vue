@@ -19,16 +19,14 @@
 import { useIndexStore } from '@/stores/index'
 import NavMenu from '@/components/system/control/NavMenu.vue'
 import WatchMenu from '@/components/system/control/WatchMenu.vue'
-// import AlarmList from '@/components/system/control/realtime/AlarmList.vue'
 
 import VideoList from '@/components/system/control/uploadVideo/VideoList.vue'
 import MiaList from '@/components/system/MiaList.vue'
 export default {
   components: {
     NavMenu,
-    // AlarmList,
     WatchMenu,
-
+    
     VideoList,
     MiaList,
   },

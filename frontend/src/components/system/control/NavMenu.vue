@@ -4,7 +4,6 @@
     <router-link class="cursor navItem" to="/upload" v-if="accountStore.is_nav_mode">UPLOAD</router-link>
     <a class="cursor navItem" @click="isModalViewed=true" v-if="!accountStore.is_nav_mode">MY</a>
     <div class="cursor navItem" @click="accountStore.logout" v-if="!accountStore.is_nav_mode">LOGOUT</div>
-    <!-- <img class="navMenu cursor" src="@/assets/optionIcon.png" alt="옵션" @click="toggle_mode"> -->
     <span v-if="accountStore.is_nav_mode" @click="toggle_mode" class=" navMenu cursor material-symbols-outlined">arrow_back_ios</span>
     <span  v-if="!accountStore.is_nav_mode" @click="toggle_mode" class="navMenu cursor material-symbols-outlined">arrow_forward_ios</span>
   </div>

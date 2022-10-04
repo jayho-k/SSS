@@ -28,7 +28,6 @@ export const useMiaStore = defineStore("MiaStore", {
         {headers: {Authorization : 'Bearer ' + token}}
       ) .then ((res) => {
         this.mia_list = res.data
-        console.log(res)
 
       }) .catch ((err) => {
         console.log(err)
@@ -51,7 +50,6 @@ export const useMiaStore = defineStore("MiaStore", {
       ) .then (() => {
         this.getMiaList ()
       }).catch ((err) => {
-        console.log(err)
         if (err.response.status === 401) {
           this.removeToken()
         }
@@ -66,7 +64,6 @@ export const useMiaStore = defineStore("MiaStore", {
         }
       ) .then (() => {
       }).catch ((err) => {
-        console.log(err)
         if (err.response.status === 401) {
           this.removeToken()
         }
@@ -88,7 +85,6 @@ export const useMiaStore = defineStore("MiaStore", {
       ) .then (() => {
         this.getMiaList ()
       }).catch ((err) => {
-        console.log(err)
         if (err.response.status === 401) {
           this.removeToken()
         }

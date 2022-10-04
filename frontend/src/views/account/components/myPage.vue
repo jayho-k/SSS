@@ -27,10 +27,5 @@ export default {
 <style>
 .profile {
   text-align: start;
-  /* width: 300px;
-  height: 300px;
-  border: 3px;
-  border-block-color: black;
-  border-radius: 10px; */
 }
 </style>

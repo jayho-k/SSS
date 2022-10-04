@@ -1,11 +1,11 @@
 <template>
   <div class="RevisionMenuBox">
-    <div class="metalBtn linearBtn" @click="add_mia"><span class="material-symbols-outlined">
-person_add
-</span></div>
-    <div class="metalBtn linearBtn" @click="del_mia"><span class="material-symbols-outlined">
-delete
-</span></div>
+    <div class="metalBtn linearBtn" @click="add_mia">
+      <span class="material-symbols-outlined">person_add</span>
+    </div>
+    <div class="metalBtn linearBtn" @click="del_mia">
+      <span class="material-symbols-outlined">delete</span>
+    </div>
   </div>
 </template>
 

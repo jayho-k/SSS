@@ -80,12 +80,8 @@ export default {
         isPwError.value = true
         errorPwMsg.value = "비밀번호를 입력해주세요"
       } else {
-        console.log(credential)
         login.login(credential.value)
       }
-    }
-    function checkPassword(){
-      // 특수문자, 몇글자 등등
     }
     function signup() {
       router.push({name:"signup"})
@@ -99,7 +95,6 @@ export default {
       errorMsg,
       findIdData,
       checklogin,
-      checkPassword,
       signup
     }
   },
