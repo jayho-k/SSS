@@ -83,26 +83,30 @@ def cctv_detail_or_update_or_delete(request):
 
 @gzip.gzip_page
 @renderer_classes((StreamingHttpResponse))
-def streaming(request):
-    addr = 0
-    cam = video_camera(addr,'fire')
-    FILE = Path(__file__).resolve()
-    ROOT = FILE.parents[0].parents[0] / 'yolo7deep'  # yolov5 strongsort root directory
-    TRACK = ROOT.parents[0] /'media/track'
-    name_exp = 'exp'
-    TEMP_PIC = ROOT.parents[0] / 'Temp/pic'
-    pic_id = ''.join([str(addr), '.jpg'])
-    if not TEMP_PIC.exists():
-        TEMP_PIC.mkdir(parents=True, exist_ok=True)
-    out_file = TRACK/name_exp/pic_id
-    print(out_file)
-    sleep(0.1)
-    return StreamingHttpResponse(gen_result(out_file), content_type="multipart/x-mixed-replace;boundary=frame")
+def streaming(request,user_id,cctv_id,type):
+    user = get_object_or_404(get_user_model(), id=user_id)
+    addr = get_object_or_404(CCTV, id=cctv_id)
 
+    if type == "fire" or type == "mia":
+        cam = video_camera(addr, type)
+        FILE = Path(__file__).resolve()
+        ROOT = FILE.parents[0].parents[0] / 'yolo7deep'  # yolov5 strongsort root directory
+        TRACK = ROOT.parents[0] /'media/track'
+        name_exp = 'exp'
+        TEMP_PIC = ROOT.parents[0] / 'Temp/pic'
+        pic_id = ''.join([str(addr), '.jpg'])
+        if not TEMP_PIC.exists():
+            TEMP_PIC.mkdir(parents=True, exist_ok=True)
+        out_file = TRACK/name_exp/pic_id
+        print(out_file)
+        sleep(0.1)
+        return StreamingHttpResponse(gen_result(out_file), content_type="multipart/x-mixed-replace;boundary=frame")
+    elif type == "safety":
+        pass
+    return Response(request)
 
 class video_camera(object):
     def __init__(self, adrr, type):
-        # self.video = cv2.VideoCapture('http://qwerasdf1234:1q2w3e4r@192.168.0.26:8080/video') # local
         self.video = cv2.VideoCapture(adrr) # server
         self.adrr = str(adrr)
         (self.grabbed, self.frame) = self.video.read()
