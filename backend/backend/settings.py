@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "accounts",
     "cctvs",
     "missingchilds",
-    "uploads",
+    
     "rest_framework",
     "rest_framework.authentication",
     "corsheaders",
