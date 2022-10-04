@@ -168,17 +168,7 @@ class yolo_stream(object):
         self.stride = self.model.stride.max()  # model stride
         self.imgsz = check_img_size(self.api.imgsz[0], s=self.stride.cpu().numpy())  # check image size
 
-        # # Dataloader
-        # if webcam:
-        #     show_vid = check_imshow()
-        #     cudnn.benchmark = True  # set True to speed up constant image size inference
-        #     dataset = LoadStreams(source, img_size=imgsz, stride=stride.cpu().numpy())
-        #     nr_sources = 1
-        # else:
-        #     dataset = LoadImages(source, img_size=imgsz, stride=stride)
-        #     nr_sources = 1
-        # vid_path, vid_writer, txt_path = [None] * nr_sources, [None] * nr_sources, [None] * nr_sources
-        nr_sources = 1  ######## possible frame unit
+        nr_sources = 1  
         # initialize StrongSORT
         self.cfg = get_config()
         self.cfg.merge_from_file(self.api.config_strongsort)
@@ -360,8 +350,3 @@ class yolo_stream(object):
         if self.api.update:
             strip_optimizer(self.yolo_weights)  # update model (to fix SourceChangeWarning)
         return self.save_dir
-
-
-    def retrunStream(self):
-        return StreamingHttpResponse(gen_frame(self.img), content_type="multipart/x-mixed-replace;boundary=frame")
-
