@@ -18,7 +18,7 @@ import RevisionVideoMenu from '@/components/system/control/uploadVideo/RevisionV
   }
 </script>
   
-<style>
+<style scoped>
   .VideoMenuBox {
   position: absolute;
   display: flex;

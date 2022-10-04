@@ -1,6 +1,7 @@
 <template>
   <div class="uploadVideoMain">
     <VideoFiles></VideoFiles>
+
     <UploadController></UploadController>
   </div>
 </template>

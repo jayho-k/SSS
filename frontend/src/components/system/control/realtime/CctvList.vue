@@ -8,8 +8,8 @@
       @click="mapCenter(D_i)"
       class="CctvItemBox">&nbsp;&nbsp;
       {{D_item.name}} 
-      <span class="material-symbols-outlined" @click="unlock(D_i)">lock</span>
-      <span class="material-symbols-outlined">lock_open</span>
+      <span class="material-symbols-outlined" @click="unlock($event, D_i)">lock</span>
+      <!-- <span class="material-symbols-outlined">lock_open</span> -->
       </div>
     </div>
 	</div>
@@ -27,14 +27,21 @@ export default {
       const kakaoStore = useKakaoStore()
       const DataSet = ref(computed(() => kakaoStore.saved_markers_info))
       function mapCenter (D_i) {
+
         kakaoStore.setMapCenter(D_i)
       }
-      function unlock (m_i) {
-        kakaoStore.saved_markers[m_i].setDraggable(true)
-
+      function unlock (e, m_i) {
+        if (kakaoStore.saved_markers[m_i].getDraggable() === true) {
+          e.target.innerText = 'lock'
+          kakaoStore.saved_markers[m_i].setDraggable(false)
+        } else {
+          e.target.innerText = 'lock_open'
+          kakaoStore.saved_markers[m_i].setDraggable(true)
+        }
       }
 
       return {
+        kakaoStore,
         DataSet,
         mapCenter,
         unlock,
@@ -43,11 +50,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .CctvListBox {
   position: relative;
   width: var(--controller-width);
-  height: 400px;
+  height: calc((100vh - 220px)/2);
+  min-height: 220px;
   background-color: var(--main-color2);
   padding: 4px;
   
@@ -59,7 +67,7 @@ export default {
 .CctvItem{
   padding: 0px 4px;
   width:244px;
-  height:365px;
+  height:calc(100% - 35px);
 	overflow-y: scroll;
   overflow-x: hidden;
 }

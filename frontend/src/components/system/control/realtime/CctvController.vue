@@ -16,14 +16,12 @@ import { useIndexStore } from '@/stores/index'
 import NavMenu from '@/components/system/control/NavMenu.vue'
 import WatchMenu from '@/components/system/control/WatchMenu.vue'
 import CctvList from '@/components/system/control/realtime/CctvList.vue'
-// import AlarmList from '@/components/system/control/realtime/AlarmList.vue'
 import MiaList from '@/components/system/MiaList.vue'
 export default {
   components: {
     NavMenu,
     CctvList,
     WatchMenu,
-    // AlarmList,
     MiaList,
   },
   setup () {
@@ -37,7 +35,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .controllerBox {
   width: 260px;
   margin-left: 20px;
