@@ -26,6 +26,6 @@ export default {
 
 <style>
 .profile {
-  text-align: start;
+  
 }
 </style>

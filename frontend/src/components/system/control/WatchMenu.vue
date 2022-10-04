@@ -23,19 +23,27 @@
 </template>
 
 <script>
-import { onMounted } from 'vue'
+// import { onMounted } from 'vue'
 
 export default {
 	setup() {
 		function getTime() {
 			var time_now = new Date()
-		
+			function modifyNumber(time){
+				if (parseInt(time)<13){
+					return time
+				}
+				else{
+					return time - 12
+				}
+			}
+			
 			const timeData = {
 				year: time_now.getFullYear(),
 				month: time_now.getMonth() + 1,
 				date: time_now.getDate(),
 				day: time_now.getDay(),
-				hours: String(time_now.getHours()).padStart(2, "0"),
+				hours: String(modifyNumber(time_now.getHours())).padStart(2, "0"),
 				minutes: String(time_now.getMinutes()).padStart(2, "0"),
 				seconds: String(time_now.getSeconds()).padStart(2, "0"),
 				week: ["Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat"]
@@ -54,12 +62,7 @@ export default {
 			document.getElementById("minutes").innerText = timeData.minutes
 			document.getElementById("seconds").innerText = timeData.seconds
 		}
-		onMounted(() => {
-			getTime()
-			
-		}),
-		
-
+	
 		setInterval(getTime, 1000);
 
 		return {
@@ -72,14 +75,12 @@ export default {
 
 <style scoped>
 .watchBox {
-	
 	width: 260px;
 	height: 80px;
 	border-radius: 5px;
 	font-family: 'crystal';
 	color: white;
 	font-size: 50px;
-	text-shadow:  red 2px 2px;
 }
 .watchTop {
 	display: flex;
@@ -98,11 +99,17 @@ export default {
 .watch_d {
 	font-size:28px;
 	color:rgb(247, 216, 216);
+	animation: blink-effect 1s step-end infinite;
 }
 @font-face {
   font-family: 'crystal';
   src: url("@/assets/LiquidCrystal-ExBold.otf") format('opentype');
 
+}
+@keyframes blink-effect {
+  50% {
+    opacity: 0;
+  }
 }
 
 </style>
