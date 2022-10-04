@@ -2,29 +2,42 @@
   <div class="NavMenuBox navMetal">
     <router-link class="cursor navItem" to="/cctv" v-if="accountStore.is_nav_mode">CCTV</router-link>
     <router-link class="cursor navItem" to="/upload" v-if="accountStore.is_nav_mode">UPLOAD</router-link>
-    <router-link class="cursor navItem" to="/upload" v-if="!accountStore.is_nav_mode">MY</router-link>
+    <a class="cursor navItem" @click="isModalViewed=true" v-if="!accountStore.is_nav_mode">MY</a>
     <div class="cursor navItem" @click="accountStore.logout" v-if="!accountStore.is_nav_mode">LOGOUT</div>
     <!-- <img class="navMenu cursor" src="@/assets/optionIcon.png" alt="옵션" @click="toggle_mode"> -->
     <span v-if="accountStore.is_nav_mode" @click="toggle_mode" class=" navMenu cursor material-symbols-outlined">arrow_back_ios</span>
-    <span  v-if="!accountStore.is_nav_mode" @click="toggle_mode" class="navMenu cursor material-symbols-outlined">
-arrow_forward_ios
-</span>
+    <span  v-if="!accountStore.is_nav_mode" @click="toggle_mode" class="navMenu cursor material-symbols-outlined">arrow_forward_ios</span>
   </div>
+  <ModalView v-if="isModalViewed" @close-modal="isModalViewed=false">
+    <myPage />
+  </ModalView>
 </template>
 
 <script>
+import ModalView from '@/views/account/components/ModalView.vue'
+import myPage from '@/views/account/components/myPage.vue'
 import { useAccounts } from '@/stores/accounts'
+import { ref } from 'vue'
 export default {
+  components: {
+    ModalView,
+    myPage
+  },
   setup() {
+    const isModalViewed = ref(false)
     const accountStore = useAccounts()
     function toggle_mode() {
       accountStore.is_nav_mode = !accountStore.is_nav_mode 
 
     }
-
+    const account = useAccounts()
+    account.fetchCurrentUser()
     return {
       accountStore,
       toggle_mode,
+      account,
+      isModalViewed
+
     }
   }
 }
