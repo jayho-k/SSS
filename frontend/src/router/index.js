@@ -35,13 +35,13 @@ const routes = [
   {
     path: '/VideoPlayer',
     name: 'VideoPlayer',
-    component: () => import('@/components/system/uploadVideo/VideoPlayer.vue')
+    component: () => import('@/views/uploadVideo/VideoPlayView.vue')
   },
   {
     path: '/please/Login',
     name: 'plzLogin',
     component: () => import('@/views/LoginErrorPage.vue')
-  }
+  },
 ]
 
 const router = createRouter({

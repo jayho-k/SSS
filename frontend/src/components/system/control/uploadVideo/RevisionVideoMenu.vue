@@ -25,6 +25,7 @@ export default {
       Object.values(event.target.files).forEach(item => {
         uploadStore.show_video = URL.createObjectURL(item)
         uploadStore.video_list.push(item)
+        uploadStore.analysis_url_list.push('')
       })
     }
     function upload_del (e) {
