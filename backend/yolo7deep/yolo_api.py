@@ -10,6 +10,8 @@ os.environ["MKL_NUM_THREADS"] = "1"
 os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
 os.environ["NUMEXPR_NUM_THREADS"] = "1"
 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE","backend.settings")
+
 import sys
 import numpy as np
 from pathlib import Path
@@ -39,8 +41,6 @@ from yolov7.utils.torch_utils import select_device, time_synchronized
 from yolov7.utils.plots import plot_one_box
 from strong_sort.utils.parser import get_config
 from strong_sort.strong_sort import StrongSORT
-
-from django.http import StreamingHttpResponse
 
 
 VID_FORMATS = 'asf', 'avi', 'gif', 'm4v', 'mkv', 'mov', 'mp4', 'mpeg', 'mpg', 'ts', 'wmv'  # include video suffixes
@@ -190,6 +190,9 @@ def run(
                     txt_file_name = p.stem
                     save_path = str(save_dir / p.name)  # im.jpg, vid.mp4, ...
                 # folder with imgs
+                elif source.endswith('jpg'):
+                    txt_file_name = p.stem
+                    save_path = str(save_dir / p.name)
                 else:
                     txt_file_name = p.parent.name  # get folder name containing current img
                     save_path = str(save_dir / p.parent.name)  # im.jpg, vid.mp4, ...
@@ -266,23 +269,33 @@ def run(
 
             # Stream results
             if show_vid:
-                return im0
+                # cv2.imshow(str(p), im0)
+                # cv2.waitKey(1)  # 1 millisecond
+                print(show_vid)
+                print("****************************************")
+                # _, jpeg = cv2.imencode('.jpg', im0)
+                # return jpeg.tobytes()
 
             # Save results (image with detections)
             if save_vid:
-                if vid_path[i] != save_path:  # new video
-                    vid_path[i] = save_path
-                    if isinstance(vid_writer[i], cv2.VideoWriter):
-                        vid_writer[i].release()  # release previous video writer
-                    if vid_cap:  # video
-                        fps = vid_cap.get(cv2.CAP_PROP_FPS)
-                        w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                        h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                    else:  # stream
-                        fps, w, h = 30, im0.shape[1], im0.shape[0]
-                    save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
-                    vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'X264'), fps, (w, h))
-                vid_writer[i].write(im0)
+                if dataset.mode == 'image':
+                    save_path = str(Path(save_path).with_suffix('.jpg'))
+                    print(f" The image with the result is saved in: {save_path}")
+                    cv2.imwrite(save_path, im0)
+                else:
+                    if vid_path[i] != save_path:  # new video
+                        vid_path[i] = save_path
+                        if isinstance(vid_writer[i], cv2.VideoWriter):
+                            vid_writer[i].release()  # release previous video writer
+                        if vid_cap:  # video
+                            fps = vid_cap.get(cv2.CAP_PROP_FPS)
+                            w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                            h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                        else:  # stream
+                            fps, w, h = 30, im0.shape[1], im0.shape[0]
+                        save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
+                        vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'h264'), fps, (w, h))
+                    vid_writer[i].write(im0)
 
             prev_frames[i] = curr_frames[i]
 
