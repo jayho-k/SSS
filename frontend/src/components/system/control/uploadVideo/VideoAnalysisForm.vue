@@ -1,14 +1,16 @@
 <template>
-    <div v-if="uploadStore.is_analysis_video">
-			<select id="select" @change="select_case" name="job">
-				<option value="">직업선택</option>
-				<option value="fire">화재감지</option>
-				<option value="mia">미아탐색</option>
-				<option value="safety">야생동물보호</option>
-			</select>
-			<div @click="start_detecting">이거누르면 알지?</div>
+	<div v-if="uploadStore.is_analysis_video">
+		<select id="select" @change="select_case" name="job">
+			<option value="">선택</option>
+			<option value="fire">화재감지</option>
+			<option value="mia">미아탐색</option>
+			<option value="safety">야생동물보호</option>
+		</select>
+		<div style="form_buttons">
+			<div @click="start_detecting">분석</div>
 			<div @click="toggle_form">취소</div>
-    </div>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -40,5 +42,9 @@ export default {
 </script>
 
 <style>
-
+.form_buttons {
+	display:flex; 
+	justify-content: space-around;
+	align-items: center;
+}
 </style>

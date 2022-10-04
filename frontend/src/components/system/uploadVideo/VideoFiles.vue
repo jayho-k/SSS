@@ -1,36 +1,25 @@
 <template>
 	<div class="VideoFilesView">
-		<video v-if="idx" controls=1 class="videoMainBox" id="video">
+		<video v-if="uploadStore.is_local_view" controls=1 class="videoMainBox" id="video">
 		
 		<source :src="uploadStore.show_video" type="video/mp4">
 				해당 브라우저는 video 태그를 지원하지 않습니다.
 		</video>
-		<button type="button" @click="idxtoggle()">토글버튼</button>
+		<VideoPlayer></VideoPlayer>
 	</div>
-    
 </template>
 
 <script>
 import { useUploadVideoStore } from '@/stores/uploadVideo';
-import {ref} from 'vue'
+import VideoPlayer from '@/components/system/uploadVideo/VideoPlayer.vue'
 export default {
-	components: { },
+	components: { VideoPlayer },
 	setup() {
 		const uploadStore = useUploadVideoStore()
-		var idx = ref(false)
 		const URL = process.env.VUE_APP_VIDEO_API
-		function idxtoggle () {
-			if (idx.value === true) {
-					idx.value = false
-			} else {
-					idx.value = true
-			}
-		}
 		return {
 			uploadStore,
-			idx,
 			URL,
-			idxtoggle,
 		}
 	}
 }
