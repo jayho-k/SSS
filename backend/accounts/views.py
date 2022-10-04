@@ -139,37 +139,36 @@ def find_id(request):
 # 비밀번호 초기화
 # 유저가 비밀번호 찾기 요청을 보내면 관리자가 임시비밀번호 반환
 # KISA(한국인터넷진흥원)에서 가이드하는 안전한 패스워드 정책(2가지 이상의 문자열을 대소문자조합 그리고 10자리 이상)
-@api_view(["POST"])
-def password_reset(request):
-    user_id = request.data.get("uid")
-    user = get_object_or_404(get_user_model(), id=user_id)
-    # if (user.forget_password == True):
-    string_pool = string.ascii_letters + string.digits
-    while True:
-        temp_password = ''.join(secrets.choice(string_pool) for i in range(10))
-        if (any(c.islower() for c in temp_password)
-            and any(c.isupper() for c in temp_password)
-            and sum(c.isdigit() for c in temp_password) >= 3):
-            break
-    data = {
-        "password" : temp_password
-    }
-    user.set_password(temp_password)
-    from django.core.mail import EmailMessage
-    from django.template.loader import render_to_string
+# @api_view(["POST"])
+# def password_reset(request):
+#     user_id = request.data.get("uid")
+#     user = get_object_or_404(get_user_model(), id=user_id)
+#     # if (user.forget_password == True):
+#     string_pool = string.ascii_letters + string.digits
+#     while True:
+#         temp_password = ''.join(secrets.choice(string_pool) for i in range(10))
+#         if (any(c.islower() for c in temp_password)
+#             and any(c.isupper() for c in temp_password)
+#             and sum(c.isdigit() for c in temp_password) >= 3):
+#             break
+#     data = {
+#         "password" : temp_password
+#     }
+#     user.set_password(temp_password)
+#     from django.core.mail import EmailMessage
+#     from django.template.loader import render_to_string
 
-    mail_subject = 'smtp를 사용하여 이메일 보내기'
-    message = render_to_string('smtp_email.html', {
-        "name" : user.name,
-        "password" : temp_password
-        })
-    to_email = user.email
-    send_email = EmailMessage(mail_subject, message, to=[to_email])
-    send_email.send()
-    user.forget_password = False
-    user.save()
-    return Response(data, status=status.HTTP_200_OK)
-    # return Response(status=status.HTTP_200_OK)
+#     mail_subject = 'smtp를 사용하여 이메일 보내기'
+#     message = render_to_string('smtp_email.html', {
+#         "name" : user.name,
+#         "password" : temp_password
+#         })
+#     to_email = user.email
+#     send_email = EmailMessage(mail_subject, message, to=[to_email])
+#     send_email.send()
+#     user.forget_password = False
+#     user.save()
+#     return Response(data, status=status.HTTP_200_OK)
 
 # 회원가입 승인    
 @api_view(['PATCH'])

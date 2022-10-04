@@ -35,6 +35,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             "id",
+            "username",
             "name",
             "email",
             "phone_number",
