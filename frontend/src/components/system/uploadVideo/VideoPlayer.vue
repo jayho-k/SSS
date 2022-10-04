@@ -1,10 +1,11 @@
 <template>
-  <div class="VideoPlayerBox">
-    <video controls=1 class="videoMainBox" id="video">
-    <source :src="show_video" type="video/mp4" >
+  <div v-if="uploadStore.is_result_view" class="VideoPlayerBox">
+    <video  controls=1 class="videoMainBox" id="video">
+    <source :src="URL + uploadStore.analysis_video" type="video/mp4" >
         해당 브라우저는 video 태그를 지원하지 않습니다.
     </video>
     <a :src="show_video">asdfdsf</a>
+    <div @click="sw">토글버튼 2</div>
   </div>
     
 </template>
@@ -15,9 +16,15 @@ export default {
   components: { },
   setup() {
     const uploadStore = useUploadVideoStore()
-    const show_video = uploadStore.show_video
+    const URL = process.env.VUE_APP_VIDEO_API
+    function sw () {
+      uploadStore.is_result_view = !uploadStore.is_result_view
+    }
     return {
-      show_video
+      uploadStore,
+      sw,
+      URL,
+      
     }
   }
 }
@@ -25,12 +32,11 @@ export default {
 
 <style>
 .VideoPlayerBox {
-  width:800px;
-  height:1040px;
+width: 100%;
+height: 100%;
 }
 .videoMainBox {
-  width:800px;
-  height:800px;
-
+  width: 100%;
+  height: 100%;
 }
 </style>

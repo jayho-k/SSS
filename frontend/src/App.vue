@@ -1,13 +1,8 @@
 <template>
-  <div>
-    <router-link to="/login"> 로그인/회원가입</router-link>
-    <br>
-    <router-link to="/cctv">sadfsdfdasf</router-link>
-    <br>
-    <router-link to="/accountManage">회원관리</router-link>
-    <br>
-    <router-link to="/please/Login">회원관리</router-link>
+  <div class="main">
     <router-view></router-view>
+
+
   </div>
 </template>
 
@@ -58,5 +53,11 @@ body {
   -moz-user-select:none;
   -ms-user-select:none;
   user-select:none
+}
+.main{
+  width: 100vw;
+  height: 100vh;
+  min-width: 1280px;
+  min-height: 720px;
 }
 </style>

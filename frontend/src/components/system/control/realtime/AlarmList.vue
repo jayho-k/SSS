@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .alarmListBox {
     margin-top: 16px;
     width: var(--controller-width);

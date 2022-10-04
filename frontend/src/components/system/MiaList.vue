@@ -6,9 +6,11 @@
       <div v-for="(D_item, D_i) in DataSet"
       :key="D_i"
       :D_item = D_item
-      @click="update_or_getDetail(D_item['id'])"
+      @click="delete_mia(D_item['id'], D_i)"
       class="miaItemBox"
-      >{{D_item['name']}} + {{D_item['age']}}   <button type="button" @click="deleteMia(D_item['id'])">delete</button></div>
+      >&nbsp;&nbsp;{{D_item['name']}} {{D_item['age']}}세   <div @click="updateMia(D_item)"><span class="material-symbols-outlined">
+edit
+</span></div></div>
     </div>
     <MiaAddForm v-show="is_add_mia"></MiaAddForm>  
 
@@ -31,20 +33,25 @@ export default {
     miaStore.getMiaList()
     const DataSet = ref(computed(() => miaStore.mia_list))
     
-    function update_or_getDetail(idx) {
-      miaStore.is_add_mia = !miaStore.is_add_mia
-      miaStore.mia_update_idx = idx
-      miaStore.getMiaDetail()
+    function delete_mia(id, idx) {
+      
+      if (!miaStore.mia_list_mode) {
+        miaStore.deleteMia(id)
+        miaStore.mia_list.splice(idx, 1)
+      }
     }
-    function deleteMia (id) {
-      miaStore.deleteMia(id)
-
+    function updateMia (item) {
+      miaStore.is_add_mia = !miaStore.is_add_mia
+      miaStore.miaData.name = item['name']
+      miaStore.miaDataget = item['get']
+      miaStore.mia_update_id = item['id']
     }
     return {
       is_add_mia,
       DataSet,
-      deleteMia,
-      update_or_getDetail,
+
+      delete_mia,
+      updateMia,
     }
   }
 }
@@ -53,7 +60,7 @@ export default {
 <style>
 .miaItemBox {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   width: var(--controller-width);
   height: 40px;
@@ -68,24 +75,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 .miaListBox {
   position: relative;
   width: var(--controller-width);
-  height: 440px;
+  height: calc((100vh - 210px)/2);
+  min-height: 285px;
   background-color: var(--main-color2);
   padding: 4px;
   margin-top: 20px;
 
 }
 
-
 /* 영역 설정*/
 .miaListItem{
   padding: 0px 4px;
   width:244px;
-  height:405px;
+  height:calc(100% - 35px);
 	overflow-y: scroll;
   overflow-x: hidden;
   
 }
-
 
 /* 스크롤바 설정*/
 .miaListItem::-webkit-scrollbar{

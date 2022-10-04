@@ -1,44 +1,66 @@
 <template>
   <div class="NavMenuBox navMetal">
-    <router-link to="/cctv">cctv</router-link>
-    <router-link to="/upload">upload</router-link>
-    <button type="button" @click="accountStore.logout">logout</button>
-    <img class="navMenu" src="@/assets/optionIcon.png" alt="옵션">
+    <router-link class="cursor navItem" to="/cctv" v-if="accountStore.is_nav_mode">CCTV</router-link>
+    <router-link class="cursor navItem" to="/upload" v-if="accountStore.is_nav_mode">UPLOAD</router-link>
+    <a class="cursor navItem" @click="isModalViewed=true" v-if="!accountStore.is_nav_mode">MY</a>
+    <div class="cursor navItem" @click="accountStore.logout" v-if="!accountStore.is_nav_mode">LOGOUT</div>
+    <!-- <img class="navMenu cursor" src="@/assets/optionIcon.png" alt="옵션" @click="toggle_mode"> -->
+    <span v-if="accountStore.is_nav_mode" @click="toggle_mode" class=" navMenu cursor material-symbols-outlined">arrow_back_ios</span>
+    <span  v-if="!accountStore.is_nav_mode" @click="toggle_mode" class="navMenu cursor material-symbols-outlined">arrow_forward_ios</span>
   </div>
+  <ModalView v-if="isModalViewed" @close-modal="isModalViewed=false">
+    <myPage />
+  </ModalView>
 </template>
 
 <script>
+import ModalView from '@/views/account/components/ModalView.vue'
+import myPage from '@/views/account/components/myPage.vue'
 import { useAccounts } from '@/stores/accounts'
+import { ref } from 'vue'
 export default {
+  components: {
+    ModalView,
+    myPage
+  },
   setup() {
+    const isModalViewed = ref(false)
     const accountStore = useAccounts()
+    function toggle_mode() {
+      accountStore.is_nav_mode = !accountStore.is_nav_mode 
 
+    }
+    const account = useAccounts()
+    account.fetchCurrentUser()
     return {
       accountStore,
+      toggle_mode,
+      account,
+      isModalViewed
+
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .NavMenuBox {
   display: flex;
   width: 260px;
   height: 60px;
   background-color: var(--main-color2);
   border-radius: 5px;
-  justify-content: space-around;
   align-items: center;
 }
+.navItem {
+  width: 100px;
+}
 .navMenu {
+  margin-left: 12px;
   width: 28px;
   height: 28px;
-  transition: all 0.5s linear
 }
 
-.navMenu:hover {
-  transform: rotate( 90deg )
-}
 
 .navMetal {
 
@@ -56,5 +78,9 @@ export default {
     hsla(0,0%,100%,.5) 0  1px 4px 4px; /* outer HL */ 
   
   transition: color .2s;
+}
+
+.cursor:hover {
+  cursor: pointer;
 }
 </style>
