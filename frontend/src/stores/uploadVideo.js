@@ -10,7 +10,6 @@ export const useUploadVideoStore = defineStore("upload", {
         video_list: [],
         show_video: '',
         show_add_mia: 0,
-        result_urls:[],
 
         analysis_case:null,
         analysis_url_list: [],

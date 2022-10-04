@@ -15,11 +15,9 @@
           </div>
           <div >
             <input v-model="credential.phone_number" type="tel" class="modal-input-sign form-validation" id="telNumber" name="telNumber" placeholder="전화번호">
-            <!-- <p v-if="isError" class="tel-check">Tel-Number Valid Error</p> -->
           </div>
           <div >
             <input v-model="credential.email" @keyup="emailValid" type="email" class="modal-input-sign form-validation" id="email" name="email" placeholder="이메일">
-            <!-- <p v-if="isError" class="email-check">Email Valid Error</p> -->
           </div>
           <div >
             <input v-model="credential.name" type="text" class="modal-input-sign form-validation" id="managerName" name="managerName" placeholder="관리자명">
@@ -37,7 +35,6 @@ import { useAccounts } from '@/stores/accounts'
 import { ref } from 'vue'
 export default {
   setup() {
-    // const isError = ref(false)
     const credential = ref({
       username: '',
       password: '',
@@ -50,10 +47,8 @@ export default {
     return {
       signup,
       credential,
-      // isError
     }
   },
-  methods: {},
 };
 </script>
 

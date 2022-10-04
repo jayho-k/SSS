@@ -8,9 +8,11 @@
       :D_item = D_item
       @click="delete_mia(D_item['id'], D_i)"
       class="miaItemBox"
-      >&nbsp;&nbsp;{{D_item['name']}} {{D_item['age']}}세   <div @click="updateMia(D_item)"><span class="material-symbols-outlined">
-edit
-</span></div></div>
+      >&nbsp;&nbsp;{{D_item['name']}} {{D_item['age']}}세   
+      <div @click="updateMia(D_item)">
+        <span class="material-symbols-outlined">edit</span>
+        </div>
+      </div>
     </div>
     <MiaAddForm v-show="is_add_mia"></MiaAddForm>  
 

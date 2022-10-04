@@ -20,19 +20,14 @@ export const useKakaoStore = defineStore("Kakao", {
 			}
 	},
 	actions: {
-		// resetVariable() {
-
-		// }
 		dragUpdate(idx) {
 			this.drag_index = idx
 		},
 		setDrag() {
 			if (this.is_move) {
-				// this.saved_markers.forEach(function(item) {item.setDraggable(true)})
 				this.is_marker_add = true
 			} else {
 				this.is_marker_add = false
-				// this.saved_markers.forEach(function(item) {item.setDraggable(false)})
 			}
 			this.is_move = !this.is_move
 		},
