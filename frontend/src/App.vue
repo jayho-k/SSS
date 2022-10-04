@@ -5,17 +5,12 @@
 </template>
 
 <script>
-import { useIndexStore } from "@/stores/index"
 export default {
   name: 'App',
   components: {
 },
   setup () {
-    const store = useIndexStore()
-    store.count ++
-    return {
-      store
-    }
+
   }
 }
 </script>

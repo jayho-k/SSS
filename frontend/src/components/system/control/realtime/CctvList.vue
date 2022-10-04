@@ -87,12 +87,6 @@ background: -webkit-linear-gradient(top, rgba(245,246,246,1) 0%,rgba(219,220,226
 background: linear-gradient(to bottom, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 96%,rgba(221,223,227,1) 99%,rgba(245,246,246,1) 100%); 
 
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=0 ); 
-/* 클릭시  
-background: rgb(245,246,246); 
-background: -moz-linear-gradient(top, rgba(245,246,246,1) 0%, rgba(221,223,227,1) 4%, rgba(221,223,227,1) 4%, rgba(184,186,198,1) 6%, rgba(219,220,226,1) 92%, rgba(219,220,226,1) 94%, rgba(219,220,226,1) 97%, rgba(219,220,226,1) 97%, rgba(245,246,246,1) 100%); 
-background: -webkit-linear-gradient(top, rgba(245,246,246,1) 0%,rgba(221,223,227,1) 4%,rgba(221,223,227,1) 4%,rgba(184,186,198,1) 6%,rgba(219,220,226,1) 92%,rgba(219,220,226,1) 94%,rgba(219,220,226,1) 97%,rgba(219,220,226,1) 97%,rgba(245,246,246,1) 100%); 
-background: linear-gradient(to bottom, rgba(245,246,246,1) 0%,rgba(221,223,227,1) 4%,rgba(221,223,227,1) 4%,rgba(184,186,198,1) 6%,rgba(219,220,226,1) 92%,rgba(219,220,226,1) 94%,rgba(219,220,226,1) 97%,rgba(219,220,226,1) 97%,rgba(245,246,246,1) 100%); 
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=0 );  */
 }
 
 /* 스크롤바 설정*/
