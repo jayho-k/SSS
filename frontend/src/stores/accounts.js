@@ -102,7 +102,7 @@ export const useAccounts = defineStore({
             headers: this.authHeader
           })
             .then(res => {
-              this.currentUser = res.data
+              this.profile = res.data
             })
             .catch(err => {
               if (err.response.status === 401) {
@@ -190,10 +190,6 @@ export const useAccounts = defineStore({
                 this.refreshToken()
             }
         }) 
-      },
-      currentUser() {
-        const token = localStorage.getItem('token')
-        axios.get(SGSS.accounts.userManage(), {headers: {Authorization : 'Bearer ' + token}})
       },
       findId(data) {
         axios.post(SGSS.accounts.findId(),
