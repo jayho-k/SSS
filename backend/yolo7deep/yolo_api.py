@@ -101,7 +101,7 @@ def run(
     save_dir = Path(project) / exp_name  # non-increment run
     save_dir = Path(save_dir)
     (save_dir / 'tracks' if save_txt else save_dir).mkdir(parents=True, exist_ok=True)  # make dir
-
+    print(conf_thres)
     # Load model
     device = select_device(device)
     
@@ -253,20 +253,20 @@ def run(
                                     txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
                                     save_one_box(bboxes, imc, file=save_dir / 'crops' / txt_file_name / names[c] / f'{id}' / f'{p.stem}.jpg', BGR=True)
 
-                    print(f'{s}Done. YOLO:({t3 - t2:.3f}s), StrongSORT:({t5 - t4:.3f}s)')
+                        print(f'{s}Done. YOLO:({t3 - t2:.3f}s), StrongSORT:({t5 - t4:.3f}s)')
+                    else:
+                        strongsort_list[i].increment_ages()
+                        print('No detections')
+                else:
+                    for *xyxy, conf, cls in reversed(det):
+                        if save_vid or show_vid:  # Add bbox to image
+                            label = f'{names[int(cls)]} {conf:.2f}'
+                            plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=line_thickness)
 
-            else:
-                for *xyxy, conf, cls in reversed(det):
-                    if save_vid or show_vid:  # Add bbox to image
-                        label = f'{names[int(cls)]} {conf:.2f}'
-                        plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=line_thickness)
-                if deepsort:
-                    strongsort_list[i].increment_ages()
-                    print('No detections')
 
             # Stream results
             if show_vid:
-                return StreamingHttpResponse(im0, content_type="multipart/x-mixed-replace;boundary=frame")
+                return im0
 
             # Save results (image with detections)
             if save_vid:
@@ -350,7 +350,7 @@ def parse_api(
         save_crop=False,  # save cropped prediction boxes
         save_vid=False,  # save confidences in --save-txt labels
         nosave=False,  # do not save images/videos
-        classes=[0],  # filter by class: --class 0, or --class 0 2 3
+        classes=None,  # filter by class: --class 0, or --class 0 2 3
         agnostic_nms=False,  # class-agnostic NMS
         augment=False,  # augmented inference
         visualize=False,  # visualize features
@@ -378,17 +378,18 @@ def parse_api(
     api['name'] = name
     api['save_vid'] = save_vid
     ########################################################
-    api['imgsz'] = [640]
-    api['conf_thres'] = 0.25
-    api['iou_thres'] = 0.45
-    api['max_det'] = 1000
-    api['show_vid'] = False
-    api['save_txt'] = False
-    api['save_conf'] = False
-    api['save_crop'] = False
-    api['nosave'] = True
-    api['line_thickness'] = 3
-    api['hide_labels'] = False
+    api['imgsz'] = imgsz
+    api['conf_thres'] = conf_thres
+    api['iou_thres'] = iou_thres
+    api['max_det'] = max_det
+    api['show_vid'] = show_vid
+    api['save_txt'] = save_txt
+    api['save_conf'] = save_conf
+    api['save_crop'] = save_crop
+    api['nosave'] = nosave
+    api['line_thickness'] = line_thickness
+    api['hide_labels'] = hide_labels
+    api['hide_conf'] = hide_conf
     # source='0',
     # yolo_weights=WEIGHTS / 'yolov5m.pt',  # model.pt path(s),
     # strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
