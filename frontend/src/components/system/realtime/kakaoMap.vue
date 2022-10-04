@@ -159,14 +159,9 @@ export default {
             customOverlay.setMap(initMap.map, marker)
 
             
-            
-            // 생성된 마커를 배열에 추가합니다
-
-            // make_overlay (title, position, store.saved_overlay, marker)
 
              // add 클릭 이벤트
             kakao.maps.event.addListener(marker, 'click', function() {
-              console.log(store.cctv_mode)
               if (store.cctv_mode === 1) {
                 click_update_Marker(marker)
               } 
@@ -329,8 +324,6 @@ export default {
 		}
 
     function drag_start_move_marker(marker) {
-      console.log(marker.getTitle())
-      console.log(store.saved_markers_info)
       for (var d_m_m_i = 0; d_m_m_i < store.saved_markers_info.length;  d_m_m_i ++) {
         if (marker.getTitle() === store.saved_markers_info[d_m_m_i]['name']) {
           save_overlay[d_m_m_i].setMap(null)

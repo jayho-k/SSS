@@ -31,7 +31,6 @@ export const useAccounts = defineStore({
           SGSS.accounts.login(), 
           credential
         ).then(res => {
-          console.log(res.data)
           localStorage.setItem('token', res.data.access)
           localStorage.setItem('refresh', res.data.refresh)
           this.token = res.data.access
@@ -56,26 +55,23 @@ export const useAccounts = defineStore({
           SGSS.accounts.logout(),
           '',
           {headers: {Authorization : 'Bearer ' + token}}
-        ) .then((res) => {
+        ) .then(() => {
           localStorage.removeItem('token')
           localStorage.removeItem('refresh')
           this.currentUser = {}
-          console.log(res)
+
           router.push({name : 'login'})
         }
-        ) .catch((err) => {
-          console.log(err)
-          console.log(token)
+        ) .catch(() => {
+
         }
         )
 
       },
       signup(credential) {
-        console.log(credential)
         axios.post(
           SGSS.accounts.signup(), credential
-          ).then(res => {
-            console.log(res);
+          ).then(() => {
           })
           .catch(err => {
             console.error(err.data)
@@ -117,7 +113,6 @@ export const useAccounts = defineStore({
           SGSS.managerLogin.activateList(), {headers: {Authorization : 'Bearer ' + token}}
           ).then(res => {
           this.activate_users = res.data 
-          console.log(this.activate_users)
         })
         .catch(err => {
           if(err.response.status === 500){
@@ -180,7 +175,6 @@ export const useAccounts = defineStore({
       userActviate(uid){
         const userId = uid
         const token = localStorage.getItem('token')
-        // console.log(userId)
         axios.patch(SGSS.managerLogin.approveSignup(), 
         
             {'uid': userId},

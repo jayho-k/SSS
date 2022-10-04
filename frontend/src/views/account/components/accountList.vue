@@ -43,7 +43,6 @@
               <td v-show="store.user_list_mode === 1">{{user.id}}</td>
               <div class="button_td">
                 <td  v-show="store.user_list_mode === 1">
-                  <!-- <button @click="changePassword(index)" class="changePassword" id="changePassword">비밀번호 변경</button> -->
                   <button @click="ismModalViewed = true" class="changePassword" id="changePassword">비밀번호 변경</button>
                 </td>
                 <td v-show="store.user_list_mode === 1">
@@ -57,7 +56,6 @@
             <tr v-for="(user, index) in store.deactivate_users"
             :key="user.id">
               <td v-show="store.user_list_mode === 2">{{user.name}}</td>
-              <!-- <td>asdf</td> -->
               <td v-show="store.user_list_mode === 2">{{user.department}}</td>
               <td v-show="store.user_list_mode === 2">{{user.phone_number}}</td>
               <td v-show="store.user_list_mode === 2">{{user.email}}</td>
@@ -78,14 +76,12 @@
           <tr v-for="(user, index) in store.search_users"
           :key="user.id">
             <td v-show="store.user_list_mode === 3">{{user.name}}</td>
-            <!-- <td>asdf</td> -->
             <td v-show="store.user_list_mode === 3">{{user.department}}</td>
             <td v-show="store.user_list_mode === 3">{{user.phone_number}}</td>
             <td v-show="store.user_list_mode === 3">{{user.email}}</td>
             <td v-show="store.user_list_mode === 3">{{user.id}}</td>
             <div class="button_td">
               <td v-show="store.user_list_mode === 3">
-                <!-- <button @click="changePassword(index)" class="changePassword" id="changePassword">비밀번호 변경</button> -->
                 <button @click="ismModalViewed = true" class="changePassword" id="changePassword">비밀번호 변경</button>
               </td>
               <td v-show="store.user_list_mode === 3">
@@ -110,14 +106,8 @@ import router from '@/router';
     components: {},
     setup () {
       const store = useAccounts()
-      console.log(store)
-      
-        store.activateList(),
-        store.deactivateList()
-      
-
-
-
+      store.activateList(),
+      store.deactivateList()
       const toggle_box = ref(true)
       function changeList () {
         if (toggle_box.value === true){
@@ -132,30 +122,9 @@ import router from '@/router';
         store.searchUser(search.value)
       }
       
-      // function deleteAccount(idx){
-      //   if(userData.value.length > 0 ){
-      //      console.log(userData.value[idx]['id'])
-      //     userData.value.splice(idx, 1)
-         
-      //     store.deleteAccount(userData.value[idx]['id'])
-      //   }else{
-      //     console.log(userData.value)
-      //   }
-      // }
-      // function activate(idx){
-      //   console.log(userData.value[idx]['id'])
-      //   store.userActviate(userData.value[idx]['id'])
-      // }
-      // function changePassword(idx){
-      //   router
-      //   store.changePassword(userData.value[idx]['id'])
-      // }
       function myPage(){
         router.push({name : 'myPage'})
       }
-
-      
-      
       return {
         store,
         toggle_box,

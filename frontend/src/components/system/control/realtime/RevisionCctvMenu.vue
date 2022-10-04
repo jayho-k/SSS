@@ -22,10 +22,7 @@ export default {
         store.cctv_mode = 0
       } else {
         store.cctv_mode = 1
-      }
-
-
-    
+      }   
     }
     function del (e) {
       e.target.classList.toggle('clickR')

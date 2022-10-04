@@ -5,13 +5,9 @@
       <input  type="file" id="video_file" style="width: 0px; height: 0px;"  @change="showTextFile"  accept=".mp4, .mkv">
       </div>
       </label>
-    <div class="metalBtn linearBtn" @click="upload_del"><span class="material-symbols-outlined">
-delete
-</span></div>
-
-
-
-
+    <div class="metalBtn linearBtn" @click="upload_del">
+      <span class="material-symbols-outlined">delete</span>
+    </div>
   </div>
 </template>
 
