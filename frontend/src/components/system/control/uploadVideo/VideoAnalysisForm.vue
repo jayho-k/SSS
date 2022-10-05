@@ -1,12 +1,18 @@
 <template>
 	<div v-if="uploadStore.is_analysis_video">
 
-		<select id="select" @change="select_case" name="job" class="selet">
+		<div class="light-button button-wrapper">
+				<div class="buttonY">
+				
+		<select class="span" id="select" @change="select_case" name="job">
 			<option value="">선택</option>
 			<option value="fire">화재감지</option>
 			<option value="mia">미아탐색</option>
 			<option value="safety">야생동물보호</option>
 		</select>
+				</div>  
+			</div>
+
 		<div style="display:flex;	justify-content: space-around; margin-top:10px;">
 			<div></div>
 			<div class="light-button button-wrapper">
@@ -179,8 +185,54 @@ export default {
     top: 0;
     transition: all ease-in-out .35s;
   }
+	.buttonY {
+    background: #fff;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    transition: all .35s ease-in-out .35s;
+    margin: 0 auto;
+    width: 84px;
+    text-align: center;
+    height: 32px;
+    box-shadow: 2px 1px;
+  }
+
+  .buttonY:after {
+    bottom: -100%;
+    right: -100%;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: var(--sweet-red);
+    transition: all .35s ease-in-out .5s;
+  }
+  .buttonY:hover:after {
+    right: 0;
+    bottom: 0;
+    transition: all ease-in-out .35s;
+  }
+  .buttonY:before {
+    top: -100%;
+    left: -100%;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: var(--sweet-red);
+    transition: all .35s ease-in-out .5s;
+  }
+  .buttonY:hover:before {
+    left: 0;
+    top: 0;
+    transition: all ease-in-out .35s;
+  }
 	.selet {
-		width: 100px;
+		/* width: 100px;
 		height: 40px;
 		font-size: 20px;
 		margin: auto;
@@ -196,6 +248,6 @@ export default {
     background-color: #ffffff;
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center; */
 	}
 </style>

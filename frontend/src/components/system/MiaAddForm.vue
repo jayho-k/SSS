@@ -178,4 +178,79 @@ input[type="file"] {
     top: 0;
     transition: all ease-in-out .35s;
   }
+
+.button {
+    background: #fff;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    transition: all .35s ease-in-out .35s;
+    margin: 0 auto;
+    width: 200px;
+    height: 40px;
+    text-align: center;
+
+    box-shadow: 2px 1px;
+  }
+  .span {
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+    padding: 4px 4px 4px 4px;
+    background: #fff;
+    z-index: 100;
+    height: 24px;
+    width: 184px;
+    position: relative;
+    transition: all .35s ease-in-out .35s;
+    font-size: 16px;
+  }
+.button-wrapper {
+    display: inline-block;
+  }
+  .button:hover span {
+    background: var(--sweet-blue);
+    color: #fff;
+    transition: all .35s ease-in-out .35s;
+  }
+  .button:after {
+    bottom: -100%;
+    right: -100%;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: var(--sweet-blue);
+    transition: all .35s ease-in-out .5s;
+  }
+  .button:hover:after {
+    right: 0;
+    bottom: 0;
+    transition: all ease-in-out .35s;
+  }
+  .button:before {
+    top: -100%;
+    left: -100%;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: var(--sweet-blue);
+    transition: all .35s ease-in-out .5s;
+  }
+  .button:hover:before {
+    left: 0;
+    top: 0;
+    transition: all ease-in-out .35s;
+  }
+
+
+
+
+
+
+  
 </style>
