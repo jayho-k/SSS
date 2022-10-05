@@ -10,7 +10,7 @@
       class="miaItemBox"
       >&nbsp;&nbsp;{{D_item['name']}} {{D_item['age']}}세   
       <div @click="updateMia(D_item)">
-        <span class="material-symbols-outlined">edit</span>
+        <span class="material-symbols-outlined colorO">edit</span>
         </div>
       </div>
     </div>
@@ -74,6 +74,14 @@ background: linear-gradient(to bottom, rgba(245,246,246,1) 0%,rgba(219,220,226,1
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=0 ); /* IE6-9 */
 }
 
+.miaItemBox:hover {
+  background: rgb(255,255,255); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(241,241,241,1) 6%, rgba(241,241,241,1) 6%, rgba(225,225,225,1) 7%, rgba(246,246,246,1) 96%, rgba(241,241,241,1) 98%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(241,241,241,1) 6%,rgba(241,241,241,1) 6%,rgba(225,225,225,1) 7%,rgba(246,246,246,1) 96%,rgba(241,241,241,1) 98%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(241,241,241,1) 6%,rgba(241,241,241,1) 6%,rgba(225,225,225,1) 7%,rgba(246,246,246,1) 96%,rgba(241,241,241,1) 98%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f1f1f1',GradientType=0 ); /* IE6-9 */
+}
+
 .miaListBox {
   position: relative;
   width: var(--controller-width);
@@ -115,5 +123,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 .miaListItem::-webkit-scrollbar-track{
     background-color: rgba(0,0,0,0.5);
 }
-
+.colorO:hover {
+  color:var(--sweet-orange)
+}
 </style>

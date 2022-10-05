@@ -1,6 +1,6 @@
 <template>
   <div class="RevisionMenuBox">
-    <label for="video_file"><div  @change="upload_add" class="metalBtn linearBtn" >
+    <label for="video_file"><div  @change="upload_add" class="metalBtn linearBtn clickB" >
       <span class="material-symbols-outlined">drive_folder_upload</span>
       <input  type="file" id="video_file" style="width: 0px; height: 0px;"  @change="showTextFile"  accept=".mp4, .mkv">
       </div>
@@ -76,7 +76,7 @@ export default {
 /* active ------------------------- */
 
 
-.clickB {
+.clickB:hover {
   color: hsl(210, 100%, 40%);
 
   box-shadow: 
