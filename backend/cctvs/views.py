@@ -112,16 +112,16 @@ def cctv_detail_or_update_or_delete(request):
 @renderer_classes((StreamingHttpResponse))
 def streaming(request,user_id,cctv_id,type):
     user = get_object_or_404(get_user_model(), id=user_id)
-    addr = get_object_or_404(CCTV, id=cctv_id)
-    
+    cctv = get_object_or_404(CCTV, id=cctv_id)
+    addr = str(cctv.video)
     if type == "fire" or type == "mia":
-        cam = video_camera(addr, type)
+        cam = video_camera(addr, type, cctv_id)
         FILE = Path(__file__).resolve()
         ROOT = FILE.parents[0].parents[0] / 'yolo7deep'  # yolov5 strongsort root directory
         TRACK = ROOT.parents[0] /'media/track'
         name_exp = 'exp'
         TEMP_PIC = ROOT.parents[0] / 'Temp/pic'
-        pic_id = ''.join([str(addr), '.jpg'])
+        pic_id = ''.join([str(cctv_id), '.jpg'])
         if not TEMP_PIC.exists():
             TEMP_PIC.mkdir(parents=True, exist_ok=True)
         out_file = TRACK/name_exp/pic_id
@@ -132,13 +132,36 @@ def streaming(request,user_id,cctv_id,type):
         video_num = str(addr)
         args = parse_api_slowfast(video_num)
         run(args)
-
+    elif type == "normal":
+        cam = normal_streaming(addr)
+        return StreamingHttpResponse(gen(cam), content_type="multipart/x-mixed-replace;boundary=frame")
     return Response(request)
 
+
+class normal_streaming(object):
+    def __init__(self, adrr):
+        self.video = cv2.VideoCapture(adrr) # server
+        (self.grabbed, self.frame) = self.video.read()
+        threading.Thread(target=self.update, args=()).start()
+
+    def __del__(self):
+        self.video.release()
+
+    def get_frame(self):
+        image = self.frame
+        _, jpeg = cv2.imencode('.jpg', image)
+        return jpeg.tobytes()
+
+    def update(self):
+        while True:
+            (self.grabbed, self.frame) = self.video.read()
+
+
 class video_camera(object):
-    def __init__(self, adrr, type):
+    def __init__(self, adrr, type, cctv_id):
         self.video = cv2.VideoCapture(adrr) # server
         self.adrr = str(adrr)
+        self.cctv_id = str(cctv_id)
         (self.grabbed, self.frame) = self.video.read()
         self.type = type
         FILE = Path(__file__).resolve()
@@ -147,7 +170,13 @@ class video_camera(object):
         TRACK = ROOT.parents[0] /'media/track'
         name_exp = 'exp'
         TEMP_PIC = ROOT.parents[0] / 'Temp/pic'
-        pic_id = ''.join([self.adrr, '.jpg'])
+        pic_id = ''.join([self.cctv_id, '.jpg'])
+        if not TEMP_PIC.exists():
+            TEMP_PIC.mkdir(parents=True, exist_ok=True)
+        temp_file = str((TEMP_PIC/pic_id))
+        print(temp_file)
+        cv2.imwrite(temp_file, self.frame)
+        time.sleep(1)
         if self.type == 'fire':
             model = 'fire.pt'
             deepsort = False
@@ -163,11 +192,6 @@ class video_camera(object):
             deepsort = False
             conf_thres = 0.25
             print(model,deepsort)
-        if not TEMP_PIC.exists():
-            TEMP_PIC.mkdir(parents=True, exist_ok=True)
-        temp_file = str((TEMP_PIC/pic_id))
-        print(temp_file)
-        cv2.imwrite(temp_file, self.frame)
         self.stream_yolo = yolo_stream.yolo_stream(
             source=temp_file,
             yolo_weights= WEIGHTS / model,  # model.pt path(s),
@@ -199,7 +223,7 @@ class video_camera(object):
             FILE = Path(__file__).resolve()
             ROOT = FILE.parents[0].parents[0] / 'yolo7deep'  # yolov5 strongsort root directory
             TEMP_PIC = ROOT.parents[0] / 'Temp/pic'
-            pic_id = ''.join([self.adrr, '.jpg'])
+            pic_id = ''.join([self.cctv_id, '.jpg'])
             temp_file = str((TEMP_PIC/pic_id))
             print(temp_file)
             cv2.imwrite(temp_file, self.frame)
@@ -327,8 +351,8 @@ def upload(request):
         video = videos[idx - 1]
         video_name = str(video.video_file)
         _,_, res = video_name.split("/")
-
-        file = FileWrapper(open(f'media/track/exp/{res}', mode='rb'))
+        file_name, _ = res.split(".") 
+        file = FileWrapper(open(f'media/track/exp/{file_name}.mp4', mode='rb'))
         print('ddddddddddddddddddddd', file)
         # file = FileWrapper(open(f'media/video/20220930/{res}', mode='rb'))
 
@@ -336,7 +360,7 @@ def upload(request):
         # response['Content-Disposition'] = 'attachment; filename=result_video.mp4'
 
         data = {
-            "video_file": f"/media/track/exp/{res}"
+            "video_file": f"/media/track/exp/{file_name}.mp4"
         }
         return Response(data,status=status.HTTP_200_OK)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
