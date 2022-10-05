@@ -189,17 +189,18 @@ label : ../file/label_map.txt
 
 class parse_api:
 
-    def __init__(self,video):
-        self.video = video
-        self.config = '../file/slowfast_kinetics_pretrained_r50_4x16x1_20e_ava_rgb_custom_classes.py'
-        self.checkpoint='../file/latest.pth'
-        self.det_config='../file/faster_rcnn_r50_fpn_2x_coco.py'
-        self.det_checkpoint='../file/faster_rcnn_r50_fpn_2x_coco_bbox_mAP-0.384_20200504_210434-a5d8aa15.pth'
+    def __init__(self,input_path,output_path):
+        BASE = os.path.join(os.path.dirname(os.getcwd()),'backend','mmaction2','file')
+        self.video = input_path
+        self.config = os.path.join(BASE,'slowfast_kinetics_pretrained_r50_4x16x1_20e_ava_rgb_custom_classes.py')
+        self.checkpoint=os.path.join(BASE,'latest.pth')
+        self.det_config=os.path.join(BASE,'yolox_s_8x8_300e_coco.py')
+        self.det_checkpoint=os.path.join(BASE,'yolox_s_8x8_300e_coco_20211121_095711-4592a793.pth')
         self.det_score_thr=0.9
         self.action_score_thr=0.5
-        self.label_map='../file/label_map.txt'
+        self.label_map=os.path.join(BASE,'label_map.txt')
         self.device='cpu'
-        self.out_filename='../output/result.mp4'
+        self.out_filename=output_path
         self.predict_stepsize=8
         self.output_stepsize=4
         self.output_fps=10

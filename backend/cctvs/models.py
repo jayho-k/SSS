@@ -6,7 +6,7 @@ from backend.common import file_upload_path
 class CCTV(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
-    video = models.CharField(max_length=20)
+    video = models.CharField(max_length=100)
     latitude = models.FloatField()
     longitude = models.FloatField()
     
