@@ -1,26 +1,22 @@
 <template>
   <div>
-    <div class="AlarmMenuBox"> &nbsp;&nbsp;
-      <div style="text-align:left; width:200px;">Alarm</div>
+    <div class="AlarmMenuBox">&nbsp;&nbsp;
+      <div style="text-align:left; width:180px;">Alarm</div>
       <AlarmMenu></AlarmMenu>
     </div>
-
     <div style="height:30px;"></div>
   </div>
 </template>
   
 <script>
-import AlarmMenu from '@/components/system/control/realtime/RevisionAlarmMenu.vue'
+import AlarmMenu from '@/components/system/RevisionAlarmMenu.vue'
   export default {
-    components: {
-      AlarmMenu,
-    }
+    components: {AlarmMenu}
 
   }
 </script>
   
-<style scoped>
-
+<style>
   .AlarmMenuBox {
     position: absolute;
     display: flex;

@@ -1,99 +1,76 @@
 <template>
-	<div class="AlarmListBox">
+  <div class="AlarmListBox">
+
     <AlarmMenu></AlarmMenu>
-    <div class="AlarmItem">
+    <div class="AlarmListItem" v-show="!is_add_Alarm">
       <div v-for="(D_item, D_i) in DataSet"
       :key="D_i"
       :D_item = D_item
-      @click="mapCenter(D_i)"
-      class="AlarmItemBox">&nbsp;&nbsp;
-      {{D_item.name}} 
-      <span class="material-symbols-outlined" @click="unlock($event, D_i)">lock</span>
+      @click="delete_Alarm(D_item['id'], D_i)"
+      class="AlarmItemBox"
+      >&nbsp;&nbsp;{{D_item['name']}} {{D_item['age']}}세   
+      <div @click="updateAlarm(D_item)">
+        <span class="material-symbols-outlined colorO">edit</span>
+        </div>
       </div>
     </div>
-	</div>
+
+  </div>
 </template>
 
 <script>
-import { useKakaoStore } from '@/stores/kakaoMap';
+import { useAlarmStore } from '@/stores/Alarm.js'
 import { ref, computed } from 'vue'
-import AlarmMenu from '@/components/system/control/realtime/AlarmMenu'
+import AlarmMenu from '@/components/system/control/realtime/AlarmMenu.vue'
 export default {
-    components: {
-        AlarmMenu,
-    },
-    setup () {
-      const kakaoStore = useKakaoStore()
-      const DataSet = ref(computed(() => kakaoStore.saved_markers_info))
-      function mapCenter (D_i) {
-
-        kakaoStore.setMapCenter(D_i)
-      }
-      function unlock (e, m_i) {
-        e.target.classList.toggle('toggle_color')
-        if (kakaoStore.saved_markers[m_i].getDraggable() === true) {
-          e.target.innerText = 'lock'
-          kakaoStore.saved_markers[m_i].setDraggable(false)
-        } else {
-          e.target.innerText = 'lock_open'
-          kakaoStore.saved_markers[m_i].setDraggable(true)
-        }
-      }
-
-      return {
-        kakaoStore,
-        DataSet,
-        mapCenter,
-        unlock,
+  components: {
+    AlarmMenu,
+},
+  setup() {
+    const AlarmStore = useAlarmStore()
+    const is_add_Alarm = ref(computed(() => AlarmStore.is_add_Alarm))
+    AlarmStore.getAlarmList()
+    const DataSet = ref(computed(() => AlarmStore.Alarm_list))
+    
+    function delete_Alarm(id, idx) {
+      
+      if (!AlarmStore.Alarm_list_mode) {
+        AlarmStore.deleteAlarm(id)
+        AlarmStore.Alarm_list.splice(idx, 1)
       }
     }
+    function updateAlarm (item) {
+      AlarmStore.is_add_Alarm = !AlarmStore.is_add_Alarm
+      AlarmStore.AlarmData.name = item['name']
+      AlarmStore.AlarmDataget = item['get']
+      AlarmStore.Alarm_update_id = item['id']
+    }
+    return {
+      is_add_Alarm,
+      DataSet,
+
+      delete_Alarm,
+      updateAlarm,
+    }
+  }
 }
 </script>
 
-<style scoped>
-.AlarmListBox {
-  position: relative;
-  width: var(--controller-width);
-  height: calc((100vh - 220px)/2);
-  min-height: 220px;
-  background-color: var(--main-color2);
-  padding: 4px;
-  
-
-}
-.toggle_color {
-  color: var(--sweet-red);
-
-}
-
-/* 영역 설정*/
-.AlarmItem{
-  padding: 0px 4px;
-  width:244px;
-  height:calc(100% - 35px);
-	overflow-y: scroll;
-  overflow-x: hidden;
-}
-
+<style>
 .AlarmItemBox {
-  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: hsl(0,0%,95%);
-  width: 244px;
+  width: var(--controller-width);
   height: 40px;
-  margin-bottom: 1px;
-
-  background: rgb(245,246,246); 
-background: -moz-linear-gradient(top, rgba(245,246,246,1) 0%, rgba(219,220,226,1) 10%, rgba(219,220,226,1) 85%, rgba(184,186,198,1) 96%, rgba(221,223,227,1) 99%, rgba(245,246,246,1) 100%); 
-background: -webkit-linear-gradient(top, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 96%,rgba(221,223,227,1) 99%,rgba(245,246,246,1) 100%); 
-background: linear-gradient(to bottom, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 96%,rgba(221,223,227,1) 99%,rgba(245,246,246,1) 100%); 
-
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=0 ); 
-
-
+  background-color: var(--main-color2);
+  background: rgb(245,246,246); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(245,246,246,1) 0%, rgba(219,220,226,1) 10%, rgba(219,220,226,1) 85%, rgba(184,186,198,1) 95%, rgba(221,223,227,1) 98%, rgba(221,223,227,1) 98%, rgba(245,246,246,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 95%,rgba(221,223,227,1) 98%,rgba(221,223,227,1) 98%,rgba(245,246,246,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 95%,rgba(221,223,227,1) 98%,rgba(221,223,227,1) 98%,rgba(245,246,246,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=0 ); /* IE6-9 */
 }
+
 .AlarmItemBox:hover {
   background: rgb(255,255,255); /* Old browsers */
   background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(241,241,241,1) 6%, rgba(241,241,241,1) 6%, rgba(225,225,225,1) 7%, rgba(246,246,246,1) 96%, rgba(241,241,241,1) 98%); /* FF3.6-15 */
@@ -102,15 +79,36 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f1f1f1',GradientType=0 ); /* IE6-9 */
 }
 
+.AlarmListBox {
+  position: relative;
+  width: var(--controller-width);
+  height: calc((100vh - 720px) / 360 * 96 + 324px);
+  min-height: 325px;
+  background-color: var(--main-color2);
+  padding: 4px;
+  margin-top: 20px;
+
+}
+
+/* 영역 설정*/
+.AlarmListItem{
+  padding: 0px 4px;
+  width:244px;
+  height:calc(100% - 35px);
+	overflow-y: scroll;
+  overflow-x: hidden;
+  
+}
+
 /* 스크롤바 설정*/
-.AlarmItem::-webkit-scrollbar{
+.AlarmListItem::-webkit-scrollbar{
 	/*  스크롤바 막대 너비 설정 */
     width: 4px;
     z-index: -10;
 }
 
 /* 스크롤바 막대 설정*/
-.AlarmItem::-webkit-scrollbar-thumb{
+.AlarmListItem::-webkit-scrollbar-thumb{
     /* 스크롤바 막대 높이 설정    */
     height: 17%;
     background-color: rgba(255,255,255,1);
@@ -119,8 +117,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 }
 
 /* 스크롤바 뒷 배경 설정*/
-.AlarmItem::-webkit-scrollbar-track{
+.AlarmListItem::-webkit-scrollbar-track{
     background-color: rgba(0,0,0,0.5);
 }
-
+.colorO:hover {
+  color:var(--sweet-orange)
+}
 </style>

@@ -7,7 +7,6 @@
                     <input type="text" placeholder=" 이름으로 검색 " v-model="search" @keypress.enter="searchUser">
                 </div>
             </div>
-      <button @click="myPage" class="myPage" id="myPage">마이페이지</button>
       
     </div>
 
@@ -100,7 +99,6 @@
 <script>
 import { useAccounts } from "@/stores/accounts";
 import { ref } from "vue"
-import router from '@/router';
   export default {
     name:'manageTable',
     components: {},
@@ -121,17 +119,12 @@ import router from '@/router';
         store.user_list_mode = 3
         store.searchUser(search.value)
       }
-      
-      function myPage(){
-        router.push({name : 'myPage'})
-      }
       return {
         store,
         toggle_box,
         search,
         changeList,
         searchUser,
-        myPage,
       }
     }
   }

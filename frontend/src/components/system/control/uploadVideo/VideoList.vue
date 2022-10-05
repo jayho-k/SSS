@@ -10,9 +10,9 @@
     class="VideoItemBox">
     <span  @click="show_analysis(D_i, D_item)" class="material-symbols-outlined">image_search</span>
   <div @click="show_local(D_i, D_item)">{{D_item.name}}</div>
-  <span v-if="uploadStore.analysis_url_list[D_i]['fire']" class="material-symbols-outlined">local_fire_department</span>
-  <span v-if="uploadStore.analysis_url_list[D_i]['mia']" class="material-symbols-outlined">face</span>
-  <span v-if="uploadStore.analysis_url_list[D_i]['safety']" class="material-symbols-outlined">cruelty_free</span>
+  <span v-if="uploadStore.analysis_url_list[D_i]['fire']" @click="loading_video(D_i, 'fire')" class="material-symbols-outlined">local_fire_department</span>
+  <span v-if="uploadStore.analysis_url_list[D_i]['mia']" @click="loading_video(D_i, 'mia')" class="material-symbols-outlined">face</span>
+  <span v-if="uploadStore.analysis_url_list[D_i]['safety']" @click="loading_video(D_i, 'safety')" class="material-symbols-outlined">cruelty_free</span>
   </div>
     </div>
   </div>
@@ -47,7 +47,11 @@ export default {
       uploadStore.selectVideo(video)
       uploadStore.is_local_view
       setTimeout(()=>{ uploadStore.is_local_view = true}, 1)
-
+    }
+    
+    function loading_video (id, video_case) {
+      uploadStore.analysis_video =  uploadStore.analysis_url_list[id][video_case]
+      uploadStore.is_local_view = false
     }
     return {
       uploadStore,
@@ -55,11 +59,10 @@ export default {
       deleteVideo,
       show_analysis,
       show_local,
+      loading_video,
   
     }
   }
-  
-
 }
 </script>
 
