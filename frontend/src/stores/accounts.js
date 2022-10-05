@@ -11,9 +11,6 @@ export const useAccounts = defineStore({
       currentUser: {},
       profile: {},
       authError: null,
-
-
-      is_nav_mode: true,
     
       user_list_mode: 1, //activate, deactivate, serah 순으로 123
       activate_users: [],

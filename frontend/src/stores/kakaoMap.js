@@ -34,7 +34,7 @@ export const useKakaoStore = defineStore("Kakao", {
 		setMapCenter(D_i) {
 			this.map_center = [this.saved_markers_info[D_i]['latitude'], this.saved_markers_info[D_i]['longitude']]
 		},
-		createCctv(Data, info) {
+		createCctv(Data) {
 			const token = localStorage.getItem('token')
 			axios.post(
 				SGSS.realtime.setCctv(),
@@ -43,7 +43,6 @@ export const useKakaoStore = defineStore("Kakao", {
 			) .then (() => {
 				// 다시 리스트 세팅
 				this.getCctvList()
-				info.push(this.saved_markers_info[-1])
 
 			}) .catch(err => {
 				console.log(err)
