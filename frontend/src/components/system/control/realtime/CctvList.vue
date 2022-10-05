@@ -54,8 +54,7 @@ export default {
 .CctvListBox {
   position: relative;
   width: var(--controller-width);
-  height: calc((100vh - 220px)/2);
-  min-height: 220px;
+  height: calc((100vh - 720px) / 360 * 260 + 180px);
   background-color: var(--main-color2);
   padding: 4px;
   

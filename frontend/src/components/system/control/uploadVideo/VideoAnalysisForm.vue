@@ -15,22 +15,22 @@
 
 		<div style="display:flex;	justify-content: space-around; margin-top:10px;">
 			<div></div>
-			<div class="light-button button-wrapper">
+			<div @click="start_detecting" class="light-button button-wrapper">
 				<div class="buttonB">
 					<span class="span">
 						<span v-if="uploadStore.analysis_case === 'fire'" class="material-symbols-outlined">local_fire_department</span>
 						<span v-if="uploadStore.analysis_case === 'mia'" class="material-symbols-outlined">face</span>
 						<span v-if="uploadStore.analysis_case === 'safety'" class="material-symbols-outlined">cruelty_free</span>
-						<div @click="start_detecting">분석</div>
+						<div>분석</div>
 					</span>
 				</div>  
 			</div>
 
-			<div class="light-button button-wrapper">
+			<div  @click="toggle_form" class="light-button button-wrapper">
 				<div class="buttonR">
 					<span class="span">
 				
-						<div @click="toggle_form">취소</div>
+						<div>취소</div>
 					</span>
 				</div>  
 			</div>
