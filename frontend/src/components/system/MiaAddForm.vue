@@ -75,7 +75,7 @@ export default {
   height: 50%;
   min-height: 80px;
   border: 3px solid #aaa;
-  box-shadow: 2px 2px 1px 1px;
+  0: 2px 2px 1px 1px;
   background-color: #ffffff;
   background-size:contain;
   background-repeat: no-repeat;
@@ -99,7 +99,7 @@ export default {
   width: 80px;
   height: 20px;
   border: 3px solid #aaa;
-  box-shadow: 2px 1px;
+  0: 2px 1px;
 }
 input[type="file"] {
     position: absolute;
@@ -119,13 +119,13 @@ input[type="file"] {
     display: block;
     position: relative;
     overflow: hidden;
-    transition: all .35s ease-in-out .35s;
+    transition: all .2s ease-in-out .2s;
     margin: 0 auto;
     width: 200px;
     height: 40px;
     text-align: center;
 
-    box-shadow: 2px 1px;
+    0: 2px 1px;
   }
   .span {
     display: flex;
@@ -137,7 +137,7 @@ input[type="file"] {
     height: 24px;
     width: 184px;
     position: relative;
-    transition: all .35s ease-in-out .35s;
+    transition: all .2s ease-in-out .2s;
     font-size: 16px;
   }
 .button-wrapper {
@@ -146,7 +146,7 @@ input[type="file"] {
   .button:hover span {
     background: var(--sweet-blue);
     color: #fff;
-    transition: all .35s ease-in-out .35s;
+    transition: all .2s ease-in-out .2s;
   }
   .button:after {
     bottom: -100%;
@@ -156,12 +156,12 @@ input[type="file"] {
     height: 100%;
     position: absolute;
     background: var(--sweet-blue);
-    transition: all .35s ease-in-out .5s;
+    transition: all .2s ease-in-out .5s;
   }
   .button:hover:after {
     right: 0;
     bottom: 0;
-    transition: all ease-in-out .35s;
+    transition: all ease-in-out .2s;
   }
   .button:before {
     top: -100%;
@@ -171,11 +171,86 @@ input[type="file"] {
     height: 100%;
     position: absolute;
     background: var(--sweet-blue);
-    transition: all .35s ease-in-out .5s;
+    transition: all .2s ease-in-out .5s;
   }
   .button:hover:before {
     left: 0;
     top: 0;
-    transition: all ease-in-out .35s;
+    transition: all ease-in-out .2s;
   }
+
+.button {
+    background: #fff;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    transition: all .2s ease-in-out .2s;
+    margin: 0 auto;
+    width: 204px;
+    height: 40px;
+    text-align: center;
+
+    0: 2px 1px;
+  }
+  .span {
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+    padding: 4px 4px 4px 4px;
+    background: #fff;
+    z-index: 100;
+    height: 24px;
+    width: 188px;
+    position: relative;
+    transition: all .2s ease-in-out .2s;
+    font-size: 16px;
+  }
+.button-wrapper {
+    display: inline-block;
+  }
+  .button:hover span {
+    background: var(--sweet-blue);
+    color: #fff;
+    transition: all .2s ease-in-out .2s;
+  }
+  .button:after {
+    bottom: -100%;
+    right: -100%;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: var(--sweet-blue);
+    transition: all .2s ease-in-out .5s;
+  }
+  .button:hover:after {
+    right: 0;
+    bottom: 0;
+    transition: all ease-in-out .2s;
+  }
+  .button:before {
+    top: -100%;
+    left: -100%;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: var(--sweet-blue);
+    transition: all .2s ease-in-out .5s;
+  }
+  .button:hover:before {
+    left: 0;
+    top: 0;
+    transition: all ease-in-out .2s;
+  }
+
+
+
+
+
+
+  
 </style>
