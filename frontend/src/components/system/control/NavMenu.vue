@@ -1,11 +1,10 @@
 <template>
   <div class="NavMenuBox navMetal">
-    <router-link class="cursor navItem" to="/cctv" v-if="accountStore.is_nav_mode">CCTV</router-link>
-    <router-link class="cursor navItem" to="/upload" v-if="accountStore.is_nav_mode">UPLOAD</router-link>
-    <a class="cursor navItem" @click="isModalViewed=true" v-if="!accountStore.is_nav_mode">MY</a>
-    <div class="cursor navItem" @click="accountStore.logout" v-if="!accountStore.is_nav_mode">LOGOUT</div>
-    <span v-if="accountStore.is_nav_mode" @click="toggle_mode" class=" navMenu cursor material-symbols-outlined">arrow_back_ios</span>
-    <span  v-if="!accountStore.is_nav_mode" @click="toggle_mode" class="navMenu cursor material-symbols-outlined">arrow_forward_ios</span>
+    <router-link class="cursor navItem" to="/cctv"><span class="material-symbols-outlined">photo_camera</span></router-link>
+    <router-link class="cursor navItem" to="/upload"><span class="material-symbols-outlined">drive_folder_upload</span></router-link>
+    <a class="cursor navItem" @click="isModalViewed=true"><span class="material-symbols-outlined">badge</span></a>
+    <div class="cursor navItem" @click="accountStore.logout"><span class="material-symbols-outlined">logout</span></div>
+
   </div>
   <ModalView v-if="isModalViewed" @close-modal="isModalViewed=false">
     <myPage />
@@ -25,15 +24,10 @@ export default {
   setup() {
     const isModalViewed = ref(false)
     const accountStore = useAccounts()
-    function toggle_mode() {
-      accountStore.is_nav_mode = !accountStore.is_nav_mode 
-
-    }
     const account = useAccounts()
     account.fetchCurrentUser()
     return {
       accountStore,
-      toggle_mode,
       account,
       isModalViewed
 

@@ -24,7 +24,7 @@ export default {
     store.saved_markers = save_markers
 		store.saved_overlay = save_overlay
 		onMounted(() => {
-      
+
 			if (window.kakao && window.kakao.maps) {
 				initMap();
 			} else {
@@ -37,10 +37,16 @@ export default {
 
 		const initMap = () => {
 			const container = document.getElementById("map")
+      
 			const options = {
 				center: new kakao.maps.LatLng(33.450701, 126.570667),
 				level: 5,
-			}
+			} 
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var moveLatLng = new kakao.maps.LatLng(position.coords.latitude, position.coords.longitude);   
+          initMap.map.panTo(moveLatLng);
+      })}
 			//지도 객체를 등록합니다.
 			//지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
 			initMap.map = new kakao.maps.Map(container, options)
@@ -119,9 +125,10 @@ export default {
         },
         showCancelButton: true,
         confirmButtonText: '생성',
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#3fc3ee',
         showLoaderOnConfirm: true,
         cancelButtonText: '취소',
+        cancelButtonColor: '#f27474',
         preConfirm: (title) => {
           if (title === '') {
             Swal.showValidationMessage(
@@ -154,7 +161,7 @@ export default {
             })
             save_overlay.push(customOverlay)
             save_markers.push(marker);
-            createCctv(title, position.Ma, position.La, store.saved_markers_info)
+            createCctv(title, position.Ma, position.La)
 
             customOverlay.setMap(initMap.map, marker)
 
@@ -224,9 +231,10 @@ export default {
         },
         showCancelButton: true,
         confirmButtonText: '수정',
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#a5dc86',
         showLoaderOnConfirm: true,
         cancelButtonText: '취소',
+        cancelButtonColor:'#f27474',
         preConfirm: (title) => {
           if (title === '') {
             Swal.showValidationMessage(
@@ -276,30 +284,27 @@ export default {
         }
       })
     }
+
+    
 		function click_delete_marker_and_overlay(marker) {
 			var s_index = null
       for(var i = 0; i < store.saved_markers_info.length; i++) {
         if (marker.getTitle() === store.saved_markers_info[i]['name']) {
 					s_index = i
 				}}
-			const swalWithBootstrapButtons = Swal.mixin({
-				customClass: {
-					confirmButton: 'btn btn-success',
-					cancelButton: 'btn btn-danger'
-				},
-				buttonsStyling: false
-			})
-			swalWithBootstrapButtons.fire({
+			Swal.fire({
 				title: '삭제하시겠습니까?',
 				
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonText: '삭제',
 				cancelButtonText: '취소',
-				reverseButtons: true
+        confirmButtonColor: '#f8bb86',
+        cancelButtonColor: '#f27474',
+				// reverseButtons: true
 			}).then((result) => {
 				if (result.isConfirmed) {
-					swalWithBootstrapButtons.fire(
+					Swal.fire(
 						'삭제',
 						'삭제되었습니다.',
 						'success'
@@ -314,7 +319,7 @@ export default {
 					/* Read more about handling dismissals below */
 					result.dismiss === Swal.DismissReason.cancel
 				) {
-					swalWithBootstrapButtons.fire(
+					Swal.fire(
 						'취소',
 						'취소되었습니다.',
 						'error'
@@ -350,14 +355,14 @@ export default {
       store.updateCctv(store.saved_markers_info[save_drag_index])
       //수정 api 작동안됨
     }
-    function createCctv(title, lat, lon, info) {
+    function createCctv(title, lat, lon) {
       const cctv_Data = {
         name: title,
         video : 'asdf',
         latitude : lat,
         longitude : lon,
       }
-      store.createCctv(cctv_Data, info)
+      store.createCctv(cctv_Data)
     }
 		return {
       store,

@@ -5,13 +5,6 @@
     <!-- 업로드 -->
   <VideoList class="metalList"></VideoList>
   <MiaList class="metalList"></MiaList>
-
-
-      
-      
-      
-    
-    
   </div>  
 </template>
 

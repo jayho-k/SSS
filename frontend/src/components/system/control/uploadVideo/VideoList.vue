@@ -10,9 +10,9 @@
     class="VideoItemBox">
     <span  @click="show_analysis(D_i, D_item)" class="material-symbols-outlined">image_search</span>
   <div @click="show_local(D_i, D_item)">{{D_item.name}}</div>
-  <span v-if="uploadStore.analysis_url_list[D_i]['fire']" class="material-symbols-outlined">local_fire_department</span>
-  <span v-if="uploadStore.analysis_url_list[D_i]['mia']" class="material-symbols-outlined">face</span>
-  <span v-if="uploadStore.analysis_url_list[D_i]['safety']" class="material-symbols-outlined">cruelty_free</span>
+  <span v-if="uploadStore.analysis_url_list[D_i]['fire']" @click="loading_video(D_i, 'fire')" class="material-symbols-outlined">local_fire_department</span>
+  <span v-if="uploadStore.analysis_url_list[D_i]['mia']" @click="loading_video(D_i, 'mia')" class="material-symbols-outlined">face</span>
+  <span v-if="uploadStore.analysis_url_list[D_i]['safety']" @click="loading_video(D_i, 'safety')" class="material-symbols-outlined">cruelty_free</span>
   </div>
     </div>
   </div>
@@ -47,7 +47,11 @@ export default {
       uploadStore.selectVideo(video)
       uploadStore.is_local_view
       setTimeout(()=>{ uploadStore.is_local_view = true}, 1)
-
+    }
+    
+    function loading_video (id, video_case) {
+      uploadStore.analysis_video =  uploadStore.analysis_url_list[id][video_case]
+      uploadStore.is_local_view = false
     }
     return {
       uploadStore,
@@ -55,11 +59,10 @@ export default {
       deleteVideo,
       show_analysis,
       show_local,
+      loading_video,
   
     }
   }
-  
-
 }
 </script>
 
@@ -68,8 +71,7 @@ export default {
 .VideoListBox {
   position: relative;
   width: var(--controller-width);
-  height: calc((100vh - 220px)/2);
-  min-height: 220px;
+  height: calc((100vh - 720px) / 360 * 260 + 180px);
   background-color: var(--main-color2);
   padding: 4px;
   
@@ -91,6 +93,14 @@ background: -webkit-linear-gradient(top, rgba(245,246,246,1) 0%,rgba(219,220,226
 background: linear-gradient(to bottom, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 96%,rgba(221,223,227,1) 99%,rgba(245,246,246,1) 100%); 
 
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=0 ); 
+}
+
+.VideoItemBox:hover {
+  background: rgb(255,255,255); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(241,241,241,1) 6%, rgba(241,241,241,1) 6%, rgba(225,225,225,1) 7%, rgba(246,246,246,1) 96%, rgba(241,241,241,1) 98%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(241,241,241,1) 6%,rgba(241,241,241,1) 6%,rgba(225,225,225,1) 7%,rgba(246,246,246,1) 96%,rgba(241,241,241,1) 98%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(241,241,241,1) 6%,rgba(241,241,241,1) 6%,rgba(225,225,225,1) 7%,rgba(246,246,246,1) 96%,rgba(241,241,241,1) 98%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f1f1f1',GradientType=0 ); /* IE6-9 */
 }
 
 /* 영역 설정*/

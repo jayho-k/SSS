@@ -2,7 +2,7 @@
   <div class="modal">
     <div class="overlay"></div>
     <div class="modal-card">
-      <button @click="$emit('close-modal')" id="close"><span class="material-symbols-outlined">close</span></button>
+      <div @click="$emit('close-modal')" id="close"><span class="material-symbols-outlined">close</span></div>
       <slot />
     </div>
   </div>
@@ -36,17 +36,19 @@ export default {
   top: 0;
 }
 .overlay {
-  opacity: 0.5;
-  background-color: #C4C4C4;
+  opacity: 0.3;
+  background-color: #000;
 }
 .modal-card {
   position: relative;
-  width: 500px;
-  margin: auto;
-  margin-top: 30px;
-  background-color: #111315;
-  min-height: 500px;
+  width: 280px;
+  margin-right: 304px;
+  margin-top: 24px;
+  margin-left: auto;
+  background-color: #eee;
+  min-height: 200px;
   z-index: 10;
   opacity: 1;
+  border: 6px double #000;
 }
 </style>
