@@ -7,7 +7,7 @@
       :D_item = D_item
       @click="mapCenter(D_i)"
       class="CctvItemBox">&nbsp;&nbsp;
-      {{D_item.name}} 
+      {{D_item['name']}} 
       <span class="material-symbols-outlined" @click="unlock($event, D_i)">lock</span>
       </div>
     </div>

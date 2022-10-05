@@ -161,7 +161,7 @@ export default {
             })
             save_overlay.push(customOverlay)
             save_markers.push(marker);
-            createCctv(title, position.Ma, position.La, store.saved_markers_info)
+            createCctv(title, position.Ma, position.La)
 
             customOverlay.setMap(initMap.map, marker)
 
@@ -355,14 +355,14 @@ export default {
       store.updateCctv(store.saved_markers_info[save_drag_index])
       //수정 api 작동안됨
     }
-    function createCctv(title, lat, lon, info) {
+    function createCctv(title, lat, lon) {
       const cctv_Data = {
         name: title,
         video : 'asdf',
         latitude : lat,
         longitude : lon,
       }
-      store.createCctv(cctv_Data, info)
+      store.createCctv(cctv_Data)
     }
 		return {
       store,
