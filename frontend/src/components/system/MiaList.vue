@@ -2,7 +2,7 @@
   <div class="miaListBox">
 
     <MiaMenu></MiaMenu>
-    <div class="miaListItem" v-show="!is_add_mia">
+    <div class="miaListItem" v-show="!miaStore.is_add_mia">
       <div v-for="(D_item, D_i) in DataSet"
       :key="D_i"
       :D_item = D_item
@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <MiaAddForm v-show="is_add_mia"></MiaAddForm>  
+    <MiaAddForm v-show="miaStore.is_add_mia"></MiaAddForm>  
 
   </div>
 </template>
@@ -31,10 +31,10 @@ export default {
 },
   setup() {
     const miaStore = useMiaStore()
-    const is_add_mia = ref(computed(() => miaStore.is_add_mia))
+    
     miaStore.getMiaList()
     const DataSet = ref(computed(() => miaStore.mia_list))
-    
+    miaStore.is_add_mia = false
     function delete_mia(id, idx) {
       
       if (!miaStore.mia_list_mode) {
@@ -49,7 +49,7 @@ export default {
       miaStore.mia_update_id = item['id']
     }
     return {
-      is_add_mia,
+      miaStore,
       DataSet,
 
       delete_mia,
