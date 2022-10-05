@@ -1,7 +1,6 @@
 import axios from "axios";
 import SGSS from '@/api/SGSS';
 import { defineStore } from "pinia";
-import router from '@/router';
 
 // 예제
 export const useUploadVideoStore = defineStore("upload", {
@@ -16,9 +15,8 @@ export const useUploadVideoStore = defineStore("upload", {
         analysis_video_idx: null,
         analysis_video: null,
         is_analysis_video: false,
-        is_result_view: true,
         is_local_view:false,
-        video_list_mode: true //false 는 del
+        video_list_mode: true, //false 는 del
     }
   },
   actions: {
@@ -34,12 +32,15 @@ export const useUploadVideoStore = defineStore("upload", {
         formData,
         {headers: {Authorization : 'Bearer ' + token}}
       ) .then ((res) => {
-        this.analysis_url_list[idx][this.analysis_case] = res.data
-        this.analysis_video = res.data['video_file']
+        var url =  res.data.video_file.split('.')
+        this.analysis_url_list[idx][this.analysis_case] = this.analysis_video = url[0] + '.mp4'
+        this.analysis_video = url[0] + '.mp4'
+
         this.analysis_video_idx = idx
         console.log('분석끝')
-      }) .then (() => router.push({name : 'upload'}))
-      .catch ((err) => {
+      }) .then (() => 
+        this.is_local_view = false
+      ) .catch ((err) => {
         console.log(err)
       })
     },

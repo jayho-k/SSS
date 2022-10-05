@@ -7,7 +7,7 @@
       :D_item = D_item
       @click="mapCenter(D_i)"
       class="CctvItemBox">&nbsp;&nbsp;
-      {{D_item.name}} 
+      {{D_item['name']}} 
       <span class="material-symbols-outlined" @click="unlock($event, D_i)">lock</span>
       </div>
     </div>
@@ -30,6 +30,7 @@ export default {
         kakaoStore.setMapCenter(D_i)
       }
       function unlock (e, m_i) {
+        e.target.classList.toggle('toggle_color')
         if (kakaoStore.saved_markers[m_i].getDraggable() === true) {
           e.target.innerText = 'lock'
           kakaoStore.saved_markers[m_i].setDraggable(false)
@@ -53,14 +54,16 @@ export default {
 .CctvListBox {
   position: relative;
   width: var(--controller-width);
-  height: calc((100vh - 220px)/2);
-  min-height: 220px;
+  height: calc((100vh - 720px) / 360 * 260 + 180px);
   background-color: var(--main-color2);
   padding: 4px;
   
 
 }
+.toggle_color {
+  color: var(--sweet-red);
 
+}
 
 /* 영역 설정*/
 .CctvItem{
@@ -87,6 +90,15 @@ background: -webkit-linear-gradient(top, rgba(245,246,246,1) 0%,rgba(219,220,226
 background: linear-gradient(to bottom, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 96%,rgba(221,223,227,1) 99%,rgba(245,246,246,1) 100%); 
 
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=0 ); 
+
+
+}
+.CctvItemBox:hover {
+  background: rgb(255,255,255); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(241,241,241,1) 6%, rgba(241,241,241,1) 6%, rgba(225,225,225,1) 7%, rgba(246,246,246,1) 96%, rgba(241,241,241,1) 98%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(241,241,241,1) 6%,rgba(241,241,241,1) 6%,rgba(225,225,225,1) 7%,rgba(246,246,246,1) 96%,rgba(241,241,241,1) 98%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(241,241,241,1) 6%,rgba(241,241,241,1) 6%,rgba(225,225,225,1) 7%,rgba(246,246,246,1) 96%,rgba(241,241,241,1) 98%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f1f1f1',GradientType=0 ); /* IE6-9 */
 }
 
 /* 스크롤바 설정*/

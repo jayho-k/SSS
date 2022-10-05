@@ -1,39 +1,35 @@
 <template>
   <div class="RevisionMenuBox">
-    <label for="video_file"><div  @change="upload_add" class="metalBtn linearBtn clickB" >
-      <span class="material-symbols-outlined">drive_folder_upload</span>
-      <input  type="file" id="video_file" style="width: 0px; height: 0px;"  @change="showTextFile"  accept=".mp4, .mkv">
-      </div>
-      </label>
-    <div class="metalBtn linearBtn" @click="upload_del">
+    <div class="metalBtn linearBtn" @click="add_mia">
+      <span class="material-symbols-outlined">person_add</span>
+    </div>
+    <div class="metalBtn linearBtn" @click="del_mia">
       <span class="material-symbols-outlined">delete</span>
     </div>
   </div>
 </template>
 
 <script>
-import { useUploadVideoStore } from '@/stores/uploadVideo';
+import { useMiaStore } from '@/stores/mia';
 export default {
   setup() {
-    const uploadStore = useUploadVideoStore()
-    uploadStore.video_list_mode = true
-    function upload_add (event) { 
-      Object.values(event.target.files).forEach(item => {
-        uploadStore.show_video = URL.createObjectURL(item)
-        uploadStore.video_list.push(item)
-        uploadStore.analysis_url_list.push({'fire':'', 'mia':'','safety':''})
-      })
-    }
-    function upload_del (e) {
+    const miaStore = useMiaStore()
+    miaStore.mia_list_mode = true
+    function add_mia (e) { 
+      e.target.classList.toggle('clickB')
+        miaStore.is_add_mia = !miaStore.is_add_mia
+      }
+    function del_mia (e) { 
       e.target.classList.toggle('clickR')
-      uploadStore.video_list_mode = !uploadStore.video_list_mode
+      miaStore.mia_list_mode = !miaStore.mia_list_mode
     }
     return {
-      upload_add,
-      upload_del,
+      add_mia,
+      del_mia
     }
   }
 }
+
 </script>
 
 <style scoped>
@@ -76,12 +72,12 @@ export default {
 /* active ------------------------- */
 
 
-.clickB:hover {
+.clickB {
   color: hsl(210, 100%, 40%);
 
   box-shadow: 
     inset hsla(210,100%,30%,  1) 0  0px 0px 2px, /* border */
-    inset rgba(255, 255, 255, 0.862) 0  2px 1px 12px, /* top HL */
+    inset rgba(255, 255, 255, 0.7) 0  2px 1px 12px, /* top HL */
     
     hsla(210 ,100%,55%, .8) 0  0px 1px 1px, /* outer SD */
     hsla(210 ,80%,95%, 1) 0px  0px 0px 0px; /* outer HL */
@@ -91,7 +87,7 @@ export default {
 
   box-shadow: 
     inset rgb(212, 176, 84) 0  0px 0px 2px, /* border */
-    inset rgba(255, 255, 255, 0.862) 0  2px 1px 12px, /* top HL */
+    inset rgba(255, 255, 255, 0.525) 0  2px 1px 12px, /* top HL */
     
     hsla(43,100%,75%, .8) 0  0px 1px 1px, /* outer SD */
     hsla(210 ,80%,95%, 1) 0px  0px 0px 0px; /* outer HL */

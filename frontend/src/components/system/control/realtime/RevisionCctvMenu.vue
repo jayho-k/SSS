@@ -16,7 +16,6 @@ export default {
     const store = useKakaoStore()
     function add (e) {
       e.target.classList.toggle('clickB')
-      console.log(document.getElementById('C_Red').classList)
       document.getElementById('C_Red').classList.remove('clickR')
       if (store.cctv_mode === 1) {
         store.cctv_mode = 0

@@ -17,6 +17,7 @@ export default {
 	setup() {
 		const uploadStore = useUploadVideoStore()
 		const URL = process.env.VUE_APP_VIDEO_API
+		uploadStore.is_local_view = true
 		return {
 			uploadStore,
 			URL,
