@@ -12,7 +12,7 @@ export const useKakaoStore = defineStore("Kakao", {
 			cctv_mode: 0,
 			
 			drag_index: -1,
-			map_center: [33.450705, 126.570677],
+			map_center: [0, 0],
 
 			is_kakao_view: true,
 			cctv_list: [],
@@ -59,9 +59,6 @@ export const useKakaoStore = defineStore("Kakao", {
 				{headers: {Authorization : 'Bearer ' + token}}
 			) .then (res => {
 				this.saved_markers_info = Object.assign([], res.data)
-				if (this.saved_markers_info.length > 0) {
-				this.map_center = [this.saved_markers_info[0]['latitude'], this.saved_markers_info[0]['longitude']]
-				}
 
 			}) .catch(err => {
 				console.log(err)

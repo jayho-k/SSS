@@ -79,7 +79,6 @@ export default {
 	font-family: 'crystal';
 	color: white;
 	font-size: 50px;
-	text-shadow:  red 2px 2px;
 }
 .watchTop {
 	display: flex;
