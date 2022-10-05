@@ -18,6 +18,7 @@ WORKDIR /jenkins_home/workspace/b302/backend
 
 RUN apt-get update
 RUN apt-get install -y libgl1
+RUN apt-get install -y python3-opencv
 RUN apt-get install -y ffmpeg x264 libx264-dev
 RUN apt-get install -y vim
 
