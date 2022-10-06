@@ -1,13 +1,15 @@
 <template>
-	<div class="CctvListBox">
+	<div class="CctvListBox metalList">
     <CctvMenu></CctvMenu>
     <div class="CctvItem">
       <div v-for="(D_item, D_i) in DataSet"
       :key="D_i"
       :D_item = D_item
-      @click="mapCenter(D_i)"
-      class="CctvItemBox">&nbsp;&nbsp;
-      {{D_item['name']}} 
+      @click="mapCenter(D_i, D_item)"
+      class="CctvItemBox">
+      <span @click="link_cctv(D_item)" class="material-symbols-outlined" style="display: flex;"><div style="width:10px;"></div>add_a_photo <div style="width:10px;"></div></span>
+      <div class="cctv_name">{{D_item['name'].slice(0, 8)}} </div>
+
       <span class="material-symbols-outlined" @click="unlock($event, D_i)">lock</span>
       </div>
     </div>
@@ -15,6 +17,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import { useKakaoStore } from '@/stores/kakaoMap';
 import { ref, computed } from 'vue'
 import CctvMenu from '@/components/system/control/realtime/CctvMenu'
@@ -25,7 +28,8 @@ export default {
     setup () {
       const kakaoStore = useKakaoStore()
       const DataSet = ref(computed(() => kakaoStore.saved_markers_info))
-      function mapCenter (D_i) {
+      function mapCenter (D_i,item) {
+        kakaoStore.streaming_cctv = item['id']
 
         kakaoStore.setMapCenter(D_i)
       }
@@ -39,12 +43,54 @@ export default {
           kakaoStore.saved_markers[m_i].setDraggable(true)
         }
       }
+      function link_cctv (marker) {
+        Swal.fire({
+          title: 'cctv를 연결하시겠습니까?',
+          input: 'text',
+          inputAttributes: {
+            autocapitalize: 'off'
+          },
+          showCancelButton: true,
+          confirmButtonText: '수정',
+          confirmButtonColor: '#a5dc86',
+          showLoaderOnConfirm: true,
+          cancelButtonText: '취소',
+          cancelButtonColor:'#f27474',
+          preConfirm: (title) => {
+            if (title === '') {
+              Swal.showValidationMessage(
+              `연결할 cctv를 입력하세요 `
+              ) 
+            } else {
+              marker.video = title
+              kakaoStore.updateCctv(marker)
+              }
+            }
+          }
+        ).then((title) => {
+          if (title.isConfirmed) {
+            Swal.fire(
+            '',
+            'cctv가 연결되었습니다',
+            'success'
+
+            )
+          } else {
+            Swal.fire(
+            '',
+            '취소되었습니다',
+            'error',
+            )
+          }
+        })
+     }
 
       return {
         kakaoStore,
         DataSet,
         mapCenter,
         unlock,
+        link_cctv,
       }
     }
 }
@@ -69,7 +115,7 @@ export default {
 .CctvItem{
   padding: 0px 4px;
   width:244px;
-  height:calc(100% - 35px);
+  height:calc(100% - 34px);
 	overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -112,14 +158,19 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 .CctvItem::-webkit-scrollbar-thumb{
     /* 스크롤바 막대 높이 설정    */
     height: 17%;
-    background-color: rgba(255,255,255,1);
+    background-color: rgba(0,0,0,0.5);
     /* 스크롤바 둥글게 설정    */
     border-radius: 10px;    
 }
 
 /* 스크롤바 뒷 배경 설정*/
 .CctvItem::-webkit-scrollbar-track{
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(255,255,255,1);
 }
 
+
+.cctv_name {
+  width:140px;
+  text-align: left;
+}
 </style>

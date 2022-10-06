@@ -20,4 +20,5 @@ export default {
   background-color: var(--main-color1);
   padding: 20px 20px;
 }
+
 </style>
