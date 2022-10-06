@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="AlarmMenuBox">&nbsp;&nbsp;
-      <div style="text-align:left; width:180px;">Alarm</div>
+      <div style="text-align:left; width:60px;">Alarm</div>
       <AlarmMenu></AlarmMenu>
     </div>
     <div style="height:30px;"></div>
@@ -9,7 +9,7 @@
 </template>
   
 <script>
-import AlarmMenu from '@/components/system/RevisionAlarmMenu.vue'
+import AlarmMenu from '@/components/system/control/realtime/RevisionAlarmMenu'
   export default {
     components: {AlarmMenu}
 
