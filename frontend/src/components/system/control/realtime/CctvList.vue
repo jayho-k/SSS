@@ -8,7 +8,7 @@
       @click="mapCenter(D_i, D_item)"
       class="CctvItemBox">
       <span @click="link_cctv(D_item)" class="material-symbols-outlined" style="display: flex;"><div style="width:10px;"></div>add_a_photo <div style="width:10px;"></div></span>
-      <div class="cctv_name">{{D_item['name'].slice(0, 8)}} </div>
+      <div class="cctv_name">{{D_item['name']}} </div>
 
       <span class="material-symbols-outlined" @click="unlock($event, D_i)">lock</span>
       </div>
@@ -173,6 +173,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 .cctv_name {
   width:140px;
   text-align: left;
+  overflow: hidden;
 }
 
 .metalList {

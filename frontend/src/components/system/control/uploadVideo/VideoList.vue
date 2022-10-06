@@ -13,7 +13,7 @@
     <span  @click="show_analysis(D_i, D_item)" v-if="uploadStore.loding_idx === false" class="material-symbols-outlined" style="display:flex;"><div style="width:10px;"></div>image_search</span>
   </div>
   <div class="videoSort">
-  <div @click="show_local(D_i, D_item)" style="display:flex;"><div style="width:10px;"></div>{{D_item.name.slice(-9)}}</div>
+  <div @click="show_local(D_i, D_item)"  style="display:flex;"><div style="width:10px;"></div>{{D_item.name.slice(-10)}}</div>
   <div style="display:flex;">
   <div style="width: 28px;"><span v-if="uploadStore.analysis_url_list[D_i]['fire']" @click="loading_video(D_i, 'fire')" class="material-symbols-outlined hoverR">local_fire_department</span></div>
     
