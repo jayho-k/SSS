@@ -27,7 +27,7 @@ import CctvMenu from '@/components/system/control/realtime/RevisionCctvMenu.vue'
     align-items: center;
     color: #eee;
     background-color: hsla(0,0%,20%,1);
-    width: 252px;
+    width: 254px;
     height: 30px;
   }
 
