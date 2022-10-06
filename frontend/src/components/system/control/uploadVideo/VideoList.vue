@@ -8,11 +8,19 @@
     :D_item = D_item
     @click="deleteVideo(D_i)"
     class="VideoItemBox">
-    <span  @click="show_analysis(D_i, D_item)" class="material-symbols-outlined" style="display:flex;"><div style="width:10px;"></div>image_search</span>
-  <div @click="show_local(D_i, D_item)" style="display:flex;"><div style="width:10px;"></div>{{D_item.name.slice(0, 16)}}</div>
-  <span v-if="uploadStore.analysis_url_list[D_i]['fire']" @click="loading_video(D_i, 'fire')" class="material-symbols-outlined hoverR">local_fire_department</span>
-  <span v-if="uploadStore.analysis_url_list[D_i]['mia']" @click="loading_video(D_i, 'mia')" class="material-symbols-outlined hoverY">face</span>
-  <span v-if="uploadStore.analysis_url_list[D_i]['safety']" @click="loading_video(D_i, 'safety')" class="material-symbols-outlined hoverR">sports_kabaddi</span>
+    <div style="width: 28px;">
+    <img v-if="D_i === uploadStore.loding_idx" :src="lodingImg" alt="">
+    <span  @click="show_analysis(D_i, D_item)" v-if="uploadStore.loding_idx === false" class="material-symbols-outlined" style="display:flex;"><div style="width:10px;"></div>image_search</span>
+  </div>
+  <div class="videoSort">
+  <div @click="show_local(D_i, D_item)" style="display:flex;"><div style="width:10px;"></div>{{D_item.name.slice(-9)}}</div>
+  <div style="display:flex;">
+  <div style="width: 28px;"><span v-if="uploadStore.analysis_url_list[D_i]['fire']" @click="loading_video(D_i, 'fire')" class="material-symbols-outlined hoverR">local_fire_department</span></div>
+    
+  <div style="width: 28px;"><span v-if="uploadStore.analysis_url_list[D_i]['mia']" @click="loading_video(D_i, 'mia')" class="material-symbols-outlined hoverY">face</span></div>
+  <div style="width: 28px;"><span v-if="uploadStore.analysis_url_list[D_i]['safety']" @click="loading_video(D_i, 'safety')" class="material-symbols-outlined hoverR">sports_kabaddi</span></div>
+    </div>
+  </div>
   </div>
     </div>
   </div>
@@ -22,6 +30,7 @@
 import { useUploadVideoStore } from '@/stores/uploadVideo'
 import VideoMenu from '@/components/system/control/uploadVideo/VideoMenu'
 import VideoForm from '@/components/system/control/uploadVideo/VideoAnalysisForm.vue'
+import lodingImg from '@/assets/upload_loading.gif'
 export default {
   components: {
     VideoMenu,
@@ -60,6 +69,7 @@ export default {
       show_analysis,
       show_local,
       loading_video,
+      lodingImg
   
     }
   }
@@ -72,6 +82,7 @@ export default {
   position: relative;
   width: var(--controller-width);
   height: calc((100vh - 720px) / 360 * 260 + 180px);
+  min-height: 180px;
   background-color: var(--main-color2);
   padding: 4px;
   
@@ -151,4 +162,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
   color: var(--sweet-blue);
 }
 
+.metalList {
+  text-align: center;
+  color: hsla(0,0%,20%,1);
+  text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 1px 1px;
+  
+  background-color: hsl(0,0%,90%);
+  box-shadow: inset rgb(0, 0, 0) 0  0px 0px 4px, /* border */
+    inset rgba(0, 0, 0, 0.8) 0 -1px 5px 4px, /* soft SD */
+    inset hsla(0,0%,0%, .25) 0 -1px 0px 7px, /* bottom SD */
+    inset hsla(0,0%,100%,.7) 0  2px 1px 7px, /* top HL */
+    
+    hsla(0,0%, 0%,.15) 0 -5px 6px 4px, /* outer SD */
+    hsla(0,0%,100%,.5) 0  1px 4px 3px; /* outer HL */ 
+}
+.videoSort {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 </style>

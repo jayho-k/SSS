@@ -9,9 +9,9 @@
       :D_item = D_item
       @click="delete_mia(D_item['id'], D_i)"
       class="miaItemBox"
-      ><span class="material-symbols-outlined" @mouseover="img_modal">image</span> 
-      <div class="mia_name"><div style="width:10px;"></div><div style="width:100px;">{{D_item['name'].slice(0, 6)}}</div></div>
-      <div class="mia_age" >{{D_item['age']}}세</div>
+      ><span class="material-symbols-outlined hoverRed" style="width:40px;" @click="img_modal($event,D_item.child_img)">image</span> 
+      <div class="miaName"><div style="width:10px;"></div><div style="width:100px;">{{D_item['name'].slice(0, 6)}}</div></div>
+      <div class="miaAge" >{{D_item['age']}}세</div>
       <div @click="updateMia(D_item)">
         <span class="material-symbols-outlined colorO">edit</span>
         </div>
@@ -38,7 +38,6 @@ export default {
 },
   setup() {
     const miaStore = useMiaStore()
-
     
     miaStore.getMiaList()
     const DataSet = ref(computed(() => miaStore.mia_list))
@@ -50,11 +49,13 @@ export default {
         miaStore.mia_list.splice(idx, 1)
       }
     }
-    function img_modal () {
-      miaStore
-      
+    function img_modal (e,img) {
+      miaStore.is_mia_img_modal = false
+      miaStore.modal_mia_img = img
+      setTimeout(() => { miaStore.is_mia_img_modal = true}, 1)
 
     }
+
     function updateMia (item) {
       miaStore.is_add_mia = !miaStore.is_add_mia
       miaStore.miaData.name = item['name']
@@ -140,21 +141,30 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
   color:var(--sweet-orange)
 }
 .metalList {
-    text-align: center;
-    color: hsla(0,0%,20%,1);
-    text-shadow: hsl(0deg 0% 40% / 50%) 0 -1px 0, hsl(0deg 0% 100% / 60%) 0 1px 1px;
-    background-color: hsl(0,0%,90%);
-    box-shadow: inset hsla(0,0%,15%, 1) 0 0px 0px 4px, /* border */ inset hsla(0,0%,15%, .8) 0 -1px 5px 4px, /* soft SD */ inset hsla(0,0%,0%, .25) 0 -1px 0px 7px, /* bottom SD */ inset hsla(0,0%,100%,.7) 0 2px 1px 7px, /* top HL */ hsla(0,0%, 0%,.15) 0 -5px 6px 4px, /* outer SD */ hsla(0,0%,100%,.5) 0 1px 4px 3px;
-    transition: color .2s;
+  text-align: center;
+  color: hsla(0,0%,20%,1);
+  text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 1px 1px;
+  
+  background-color: hsl(0,0%,90%);
+  box-shadow: inset rgb(0, 0, 0) 0  0px 0px 4px, /* border */
+    inset rgba(0, 0, 0, 0.8) 0 -1px 5px 4px, /* soft SD */
+    inset hsla(0,0%,0%, .25) 0 -1px 0px 7px, /* bottom SD */
+    inset hsla(0,0%,100%,.7) 0  2px 1px 7px, /* top HL */
+    
+    hsla(0,0%, 0%,.15) 0 -5px 6px 4px, /* outer SD */
+    hsla(0,0%,100%,.5) 0  1px 4px 3px; /* outer HL */ 
 }
-.mia_name {
-  display: flex;
-  height: 30px;
+.miaName {
   width: 110px;
   text-align: right;
+
 }
-.mia_age{
+.miaAge{
   width:52px;
   text-align:right;
+}
+.hoverRed:hover {
+  color: var(--sweet-red)
+  
 }
 </style>

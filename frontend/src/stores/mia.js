@@ -18,6 +18,7 @@ export const useMiaStore = defineStore("MiaStore", {
       miaData,
       mia_list_mode: true, //false 는 삭제
 
+      modal_mia_img:null,
       is_mia_img_modal: false,
 
     }
@@ -68,6 +69,11 @@ export const useMiaStore = defineStore("MiaStore", {
         {headers: {Authorization : 'Bearer ' + token}}
       ) .then (() => {
         this.getMiaList ()
+        this.miaData = {
+          name:'',
+          child_img: {name: '이미지를 추가해 주세요'},
+          age: 0,
+        }
       }).catch ((err) => {
 				if (err.response.status === 401) {
 										this.refreshToken()
@@ -105,6 +111,11 @@ export const useMiaStore = defineStore("MiaStore", {
         }
       ) .then (() => {
         this.getMiaList ()
+        this.miaData = {
+          name:'',
+          child_img: {name: '이미지를 추가해 주세요'},
+          age: 0,
+        }
       }).catch ((err) => {
 				if (err.response.status === 401) {
 					this.refreshToken()
