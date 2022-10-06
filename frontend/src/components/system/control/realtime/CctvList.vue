@@ -5,7 +5,7 @@
       <div v-for="(D_item, D_i) in DataSet"
       :key="D_i"
       :D_item = D_item
-      @click="mapCenter(D_i)"
+      @click="mapCenter(D_i, D_item)"
       class="CctvItemBox">
       <span @click="link_cctv(D_item)" class="material-symbols-outlined" style="display: flex;"><div style="width:10px;"></div>add_a_photo <div style="width:10px;"></div></span>
       <div class="cctv_name">{{D_item['name'].slice(0, 8)}} </div>
@@ -28,7 +28,8 @@ export default {
     setup () {
       const kakaoStore = useKakaoStore()
       const DataSet = ref(computed(() => kakaoStore.saved_markers_info))
-      function mapCenter (D_i) {
+      function mapCenter (D_i,item) {
+        kakaoStore.streaming_cctv = item['id']
 
         kakaoStore.setMapCenter(D_i)
       }

@@ -25,6 +25,7 @@ export default {
     }
     function toggle_view () {
       miaStore.is_alarm_view = !miaStore.is_alarm_view
+      miaStore.is_add_mia = false
     }
     return {
       add_mia,
