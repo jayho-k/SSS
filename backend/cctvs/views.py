@@ -1,7 +1,6 @@
 # import socket # 소켓 프로그래밍에 필요한 API를 제공하는 모듈
 # import struct # 바이트(bytes) 형식의 데이터 처리 모듈
 # import pickle # 바이트(bytes) 형식의 데이터 변환 모듈
-from pyexpat import model
 from time import sleep
 from tkinter import Image
 from turtle import update
@@ -212,7 +211,6 @@ def upload(request):
         WEIGHTS = ROOT / 'weights'
         TRACK = ROOT.parents[0] /'media/track'
         name_exp = 'exp'
-        print(upload.video_file.path)
         if request.data.get("class") == "mia":
             print(WEIGHTS)
             model = 'mia.pt'
