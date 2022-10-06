@@ -112,8 +112,8 @@ def cctv_detail_or_update_or_delete(request):
 def streaming(request,user_id,cctv_id,type):
     user = get_object_or_404(get_user_model(), id=user_id)
     cctv = get_object_or_404(CCTV, id=cctv_id)
-    # addr = str(cctv.video)
-    addr = 0
+    addr = str(cctv.video)
+    # addr = 0
     if type == "fire" or type == "mia":
         cam = video_camera(addr, type, cctv_id)
         FILE = Path(__file__).resolve()
