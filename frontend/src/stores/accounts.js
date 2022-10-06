@@ -70,9 +70,10 @@ export const useAccounts = defineStore({
         axios.post(
           SGSS.accounts.signup(), credential
           ).then(() => {
+            router.push({name:'login'})
           })
-          .catch(err => {
-            console.error(err.data)
+          .catch(() => {
+
           })
       },
 
@@ -165,16 +166,22 @@ export const useAccounts = defineStore({
       deleteAccount(uid){
         const userId = uid
         const token = localStorage.getItem('token')
-        axios.delete(SGSS.accounts.deleteAccount(), 
+        axios.delete(SGSS.managerLogin.deleteAccount(), 
         {
             headers: {Authorization : 'Bearer ' + token},
-            data:userId
+            data:{ 'uid': userId}
+        }) .then(() => {
+          this.activateList ()
+          this.deactivateList ()
+
         }).catch((err) => {
-            if(err.response.status === 500){
-                this.refreshToken()
-          alert('다시 로그인 해주세요')
-            }
-        }) 
+          if(err.response.status === 500){
+              this.refreshToken()
+        alert('다시 로그인 해주세요')
+          }
+      }) 
+        
+        
       },
       userActviate(uid){
         const userId = uid
@@ -183,7 +190,9 @@ export const useAccounts = defineStore({
         
             {'uid': userId},
             {headers: {Authorization : 'Bearer ' + token}}
-        ).catch((err) => {
+        ).then (() => {          this.activateList ()
+          this.deactivateList ()})
+        .catch((err) => {
             if(err.response.status === 500){
                 this.refreshToken()
                 alert('다시 로그인 해주세요')
