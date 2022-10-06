@@ -278,7 +278,7 @@ def upload(request):
                 print(WEIGHTS)
                 yolo_api.yolo_detect_api(
                     source=upload.video_file.path,
-                    yolo_weights= WEIGHTS / 'yolov7.pt',  # model.pt path(s),
+                    yolo_weights= WEIGHTS / 'mia.pt',  # model.pt path(s),
                     strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
                     config_strongsort=ROOT / 'strong_sort/configs/strong_sort.yaml',
                     device='cpu',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
