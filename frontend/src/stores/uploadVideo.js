@@ -1,6 +1,7 @@
 import axios from "axios";
 import SGSS from '@/api/SGSS';
 import { defineStore } from "pinia";
+import router from "@/router";
 
 // 예제
 export const useUploadVideoStore = defineStore("upload", {
@@ -58,11 +59,17 @@ export const useUploadVideoStore = defineStore("upload", {
       }) .then (() => {
         this.is_local_view = false
         this.refreshToken()
+        this.analysis_case = null
+        router.push('upload')
       }) .catch ((err) => {
+        
         if (err.response.status === 401) {
 					this.refreshToken()
           alert('다시 로그인 해주세요')
-				}
+				} else {
+          alert('실패했습니다')
+          this.$router.go();
+        }
         console.log(err)
       })
     },

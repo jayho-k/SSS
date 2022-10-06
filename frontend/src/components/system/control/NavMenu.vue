@@ -1,6 +1,8 @@
 <template>
   <div class="NavMenuBox navMetal">
-    <div class="mia_modal" v-if="miaStore.is_mia_img_modal"><img class="mia_modal_img"  :src="`${serverURL}${miaStore.modal_mia_img}`"></div>
+    <div class="mia_modal" v-if="miaStore.is_mia_img_modal"><img class="mia_modal_img"  :src="`${serverURL}${miaStore.modal_mia_img}`"><span @click="toggle_modal" class="material-symbols-outlined closeButton">
+close
+</span></div>
     <router-link class="cursor navItem" to="/cctv"><span class="material-symbols-outlined">photo_camera</span></router-link>
     <router-link class="cursor navItem" to="/upload"><span class="material-symbols-outlined">drive_folder_upload</span></router-link>
     <a class="cursor navItem" @click="isModalViewed=true"><span class="material-symbols-outlined">badge</span></a>
@@ -30,16 +32,19 @@ export default {
     const accountStore = useAccounts()
     const miaStore = useMiaStore()
     const account = useAccounts()
-    console.log(serverURL)
-    console.log(miaStore.modal_mia_img)
+
     account.fetchCurrentUser()
     miaStore.modal_mia_img
+    function toggle_modal () {
+      miaStore.is_mia_img_modal =false
+    }
     return {
       serverURL,
       accountStore,
       account,
       isModalViewed,
-      miaStore
+      miaStore,
+      toggle_modal,
 
     }
   }
@@ -88,7 +93,7 @@ export default {
 }
 .mia_modal {
   position: absolute;
-  border: 4px inset var(--sweet-green);
+  border: 5px inset red;
   width: 276px;
   right:10px;
   top: 20px;
@@ -100,5 +105,14 @@ export default {
   width: 100%;
   height: 100%;
   background-size: cover;
+}
+.closeButton {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  color: black;
+}
+.closeButton:hover {
+  color: var(--sweet-red);
 }
 </style>

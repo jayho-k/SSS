@@ -9,7 +9,7 @@
       :D_item = D_item
       @click="delete_mia(D_item['id'], D_i)"
       class="miaItemBox"
-      ><span class="material-symbols-outlined" style="width:40px;" @mouseover="img_modal($event,D_item.child_img)" @mouseout="close_img_modal">image</span> 
+      ><span class="material-symbols-outlined hoverRed" style="width:40px;" @click="img_modal($event,D_item.child_img)">image</span> 
       <div class="miaName"><div style="width:10px;"></div><div style="width:100px;">{{D_item['name'].slice(0, 6)}}</div></div>
       <div class="miaAge" >{{D_item['age']}}세</div>
       <div @click="updateMia(D_item)">
@@ -50,15 +50,12 @@ export default {
       }
     }
     function img_modal (e,img) {
-      e.target.classList.add('imgColor');
+      miaStore.is_mia_img_modal = false
       miaStore.modal_mia_img = img
       setTimeout(() => { miaStore.is_mia_img_modal = true}, 1)
 
     }
-    function close_img_modal (e) {
-      e.target.classList.remove('imgColor');
-      miaStore.is_mia_img_modal = false
-    }
+
     function updateMia (item) {
       miaStore.is_add_mia = !miaStore.is_add_mia
       miaStore.miaData.name = item['name']
@@ -69,7 +66,6 @@ export default {
       miaStore,
       DataSet,
       img_modal,
-      close_img_modal,
       delete_mia,
       updateMia,
     }
@@ -167,8 +163,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
   width:52px;
   text-align:right;
 }
-.imgColor {
+.hoverRed:hover {
   color: var(--sweet-red)
   
+}
+.miaItemBox {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: hsl(0,0%,95%);
+  width: 244px;
+  height: 40px;
+  margin-bottom: 1px;
 }
 </style>
