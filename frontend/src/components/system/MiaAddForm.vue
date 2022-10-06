@@ -11,10 +11,10 @@
      <div class="addImgBox" id="add_img">
       <label class="imgLabel" for="img">
         <img src="@/assets/add_img.png"  class="add_imgIcon" alt="">
-        <input type="file" id="img" name="child_img" @change="fileUpload()"  accept=".png" required>
+        <input type="file" id="img" name="child_img" @change="fileUpload()"  accept=".png, .JPG" required>
         </label>
       </div>
-    <div id="miafile" style="margin-top:10px;">{{miaStore.miaData.child_img['name']}}</div>
+    <div id="miafile" style="margin-top:10px;">{{miaStore.miaData.child_img['name'].slice(0,13)}}</div>
     <div class="light-button button-wrapper">
     <button type="submit" class="button">
       <span class="span" v-if="miaStore.mia_update_id === -1"><span class="material-symbols-outlined">face</span> 미아등록</span>
