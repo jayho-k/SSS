@@ -18,6 +18,7 @@ export const useMiaStore = defineStore("MiaStore", {
       miaData,
       mia_list_mode: true, //false 는 삭제
 
+      modal_mia_img:null,
       is_mia_img_modal: false,
 
     }
