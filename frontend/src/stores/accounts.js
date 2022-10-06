@@ -60,7 +60,7 @@ export const useAccounts = defineStore({
           router.push({name : 'login'})
         }
         ) .catch(() => {
-
+          router.push({name : 'login'})
         }
         )
 
@@ -114,6 +114,7 @@ export const useAccounts = defineStore({
         .catch(err => {
           if(err.response.status === 500){
             this.refreshToken()
+          alert('다시 로그인 해주세요')
         }
         })
       },
@@ -126,6 +127,7 @@ export const useAccounts = defineStore({
           }).catch((err) => {
             if(err.response.status === 500){
                 this.refreshToken()
+          alert('다시 로그인 해주세요')
             }
           })
       },
@@ -140,6 +142,7 @@ export const useAccounts = defineStore({
         }) .catch((err) => {
             if(err.response.status === 500){
                 this.refreshToken()
+          alert('다시 로그인 해주세요')
             }
         }) 
           
@@ -152,6 +155,7 @@ export const useAccounts = defineStore({
         ).catch((err) => {
             if(err.response.status === 500){
                 this.refreshToken()
+          alert('다시 로그인 해주세요')
             }
         }) 
 
@@ -166,6 +170,7 @@ export const useAccounts = defineStore({
         }).catch((err) => {
             if(err.response.status === 500){
                 this.refreshToken()
+          alert('다시 로그인 해주세요')
             }
         }) 
       },
@@ -179,6 +184,7 @@ export const useAccounts = defineStore({
         ).catch((err) => {
             if(err.response.status === 500){
                 this.refreshToken()
+                alert('다시 로그인 해주세요')
             }
         }) 
       },
@@ -188,8 +194,9 @@ export const useAccounts = defineStore({
         ) . then ((res) => {
           console.log(res)
         })
-        .catch ((err) => {
-          console.log(err)
+        .catch (() => {
+          this.refreshToken()
+          alert('다시 로그인 해주세요')
         })
       }
     }

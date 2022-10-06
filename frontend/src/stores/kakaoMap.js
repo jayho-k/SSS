@@ -15,11 +15,26 @@ export const useKakaoStore = defineStore("Kakao", {
 			map_center: [33.450705, 126.570677],
 
 			is_kakao_view: true,
-			cctv_list: [],
 			selete_cctv:'',
+
+			alarm_list: [],
 			}
 	},
 	actions: {
+		refreshToken(){
+			const refresh = localStorage.getItem('refresh')
+
+			axios.post(SGSS.accounts.reissuance(), 
+			{
+				refresh: refresh 
+			}) .then ((res) => {
+
+					localStorage.setItem('token', res.data.access)
+			}) .catch ((err) => {
+					console.log(err)
+			})
+
+		},
 		dragUpdate(idx) {
 			this.drag_index = idx
 		},
@@ -47,7 +62,8 @@ export const useKakaoStore = defineStore("Kakao", {
 			}) .catch(err => {
 				console.log(err)
 				if (err.response.status === 401) {
-					this.removeToken()
+					this.refreshToken()
+          alert('다시 로그인 해주세요')
 				}
 			})
 		},
@@ -65,7 +81,8 @@ export const useKakaoStore = defineStore("Kakao", {
 			}) .catch(err => {
 				console.log(err)
 				if (err.response.status === 401) {
-					this.removeToken()
+					this.refreshToken()
+          alert('다시 로그인 해주세요')
 				}
 			})
 		},
@@ -85,7 +102,8 @@ export const useKakaoStore = defineStore("Kakao", {
 				}) .catch(err => {
 					console.log(err)
 					if (err.response.status === 401) {
-						this.removeToken()
+						this.refreshToken()
+						alert('다시 로그인 해주세요')
 					}
 				}
 			)
@@ -102,10 +120,27 @@ export const useKakaoStore = defineStore("Kakao", {
 				}) .catch(err => {
 					console.log(err)
 					if (err.response.status === 401) {
-						this.removeToken()
+						this.refreshToken()
+						alert('다시 로그인 해주세요')
 					}
 				}
 			)
+		},
+		getAlarmList() {
+			axios.get(
+				SGSS.realtime.alarm()
+			) .then ((res) => {
+				this.alarm_list = res.data
+
+
+			}) .catch(err => {
+				console.log(err)
+				if (err.response.status === 401) {
+					this.refreshToken()
+          alert('다시 로그인 해주세요')
+				}
+				
+			})
 		}
 	}
 })
