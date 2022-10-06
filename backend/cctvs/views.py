@@ -1,6 +1,7 @@
 # import socket # 소켓 프로그래밍에 필요한 API를 제공하는 모듈
 # import struct # 바이트(bytes) 형식의 데이터 처리 모듈
 # import pickle # 바이트(bytes) 형식의 데이터 변환 모듈
+from pyexpat import model
 from time import sleep
 from tkinter import Image
 from turtle import update
@@ -26,8 +27,6 @@ from pathlib import Path
 from mmaction2.demo import test_run
 from django.http import StreamingHttpResponse
 from PIL import Image
-
-global stream_return
 
 @api_view(["GET"])
 def cctv_list(request):
@@ -121,7 +120,7 @@ class video_camera(object):
             print(model,deepsort)
         elif self.type == 'mia':
             model = 'mia.pt'
-            deepsort = False
+            deepsort = True
             conf_thres = 0.5
             print(model,deepsort)
         else:
@@ -213,23 +212,26 @@ def upload(request):
         WEIGHTS = ROOT / 'weights'
         TRACK = ROOT.parents[0] /'media/track'
         name_exp = 'exp'
+        print(upload.video_file.path)
         if request.data.get("class") == "mia":
             print(WEIGHTS)
+            model = 'mia.pt'
+            deepsort = True
+            iou_thres = 0.2
             yolo_api.yolo_detect_api(
                 source=upload.video_file.path,
-                yolo_weights= WEIGHTS / 'yolov7.pt',  # model.pt path(s),
+                yolo_weights= WEIGHTS / model,  # model.pt path(s),
                 strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
                 config_strongsort=ROOT / 'strong_sort/configs/strong_sort.yaml',
                 device='cpu',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
-                deepsort=True, ########### MOT or not custumized variable ########################
+                deepsort=deepsort, ########### MOT or not custumized variable ########################
                 project=TRACK,  # save results to project/name
                 name=name_exp,  # save results to project/name
                 save_vid=True,  # save confidences in --save-txt labels
+                iou_thres=iou_thres,  # NMS IOU threshold
                 classes=[0,1],  # filter by class: --class 0, or --class 0 2 3
                 # line_thickness=3,  # bounding box thickness (pixels)
                 # conf_thres=0.25,  # confidence threshold
-                # iou_thres=0.45,  # NMS IOU threshold
-                # save_crop=False,  # save cropped prediction boxes
                 ###############################################################
                 # show_vid=False,  # show results
                 # imgsz=(640, 640),  # inference size (height, width)
@@ -241,19 +243,20 @@ def upload(request):
             )
         elif request.data.get("class") == "fire":
             # 화재 모델
+            model = 'fire.pt'
+            deepsort = False
             yolo_api.yolo_detect_api(
                 source=upload.video_file.path,
-                # yolo_weights= WEIGHTS / 'yolov7.pt',  # model.pt path(s),
-                yolo_weights= WEIGHTS / 'fire.pt',  # model.pt path(s),
+                yolo_weights= WEIGHTS / model,  # model.pt path(s),
                 strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
                 config_strongsort=ROOT / 'strong_sort/configs/strong_sort.yaml',
                 device='cpu',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
-                deepsort=False, ########### MOT or not custumized variable ########################
+                deepsort=deepsort, ########### MOT or not custumized variable ########################
                 project=TRACK,  # save results to project/name
                 name=name_exp,  # save results to project/name
                 save_vid=True,  # save confidences in --save-txt labels
+                classes=[0,1],  # filter by class: --class 0, or --class 0 2 3
                 conf_thres=0.5,  # confidence threshold
-                # classes=[0,1]  # filter by class: --class 0, or --class 0 2 3
                 # line_thickness=3,  # bounding box thickness (pixels)
                 # iou_thres=0.45,  # NMS IOU threshold
                 # save_crop=False,  # save cropped prediction boxes
