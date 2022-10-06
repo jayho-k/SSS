@@ -10,7 +10,7 @@ export const useKakaoStore = defineStore("Kakao", {
 			saved_markers:[],
 			saved_overlay:[],
 			cctv_mode: 0,
-			
+			is_pen_draw: false,
 			drag_index: -1,
 			map_center: [33.450705, 126.570677],
 
@@ -91,6 +91,7 @@ export const useKakaoStore = defineStore("Kakao", {
 			)
 		},
 		updateCctv(data) {
+			console.log(data)
 			const token = localStorage.getItem('token')
 			axios.put(
 				SGSS.realtime.cctv(),

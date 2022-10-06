@@ -7,6 +7,7 @@
       :D_item = D_item
       @click="mapCenter(D_i)"
       class="CctvItemBox">&nbsp;&nbsp;
+      <span @click="link_cctv(D_item)" class="material-symbols-outlined">add_a_photo</span>
       {{D_item['name']}} 
       <span class="material-symbols-outlined" @click="unlock($event, D_i)">lock</span>
       </div>
@@ -15,6 +16,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import { useKakaoStore } from '@/stores/kakaoMap';
 import { ref, computed } from 'vue'
 import CctvMenu from '@/components/system/control/realtime/CctvMenu'
@@ -39,12 +41,54 @@ export default {
           kakaoStore.saved_markers[m_i].setDraggable(true)
         }
       }
+      function link_cctv (marker) {
+        Swal.fire({
+          title: 'cctv를 연결하시겠습니까?',
+          input: 'text',
+          inputAttributes: {
+            autocapitalize: 'off'
+          },
+          showCancelButton: true,
+          confirmButtonText: '수정',
+          confirmButtonColor: '#a5dc86',
+          showLoaderOnConfirm: true,
+          cancelButtonText: '취소',
+          cancelButtonColor:'#f27474',
+          preConfirm: (title) => {
+            if (title === '') {
+              Swal.showValidationMessage(
+              `연결할 cctv를 입력하세요 `
+              ) 
+            } else {
+              marker.video = title
+              kakaoStore.updateCctv(marker)
+              }
+            }
+          }
+        ).then((title) => {
+          if (title.isConfirmed) {
+            Swal.fire(
+            '',
+            'cctv가 연결되었습니다',
+            'success'
+
+            )
+          } else {
+            Swal.fire(
+            '',
+            '취소되었습니다',
+            'error',
+            )
+          }
+        })
+     }
 
       return {
         kakaoStore,
         DataSet,
         mapCenter,
         unlock,
+        link_cctv,
       }
     }
 }
