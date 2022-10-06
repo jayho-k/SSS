@@ -845,7 +845,7 @@ class ClipHelper:
 
         return cv2.VideoWriter(
             filename=path,
-            fourcc=cv2.VideoWriter_fourcc(*'mp4v'),
+            fourcc=cv2.VideoWriter_fourcc(*'XVID'),
             fps=float(self.output_fps),
             frameSize=self.display_size,
             isColor=True)
