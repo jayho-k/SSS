@@ -1,4 +1,3 @@
-import datetime
 import os
 from uuid import uuid4
 from django.utils import timezone
@@ -6,7 +5,6 @@ import jwt
 from rest_framework.response import Response
 from .settings import SIMPLE_JWT
 from rest_framework import status
-import threading
 
 def image_upload_path(instance, filename):
     ymd_path = timezone.now().strftime('%Y%m%d/') 

@@ -1,4 +1,3 @@
-
 <template>
   <div class="modal" v-show="isOpen">
     <span class="close" @click="hide">&times;</span>

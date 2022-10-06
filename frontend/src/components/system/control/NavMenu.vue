@@ -1,44 +1,59 @@
 <template>
   <div class="NavMenuBox navMetal">
-    <router-link to="/cctv">cctv</router-link>
-    <router-link to="/upload">upload</router-link>
-    <button type="button" @click="accountStore.logout">logout</button>
-    <img class="navMenu" src="@/assets/optionIcon.png" alt="옵션">
+    <router-link class="cursor navItem" to="/cctv"><span class="material-symbols-outlined">photo_camera</span></router-link>
+    <router-link class="cursor navItem" to="/upload"><span class="material-symbols-outlined">drive_folder_upload</span></router-link>
+    <a class="cursor navItem" @click="isModalViewed=true"><span class="material-symbols-outlined">badge</span></a>
+    <div class="cursor navItem" @click="accountStore.logout"><span class="material-symbols-outlined">logout</span></div>
+
   </div>
+  <ModalView v-if="isModalViewed" @close-modal="isModalViewed=false">
+    <myPage />
+  </ModalView>
 </template>
 
 <script>
+import ModalView from '@/views/account/components/ModalView.vue'
+import myPage from '@/views/account/components/myPage.vue'
 import { useAccounts } from '@/stores/accounts'
+import { ref } from 'vue'
 export default {
+  components: {
+    ModalView,
+    myPage
+  },
   setup() {
+    const isModalViewed = ref(false)
     const accountStore = useAccounts()
-
+    const account = useAccounts()
+    account.fetchCurrentUser()
     return {
       accountStore,
+      account,
+      isModalViewed
+
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .NavMenuBox {
   display: flex;
   width: 260px;
   height: 60px;
   background-color: var(--main-color2);
   border-radius: 5px;
-  justify-content: space-around;
   align-items: center;
 }
+.navItem {
+  width: 100px;
+}
 .navMenu {
+  margin-left: 12px;
   width: 28px;
   height: 28px;
-  transition: all 0.5s linear
 }
 
-.navMenu:hover {
-  transform: rotate( 90deg )
-}
 
 .navMetal {
 
@@ -56,5 +71,9 @@ export default {
     hsla(0,0%,100%,.5) 0  1px 4px 4px; /* outer HL */ 
   
   transition: color .2s;
+}
+
+.cursor:hover {
+  cursor: pointer;
 }
 </style>

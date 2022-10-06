@@ -19,7 +19,7 @@ import CctvMenu from '@/components/system/control/realtime/RevisionCctvMenu.vue'
   }
 </script>
   
-<style>
+<style scoped>
 
   .CctvMenuBox {
     position: absolute;

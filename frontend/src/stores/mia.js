@@ -14,6 +14,7 @@ export const useMiaStore = defineStore("MiaStore", {
       mia_list: [],
       mia_update_id: -1,
       miaData,
+      mia_list_mode: true //false 는 삭제
 
     }
 
@@ -22,13 +23,11 @@ export const useMiaStore = defineStore("MiaStore", {
   actions: {
     getMiaList () {
       const token = localStorage.getItem('token')
-      console.log('asdf')
       axios.get(
         SGSS.mia.getMiaList(),
         {headers: {Authorization : 'Bearer ' + token}}
       ) .then ((res) => {
         this.mia_list = res.data
-        console.log(res.data)
 
       }) .catch ((err) => {
         console.log(err)
@@ -51,7 +50,6 @@ export const useMiaStore = defineStore("MiaStore", {
       ) .then (() => {
         this.getMiaList ()
       }).catch ((err) => {
-        console.log(err)
         if (err.response.status === 401) {
           this.removeToken()
         }
@@ -64,10 +62,8 @@ export const useMiaStore = defineStore("MiaStore", {
         {
           data:{'id':id}, headers: {Authorization : 'Bearer ' + token}
         }
-      ) .then ((res) => {
-        console.log(res.data)
+      ) .then (() => {
       }).catch ((err) => {
-        console.log(err)
         if (err.response.status === 401) {
           this.removeToken()
         }
@@ -86,11 +82,9 @@ export const useMiaStore = defineStore("MiaStore", {
         {
           headers: {Authorization : 'Bearer ' + token}
         }
-      ) .then ((res) => {
-        console.log(res.data)
-        console.log('updateMia')
+      ) .then (() => {
+        this.getMiaList ()
       }).catch ((err) => {
-        console.log(err)
         if (err.response.status === 401) {
           this.removeToken()
         }
