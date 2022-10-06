@@ -167,4 +167,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
   color: var(--sweet-red)
   
 }
+.miaItemBox {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: hsl(0,0%,95%);
+  width: 244px;
+  height: 40px;
+  margin-bottom: 1px;
+}
 </style>
