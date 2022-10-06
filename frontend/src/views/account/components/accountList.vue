@@ -31,7 +31,7 @@
           </tr>
           <!-- acti -->
 
-            <tr v-for="(user, index) in store.activate_users"
+            <tr v-for="(user) in store.activate_users"
             :key="user.id">
 
               <td v-show="store.user_list_mode === 1">{{user.name}}</td>
@@ -45,14 +45,14 @@
                   <button @click="ismModalViewed = true" class="changePassword" id="changePassword">비밀번호 변경</button>
                 </td>
                 <td v-show="store.user_list_mode === 1">
-                  <button @click="deleteAccount(index)" class="deleteAccount" id="deleteAccount">삭제</button>
+                  <button @click="store.deleteAccount(user.id)" class="deleteAccount" id="deleteAccount">삭제</button>
                 </td>
               </div>
             </tr>
 
           <!-- deacti -->
 
-            <tr v-for="(user, index) in store.deactivate_users"
+            <tr v-for="(user) in store.deactivate_users"
             :key="user.id">
               <td v-show="store.user_list_mode === 2">{{user.name}}</td>
               <td v-show="store.user_list_mode === 2">{{user.department}}</td>
@@ -61,10 +61,10 @@
               <td v-show="store.user_list_mode === 2">{{user.id}}</td>
               <div class="button_td">
                 <td v-show="store.user_list_mode === 2">
-                  <button @click="activate(index)" class="activate" id="activate">사용자 활성화</button>
+                  <button @click="store.userActviate(user.id)" class="activate" id="activate">사용자 활성화</button>
                 </td>
                 <td v-show="store.user_list_mode === 2">
-                  <button @click="deleteAccount(index)" class="deleteAccount" id="deleteAccount">삭제</button>
+                  <button @click="store.deleteAccount(user.id)" class="deleteAccount" id="deleteAccount">삭제</button>
                 </td>
               </div>
               <div>
@@ -72,7 +72,7 @@
               </div>
             </tr>
           
-          <tr v-for="(user, index) in store.search_users"
+          <tr v-for="(user) in store.search_users"
           :key="user.id">
             <td v-show="store.user_list_mode === 3">{{user.name}}</td>
             <td v-show="store.user_list_mode === 3">{{user.department}}</td>
@@ -84,7 +84,7 @@
                 <button @click="ismModalViewed = true" class="changePassword" id="changePassword">비밀번호 변경</button>
               </td>
               <td v-show="store.user_list_mode === 3">
-                <button @click="deleteAccount(index)" class="deleteAccount" id="deleteAccount">삭제</button>
+                <button @click="deleteAccount(user.id)" class="deleteAccount" id="deleteAccount">삭제</button>
               </td>
             </div>
           </tr>
