@@ -7,7 +7,7 @@
 			<option value="safety"><span class="material-symbols-outlined">safety</span></option>
 		</select>
 
-		<img style="font-size:200px" class="real_img" :src="`${serverURL}/cctvs/${userStore.streaming_id}/${kakaoStore.streaming_cctv}/streaming/${kakaoStore.streaming_case}/`" alt="잠시만 기다려 주세용" >
+		<img style="font-size:180px; color:white;" class="real_img" :src="`${serverURL}/api/cctvs/${userStore.streaming_id}/${kakaoStore.streaming_cctv}/streaming/${kakaoStore.streaming_case}/`" alt="잠시만 기다려 주세용" >
 
 	</div>
 </template>
@@ -62,4 +62,5 @@ export default {
 	border: 2px solid red;
 	border-style: inset;
 }
+
 </style>
