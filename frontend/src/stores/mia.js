@@ -16,7 +16,9 @@ export const useMiaStore = defineStore("MiaStore", {
       mia_list: [],
       mia_update_id: -1,
       miaData,
-      mia_list_mode: true //false 는 삭제
+      mia_list_mode: true, //false 는 삭제
+
+      is_mia_img_modal: false,
 
     }
 

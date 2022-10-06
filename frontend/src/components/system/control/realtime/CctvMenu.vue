@@ -4,8 +4,8 @@
       <div style="text-align:left; width:60px;">CCTV</div>
       <CctvMenu></CctvMenu>
     </div>
-
     <div style="height:30px;"></div>
+
   </div>
 </template>
   

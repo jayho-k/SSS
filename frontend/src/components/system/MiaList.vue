@@ -9,7 +9,9 @@
       :D_item = D_item
       @click="delete_mia(D_item['id'], D_i)"
       class="miaItemBox"
-      ><div class="mia_name"><div style="width:10px;"></div>{{D_item['name'].slice(0, 6)}}</div> <div>{{D_item['age']}}세</div>
+      ><span class="material-symbols-outlined" @mouseover="img_modal">image</span> 
+      <div class="mia_name"><div style="width:10px;"></div><div style="width:100px;">{{D_item['name'].slice(0, 6)}}</div></div>
+      <div class="mia_age" >{{D_item['age']}}세</div>
       <div @click="updateMia(D_item)">
         <span class="material-symbols-outlined colorO">edit</span>
         </div>
@@ -48,6 +50,11 @@ export default {
         miaStore.mia_list.splice(idx, 1)
       }
     }
+    function img_modal () {
+      miaStore
+      
+
+    }
     function updateMia (item) {
       miaStore.is_add_mia = !miaStore.is_add_mia
       miaStore.miaData.name = item['name']
@@ -57,7 +64,7 @@ export default {
     return {
       miaStore,
       DataSet,
-
+      img_modal,
       delete_mia,
       updateMia,
     }
@@ -142,8 +149,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 }
 .mia_name {
   display: flex;
+  height: 30px;
   width: 110px;
-  text-align: left;
+  text-align: right;
 }
-
+.mia_age{
+  width:52px;
+  text-align:right;
+}
 </style>
