@@ -16,7 +16,7 @@ export const useKakaoStore = defineStore("Kakao", {
 
 			is_kakao_view: true,
 
-
+			modal_mia_img: null,
 			alarm_list: [],
 			streaming_cctv:null,
 			streaming_case: 'normal',

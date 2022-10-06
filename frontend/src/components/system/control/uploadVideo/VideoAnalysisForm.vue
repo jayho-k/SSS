@@ -45,6 +45,7 @@ export default {
 		}
 		function start_detecting () {
 			uploadStore.uploadVideo()
+      uploadStore.is_analysis_video = !uploadStore.is_analysis_video
 		}
 		function toggle_form() {
 			uploadStore.is_analysis_video = !uploadStore.is_analysis_video
