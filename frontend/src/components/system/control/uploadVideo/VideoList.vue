@@ -8,12 +8,19 @@
     :D_item = D_item
     @click="deleteVideo(D_i)"
     class="VideoItemBox">
+    <div style="width: 28px;">
     <img v-if="D_i === uploadStore.loding_idx" :src="lodingImg" alt="">
     <span  @click="show_analysis(D_i, D_item)" v-if="uploadStore.loding_idx === false" class="material-symbols-outlined" style="display:flex;"><div style="width:10px;"></div>image_search</span>
-  <div @click="show_local(D_i, D_item)" style="display:flex;"><div style="width:10px;"></div>{{D_item.name.slice(0, 16)}}</div>
-    <span v-if="uploadStore.analysis_url_list[D_i]['fire']" @click="loading_video(D_i, 'fire')" class="material-symbols-outlined hoverR">local_fire_department</span>
-    <span v-if="uploadStore.analysis_url_list[D_i]['mia']" @click="loading_video(D_i, 'mia')" class="material-symbols-outlined hoverY">face</span>
-    <span v-if="uploadStore.analysis_url_list[D_i]['safety']" @click="loading_video(D_i, 'safety')" class="material-symbols-outlined hoverR">sports_kabaddi</span>
+  </div>
+  <div class="videoSort">
+  <div @click="show_local(D_i, D_item)" style="display:flex;"><div style="width:10px;"></div>{{D_item.name.slice(-9)}}</div>
+  <div style="display:flex;">
+  <div style="width: 28px;"><span v-if="uploadStore.analysis_url_list[D_i]['fire']" @click="loading_video(D_i, 'fire')" class="material-symbols-outlined hoverR">local_fire_department</span></div>
+    
+  <div style="width: 28px;"><span v-if="uploadStore.analysis_url_list[D_i]['mia']" @click="loading_video(D_i, 'mia')" class="material-symbols-outlined hoverY">face</span></div>
+  <div style="width: 28px;"><span v-if="uploadStore.analysis_url_list[D_i]['safety']" @click="loading_video(D_i, 'safety')" class="material-symbols-outlined hoverR">sports_kabaddi</span></div>
+    </div>
+  </div>
   </div>
     </div>
   </div>
@@ -169,5 +176,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
     hsla(0,0%, 0%,.15) 0 -5px 6px 4px, /* outer SD */
     hsla(0,0%,100%,.5) 0  1px 4px 3px; /* outer HL */ 
 }
-
+.videoSort {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 </style>
