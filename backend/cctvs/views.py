@@ -107,13 +107,13 @@ def cctv_detail_or_update_or_delete(request):
     return Response(status=status.HTTP_403_FORBIDDEN)
 
 
-
 @gzip.gzip_page
 @renderer_classes((StreamingHttpResponse))
 def streaming(request,user_id,cctv_id,type):
     user = get_object_or_404(get_user_model(), id=user_id)
     cctv = get_object_or_404(CCTV, id=cctv_id)
     addr = str(cctv.video)
+    # addr = 0
     if type == "fire" or type == "mia":
         cam = video_camera(addr, type, cctv_id)
         FILE = Path(__file__).resolve()
@@ -138,11 +138,19 @@ def streaming(request,user_id,cctv_id,type):
     return Response(request)
 
 
-class normal_streaming(object):
+class normal_streaming(threading.Thread):
     def __init__(self, adrr):
+        time.sleep(3)
+        self._stop_event = threading.Event()
         self.video = cv2.VideoCapture(adrr) # server
         (self.grabbed, self.frame) = self.video.read()
         threading.Thread(target=self.update, args=()).start()
+
+    def stop(self):
+        self._stop_event.set()
+
+    def stopped(self):
+        return self._stop_event.is_set()
 
     def __del__(self):
         self.video.release()
@@ -157,8 +165,10 @@ class normal_streaming(object):
             (self.grabbed, self.frame) = self.video.read()
 
 
-class video_camera(object):
+class video_camera(threading.Thread):
     def __init__(self, adrr, type, cctv_id):
+        time.sleep(3)
+        self._stop_event = threading.Event()
         self.video = cv2.VideoCapture(adrr) # server
         self.adrr = str(adrr)
         self.cctv_id = str(cctv_id)
@@ -207,10 +217,18 @@ class video_camera(object):
             conf_thres=conf_thres,  # confidence threshold
             iou_thres=0.45,  # NMS IOU threshold
         )
-        threading.Thread(target=self.update, args=()).start()
-    
+        self.thread = threading.Thread(target=self.update, args=())
+        self.thread.start()
+    def stop(self):
+        self.thread.join()
+        self._stop_event.set()
+
+    def stopped(self):
+        return self._stop_event.is_set()
+
     def __del__(self):
         self.video.release()
+        self.thread.join()
 
     def get_frame(self):
         image = self.frame
