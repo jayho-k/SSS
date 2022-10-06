@@ -27,11 +27,6 @@ const routes = [
     name: 'upload',
     component: () => import('@/views/uploadVideo/uploadVideoView.vue')
   },
-  {
-    path: '/please/Login',
-    name: 'plzLogin',
-    component: () => import('@/views/LoginErrorPage.vue')
-  },
 ]
 
 const router = createRouter({
