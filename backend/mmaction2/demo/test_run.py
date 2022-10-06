@@ -193,7 +193,7 @@ class parse_api:
         BASE = os.path.join(os.path.dirname(os.getcwd()),'backend','mmaction2','file')
         self.video = input_path
         self.config = os.path.join(BASE,'slowfast_kinetics_pretrained_r50_4x16x1_20e_ava_rgb_custom_classes.py')
-        self.checkpoint=os.path.join(BASE,'latest.pth')
+        self.checkpoint=os.path.join(BASE,'epoch_99.pth')
         self.det_config=os.path.join(BASE,'yolox_s_8x8_300e_coco.py')
         self.det_checkpoint=os.path.join(BASE,'yolox_s_8x8_300e_coco_20211121_095711-4592a793.pth')
         self.det_score_thr=0.9
