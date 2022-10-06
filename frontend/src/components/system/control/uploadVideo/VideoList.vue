@@ -1,5 +1,5 @@
 <template>
-  <div class="VideoListBox">
+  <div class="VideoListBox metalList">
       <VideoMenu></VideoMenu>
       <VideoForm></VideoForm>
     <div class="VideoItem" v-if="!uploadStore.is_analysis_video">
@@ -8,11 +8,11 @@
     :D_item = D_item
     @click="deleteVideo(D_i)"
     class="VideoItemBox">
-    <span  @click="show_analysis(D_i, D_item)" class="material-symbols-outlined">image_search</span>
-  <div @click="show_local(D_i, D_item)">{{D_item.name}}</div>
-  <span v-if="uploadStore.analysis_url_list[D_i]['fire']" @click="loading_video(D_i, 'fire')" class="material-symbols-outlined">local_fire_department</span>
-  <span v-if="uploadStore.analysis_url_list[D_i]['mia']" @click="loading_video(D_i, 'mia')" class="material-symbols-outlined">face</span>
-  <span v-if="uploadStore.analysis_url_list[D_i]['safety']" @click="loading_video(D_i, 'safety')" class="material-symbols-outlined">cruelty_free</span>
+    <span  @click="show_analysis(D_i, D_item)" class="material-symbols-outlined" style="display:flex;"><div style="width:10px;"></div>image_search</span>
+  <div @click="show_local(D_i, D_item)" style="display:flex;"><div style="width:10px;"></div>{{D_item.name.slice(0, 16)}}</div>
+  <span v-if="uploadStore.analysis_url_list[D_i]['fire']" @click="loading_video(D_i, 'fire')" class="material-symbols-outlined hoverR">local_fire_department</span>
+  <span v-if="uploadStore.analysis_url_list[D_i]['mia']" @click="loading_video(D_i, 'mia')" class="material-symbols-outlined hoverY">face</span>
+  <span v-if="uploadStore.analysis_url_list[D_i]['safety']" @click="loading_video(D_i, 'safety')" class="material-symbols-outlined hoverR">sports_kabaddi</span>
   </div>
     </div>
   </div>
@@ -80,7 +80,6 @@ export default {
 .VideoItemBox {
   position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   background-color: hsl(0,0%,95%);
   width: 244px;
@@ -107,7 +106,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 .VideoItem{
   padding: 0px 4px;
   width:244px;
-  height:calc(100% - 35px);
+  height:calc(100% - 34px);
 	overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -124,14 +123,32 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 .VideoItem::-webkit-scrollbar-thumb{
     /* 스크롤바 막대 높이 설정    */
     height: 17%;
-    background-color: rgba(255,255,255,1);
+    background-color: rgba(0,0,0,0.5);
     /* 스크롤바 둥글게 설정    */
     border-radius: 10px;    
 }
 
 /* 스크롤바 뒷 배경 설정*/
 .VideoItem::-webkit-scrollbar-track{
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(255,255,255,1);
+}
+.metalList {
+    text-align: center;
+    color: hsla(0,0%,20%,1);
+    text-shadow: hsl(0deg 0% 40% / 50%) 0 -1px 0, hsl(0deg 0% 100% / 60%) 0 1px 1px;
+    background-color: hsl(0,0%,90%);
+    box-shadow: inset hsla(0,0%,15%, 1) 0 0px 0px 4px, /* border */ inset hsla(0,0%,15%, .8) 0 -1px 5px 4px, /* soft SD */ inset hsla(0,0%,0%, .25) 0 -1px 0px 7px, /* bottom SD */ inset hsla(0,0%,100%,.7) 0 2px 1px 7px, /* top HL */ hsla(0,0%, 0%,.15) 0 -5px 6px 4px, /* outer SD */ hsla(0,0%,100%,.5) 0 1px 4px 3px;
+    transition: color .2s;
+}
+.hoverR:hover {
+  color: var(--sweet-red);
+}
+.hoverY:hover {
+
+  color: var(--sweet-orange);
+}
+.hoverB:hover {
+  color: var(--sweet-blue);
 }
 
 </style>

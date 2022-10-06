@@ -1,13 +1,11 @@
 <template>
   <div class="RevisionMenuBox">
-    <label for="video_file"><div  @change="upload_add" class="metalBtn linearBtn clickB" >
-      <span class="material-symbols-outlined">drive_folder_upload</span>
+    <label for="video_file"><div  @change="upload_add" >
+      <span class="material-symbols-outlined metalBtn linearBtn clickB">drive_folder_upload</span>
       <input  type="file" id="video_file" style="width: 0px; height: 0px;"  @change="showTextFile"  accept=".mp4, .mkv">
       </div>
       </label>
-    <div class="metalBtn linearBtn" @click="upload_del">
-      <span class="material-symbols-outlined">delete</span>
-    </div>
+      <span @click="upload_del" class="material-symbols-outlined metalBtn linearBtn">delete</span>
   </div>
 </template>
 
@@ -39,13 +37,12 @@ export default {
 <style scoped>
 
 .RevisionMenuBox {
-  justify-content: center;
+  justify-content: right;
   text-align: center;
   display: flex;
-  width: 120px;
+  width: 200px;
   height: 28px;
   border-radius: 5px;
-  align-items: center;
 }
 .metalBtn {
   display: flex;
@@ -61,9 +58,8 @@ export default {
 
 .metalBtn.linearBtn {
   width: 28px;
-  font-size: 0.2em;
+  font-size: 1.5em;
   height: 28px;
-  border-radius: 1em;
 
 }
 
@@ -75,13 +71,12 @@ export default {
 
 /* active ------------------------- */
 
-
 .clickB:hover {
   color: hsl(210, 100%, 40%);
 
   box-shadow: 
     inset hsla(210,100%,30%,  1) 0  0px 0px 2px, /* border */
-    inset rgba(255, 255, 255, 0.862) 0  2px 1px 12px, /* top HL */
+    inset rgba(255, 255, 255, 0.862) 0  2px 1px 14px, /* top HL */
     
     hsla(210 ,100%,55%, .8) 0  0px 1px 1px, /* outer SD */
     hsla(210 ,80%,95%, 1) 0px  0px 0px 0px; /* outer HL */
@@ -91,7 +86,7 @@ export default {
 
   box-shadow: 
     inset rgb(212, 176, 84) 0  0px 0px 2px, /* border */
-    inset rgba(255, 255, 255, 0.862) 0  2px 1px 12px, /* top HL */
+    inset rgba(255, 255, 255, 0.7) 0  2px 1px 14px, /* top HL */
     
     hsla(43,100%,75%, .8) 0  0px 1px 1px, /* outer SD */
     hsla(210 ,80%,95%, 1) 0px  0px 0px 0px; /* outer HL */
@@ -101,9 +96,14 @@ export default {
 
   box-shadow: 
     inset hsla(0,100%,30%,  1) 0  0px 0px 2px, /* border */
-    inset rgba(255, 255, 255, 0.862) 0  2px 1px 12px, /* top HL */
+    inset rgba(255, 255, 255, 0.862) 0  2px 1px 14px, /* top HL */
     
     hsla(0,100%,75%, .8) 0  0px 1px 1px, /* outer SD */
     hsla(210 ,80%,95%, 1) 0px  0px 0px 0px; /* outer HL */
 }
+.flex {
+  display: flex;
+  align-items: center;
+}
+
 </style>

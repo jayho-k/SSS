@@ -6,11 +6,9 @@
       <div v-for="(D_item, D_i) in DataSet"
       :key="D_i"
       :D_item = D_item
-      @click="delete_Alarm(D_item['id'], D_i)"
       class="AlarmItemBox"
-      >&nbsp;&nbsp;{{D_item['name']}} {{D_item['age']}}세   
-      <div @click="updateAlarm(D_item)">
-        <span class="material-symbols-outlined colorO">edit</span>
+      >&nbsp;&nbsp;{{D_item[0]}}
+      <div >
         </div>
       </div>
     </div>
@@ -19,7 +17,7 @@
 </template>
 
 <script>
-import { useAlarmStore } from '@/stores/Alarm.js'
+import { useKakaoStore } from '@/stores/kakaoMap';
 import { ref, computed } from 'vue'
 import AlarmMenu from '@/components/system/control/realtime/AlarmMenu.vue'
 export default {
@@ -27,30 +25,15 @@ export default {
     AlarmMenu,
 },
   setup() {
-    const AlarmStore = useAlarmStore()
-    const is_add_Alarm = ref(computed(() => AlarmStore.is_add_Alarm))
-    AlarmStore.getAlarmList()
-    const DataSet = ref(computed(() => AlarmStore.Alarm_list))
-    
-    function delete_Alarm(id, idx) {
-      
-      if (!AlarmStore.Alarm_list_mode) {
-        AlarmStore.deleteAlarm(id)
-        AlarmStore.Alarm_list.splice(idx, 1)
-      }
-    }
-    function updateAlarm (item) {
-      AlarmStore.is_add_Alarm = !AlarmStore.is_add_Alarm
-      AlarmStore.AlarmData.name = item['name']
-      AlarmStore.AlarmDataget = item['get']
-      AlarmStore.Alarm_update_id = item['id']
-    }
+    const KakaoStore = useKakaoStore()
+    const is_add_Alarm = ref(computed(() => KakaoStore.is_add_Alarm))
+    KakaoStore.getAlarmList()
+    const DataSet = ref(computed(() => KakaoStore.alarm_list.alram))
+
+
     return {
       is_add_Alarm,
       DataSet,
-
-      delete_Alarm,
-      updateAlarm,
     }
   }
 }
@@ -111,14 +94,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 .AlarmListItem::-webkit-scrollbar-thumb{
     /* 스크롤바 막대 높이 설정    */
     height: 17%;
-    background-color: rgba(255,255,255,1);
+    background-color: rgba(0,0,0,0.5);
     /* 스크롤바 둥글게 설정    */
     border-radius: 10px;    
 }
 
 /* 스크롤바 뒷 배경 설정*/
 .AlarmListItem::-webkit-scrollbar-track{
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(255,255,255,1);
 }
 .colorO:hover {
   color:var(--sweet-orange)
