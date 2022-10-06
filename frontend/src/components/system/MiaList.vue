@@ -1,5 +1,6 @@
 <template>
-  <div class="miaListBox">
+
+  <div v-if="!miaStore.is_alarm_view" class="miaListBox metalList">
 
     <MiaMenu></MiaMenu>
     <div class="miaListItem" v-show="!miaStore.is_add_mia">
@@ -8,7 +9,9 @@
       :D_item = D_item
       @click="delete_mia(D_item['id'], D_i)"
       class="miaItemBox"
-      >&nbsp;&nbsp;{{D_item['name']}} {{D_item['age']}}세   
+      ><span class="material-symbols-outlined" @mouseover="img_modal">image</span> 
+      <div class="mia_name"><div style="width:10px;"></div><div style="width:100px;">{{D_item['name'].slice(0, 6)}}</div></div>
+      <div class="mia_age" >{{D_item['age']}}세</div>
       <div @click="updateMia(D_item)">
         <span class="material-symbols-outlined colorO">edit</span>
         </div>
@@ -17,20 +20,25 @@
     <MiaAddForm v-show="miaStore.is_add_mia"></MiaAddForm>  
 
   </div>
+  <AlarmList v-if="miaStore.is_alarm_view" class="metalList"></AlarmList>
+
 </template>
 
 <script>
 import { useMiaStore } from '@/stores/mia.js'
 import { ref, computed } from 'vue'
+import AlarmList from '@/components/system/control/realtime/AlarmList.vue'
 import MiaAddForm from '@/components/system/MiaAddForm.vue'
 import MiaMenu from '@/components/system/MiaMenu.vue'
 export default {
   components: {
     MiaAddForm,
     MiaMenu,
+    AlarmList,
 },
   setup() {
     const miaStore = useMiaStore()
+
     
     miaStore.getMiaList()
     const DataSet = ref(computed(() => miaStore.mia_list))
@@ -42,6 +50,11 @@ export default {
         miaStore.mia_list.splice(idx, 1)
       }
     }
+    function img_modal () {
+      miaStore
+      
+
+    }
     function updateMia (item) {
       miaStore.is_add_mia = !miaStore.is_add_mia
       miaStore.miaData.name = item['name']
@@ -51,7 +64,7 @@ export default {
     return {
       miaStore,
       DataSet,
-
+      img_modal,
       delete_mia,
       updateMia,
     }
@@ -97,7 +110,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 .miaListItem{
   padding: 0px 4px;
   width:244px;
-  height:calc(100% - 35px);
+  height:calc(100% - 34px);
 	overflow-y: scroll;
   overflow-x: hidden;
   
@@ -114,16 +127,34 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 .miaListItem::-webkit-scrollbar-thumb{
     /* 스크롤바 막대 높이 설정    */
     height: 17%;
-    background-color: rgba(255,255,255,1);
+    background-color: rgba(0,0,0,0.5);
     /* 스크롤바 둥글게 설정    */
     border-radius: 10px;    
 }
 
 /* 스크롤바 뒷 배경 설정*/
 .miaListItem::-webkit-scrollbar-track{
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(255,255,255,1);
 }
 .colorO:hover {
   color:var(--sweet-orange)
+}
+.metalList {
+    text-align: center;
+    color: hsla(0,0%,20%,1);
+    text-shadow: hsl(0deg 0% 40% / 50%) 0 -1px 0, hsl(0deg 0% 100% / 60%) 0 1px 1px;
+    background-color: hsl(0,0%,90%);
+    box-shadow: inset hsla(0,0%,15%, 1) 0 0px 0px 4px, /* border */ inset hsla(0,0%,15%, .8) 0 -1px 5px 4px, /* soft SD */ inset hsla(0,0%,0%, .25) 0 -1px 0px 7px, /* bottom SD */ inset hsla(0,0%,100%,.7) 0 2px 1px 7px, /* top HL */ hsla(0,0%, 0%,.15) 0 -5px 6px 4px, /* outer SD */ hsla(0,0%,100%,.5) 0 1px 4px 3px;
+    transition: color .2s;
+}
+.mia_name {
+  display: flex;
+  height: 30px;
+  width: 110px;
+  text-align: right;
+}
+.mia_age{
+  width:52px;
+  text-align:right;
 }
 </style>

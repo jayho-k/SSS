@@ -1,10 +1,10 @@
 <template>
   <div class="RevisionMenuBox">
     
-    <div @click="toggle_view"><span class="material-symbols-outlined">live_tv</span></div>
+    <div @click="toggle_view" class="flex"><span class="material-symbols-outlined">live_tv</span></div>
       <div class="menuIcons">
-      <button class="metalBtn linearBtn" @click="add"><span id="C_blue" class="material-symbols-outlined">add_location_alt</span></button>
-      <button class="metalBtn linearBtn" @click="del"><span id="C_Red" class="material-symbols-outlined">delete</span></button>
+        <span id="C_blue" @click="add" class="material-symbols-outlined metalBtn linearBtn">add_location_alt</span>
+        <span id="C_Red" @click="del" class="material-symbols-outlined metalBtn linearBtn">delete</span>
     </div>
   </div>
 </template>
@@ -48,10 +48,10 @@ export default {
 <style scoped>
 
 .RevisionMenuBox {
-  justify-content: center;
+  justify-content: space-between;
   text-align: center;
   display: flex;
-  width: 120px;
+  width: 200px;
   height: 28px;
   border-radius: 5px;
   align-items: center;
@@ -70,9 +70,8 @@ export default {
 
 .metalBtn.linearBtn {
   width: 28px;
-  font-size: 0.2em;
+  font-size: 1.5em;
   height: 28px;
-  border-radius: 1em;
 
 }
 
@@ -90,7 +89,7 @@ export default {
 
   box-shadow: 
     inset hsla(210,100%,30%,  1) 0  0px 0px 2px, /* border */
-    inset rgba(255, 255, 255, 0.862) 0  2px 1px 12px, /* top HL */
+    inset rgba(255, 255, 255, 0.862) 0  2px 1px 14px, /* top HL */
     
     hsla(210 ,100%,55%, .8) 0  0px 1px 1px, /* outer SD */
     hsla(210 ,80%,95%, 1) 0px  0px 0px 0px; /* outer HL */
@@ -100,7 +99,7 @@ export default {
 
   box-shadow: 
     inset rgb(212, 176, 84) 0  0px 0px 2px, /* border */
-    inset rgba(255, 255, 255, 0.7) 0  2px 1px 12px, /* top HL */
+    inset rgba(255, 255, 255, 0.7) 0  2px 1px 14px, /* top HL */
     
     hsla(43,100%,75%, .8) 0  0px 1px 1px, /* outer SD */
     hsla(210 ,80%,95%, 1) 0px  0px 0px 0px; /* outer HL */
@@ -110,9 +109,13 @@ export default {
 
   box-shadow: 
     inset hsla(0,100%,30%,  1) 0  0px 0px 2px, /* border */
-    inset rgba(255, 255, 255, 0.862) 0  2px 1px 12px, /* top HL */
+    inset rgba(255, 255, 255, 0.862) 0  2px 1px 14px, /* top HL */
     
     hsla(0,100%,75%, .8) 0  0px 1px 1px, /* outer SD */
     hsla(210 ,80%,95%, 1) 0px  0px 0px 0px; /* outer HL */
+}
+.flex {
+  display: flex;
+  align-items: center;
 }
 </style>

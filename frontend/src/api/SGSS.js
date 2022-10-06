@@ -28,6 +28,7 @@ export default {
       cctv: () => HOST + CCTV,
       setCctv: () => HOST + CCTV + 'create/',
       getCctvList:() => HOST + CCTV +'list/',
+      alarm:() => HOST + CCTV + 'alram/'
     },
     mia: {
       getMiaList: () => HOST + MIA + 'list/',
