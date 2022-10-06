@@ -17,9 +17,24 @@ export const useUploadVideoStore = defineStore("upload", {
         is_analysis_video: false,
         is_local_view:false,
         video_list_mode: true, //false 는 del
+        loding_idx: false,
     }
   },
   actions: {
+    refreshToken(){
+      const refresh = localStorage.getItem('refresh')
+
+      axios.post(SGSS.accounts.reissuance(), 
+      {
+           refresh: refresh 
+      }) .then ((res) => {
+
+          localStorage.setItem('token', res.data.access)
+      }) .catch ((err) => {
+          console.log(err)
+      })
+
+    },
     uploadVideo () {
       console.log('분석 시작')
       const formData = new FormData()
@@ -27,6 +42,7 @@ export const useUploadVideoStore = defineStore("upload", {
       formData.append("video", this.video_list[idx])
       formData.append("class", this.analysis_case)
       const token = localStorage.getItem('token')
+      this.loding_idx = idx
       axios.post(
         SGSS.upload.upload(),
         formData,
@@ -38,9 +54,11 @@ export const useUploadVideoStore = defineStore("upload", {
 
         this.analysis_video_idx = idx
         console.log('분석끝')
-      }) .then (() => 
+        this.loding_idx = false
+      }) .then (() => {
         this.is_local_view = false
-      ) .catch ((err) => {
+        this.refreshToken()
+      }) .catch ((err) => {
         if (err.response.status === 401) {
 					this.refreshToken()
           alert('다시 로그인 해주세요')
