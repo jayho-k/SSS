@@ -168,17 +168,7 @@ class yolo_stream(object):
         self.stride = self.model.stride.max()  # model stride
         self.imgsz = check_img_size(self.api.imgsz[0], s=self.stride.cpu().numpy())  # check image size
 
-        # # Dataloader
-        # if webcam:
-        #     show_vid = check_imshow()
-        #     cudnn.benchmark = True  # set True to speed up constant image size inference
-        #     dataset = LoadStreams(source, img_size=imgsz, stride=stride.cpu().numpy())
-        #     nr_sources = 1
-        # else:
-        #     dataset = LoadImages(source, img_size=imgsz, stride=stride)
-        #     nr_sources = 1
-        # vid_path, vid_writer, txt_path = [None] * nr_sources, [None] * nr_sources, [None] * nr_sources
-        nr_sources = 1  ######## possible frame unit
+        nr_sources = 1 
         # initialize StrongSORT
         self.cfg = get_config()
         self.cfg.merge_from_file(self.api.config_strongsort)
@@ -221,7 +211,7 @@ class yolo_stream(object):
             dataset = LoadStreams(self.source, img_size=self.imgsz, stride=self.stride.cpu().numpy())
             nr_sources = 1
         else:
-            dataset = LoadImages(self.source, img_size=self.imgsz, stride=self.stride)
+            dataset = LoadImages(self.source, img_size=self.imgsz, stride=self.stride.cpu().numpy())
             nr_sources = 1
         vid_path, vid_writer, txt_path = [None] * nr_sources, [None] * nr_sources, [None] * nr_sources
 
@@ -279,9 +269,10 @@ class yolo_stream(object):
 
                 txt_path = str(self.save_dir / 'tracks' / txt_file_name)  # im.txt
                 s += '%gx%g ' % im.shape[2:]  # print string
+                ssslog = ''
                 imc = im0.copy() if self.api.save_crop else im0  # for save_crop
 
-                if self.api.deepsort and self.cfg.STRONGSORT.ECC:  # camera motion compensation
+                if self.cfg.STRONGSORT.ECC:  # camera motion compensation
                     self.strongsort_list[i].tracker.camera_update(self.prev_frames[i], curr_frames[i])
 
                 if det is not None and len(det):
@@ -292,6 +283,7 @@ class yolo_stream(object):
                     for c in det[:, -1].unique():
                         n = (det[:, -1] == c).sum()  # detections per class
                         s += f"{n} {self.names[int(c)]}{'s' * (n > 1)}, "  # add to string
+                        ssslog += f"{n} {self.names[int(c)]}"
 
                     xywhs = xyxy2xywh(det[:, 0:4])
                     confs = det[:, 4]
@@ -332,15 +324,15 @@ class yolo_stream(object):
                                     plot_one_box(bboxes, im0, label=label, color=self.colors[int(cls)], line_thickness=self.api.line_thickness)
                             print(f'{s}Done. YOLO:({t3 - t2:.3f}s), StrongSORT:({t5 - t4:.3f}s)')
                         else:
-                            self.strongsort_list[i].increment_ages()
-                            print('No detections')
+                            # print(det)
+                            for *xyxy, conf, cls in reversed(det):
+                                if self.api.save_vid or self.api.show_vid:  # Add bbox to image
+                                    label = f'{self.names[int(cls)]} {conf:.2f}'
+                                    plot_one_box(xyxy, im0, label=label, color=self.colors[int(cls)], line_thickness=self.api.line_thickness)
+                                    print("******************DRAW BOX**********************")
                     else:
-                        # print(det)
-                        for *xyxy, conf, cls in reversed(det):
-                            if self.api.save_vid or self.api.show_vid:  # Add bbox to image
-                                label = f'{self.names[int(cls)]} {conf:.2f}'
-                                plot_one_box(xyxy, im0, label=label, color=self.colors[int(cls)], line_thickness=self.api.line_thickness)
-                                print("******************DRAW BOX**********************")
+                        self.strongsort_list[i].increment_ages()
+                        print('No detections')
 
                 save_path = str(Path(save_path).with_suffix('.jpg'))
                 print(f" The image with the result is saved in: {save_path}")
@@ -349,7 +341,7 @@ class yolo_stream(object):
 
 
                 self.prev_frames[i] = curr_frames[i]
-                return 0
+                return ssslog
 
         # Print results
         t = tuple(x / seen * 1E3 for x in dt)  # speeds per image
@@ -360,8 +352,3 @@ class yolo_stream(object):
         if self.api.update:
             strip_optimizer(self.yolo_weights)  # update model (to fix SourceChangeWarning)
         return self.save_dir
-
-
-    def retrunStream(self):
-        return StreamingHttpResponse(gen_frame(self.img), content_type="multipart/x-mixed-replace;boundary=frame")
-

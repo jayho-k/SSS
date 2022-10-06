@@ -114,28 +114,30 @@ def streaming(request,user_id,cctv_id,type):
     cctv = get_object_or_404(CCTV, id=cctv_id)
     addr = str(cctv.video)
     # addr = 0
+    FILE = Path(__file__).resolve()
+    ROOT = FILE.parents[0].parents[0] / 'yolo7deep'  # yolov5 strongsort root directory
+    TRACK = ROOT.parents[0] /'media/track'
+    TEMP_PIC = ROOT.parents[0] / 'Temp/pic'
+    name_exp = 'exp'
+    if not TEMP_PIC.exists():
+        TEMP_PIC.mkdir(parents=True, exist_ok=True)
+    pic_id = ''.join([str(cctv_id), '.jpg'])
+    out_file = str(TRACK/name_exp/pic_id)
     if type == "fire" or type == "mia":
         cam = video_camera(addr, type, cctv_id)
-        FILE = Path(__file__).resolve()
-        ROOT = FILE.parents[0].parents[0] / 'yolo7deep'  # yolov5 strongsort root directory
-        TRACK = ROOT.parents[0] /'media/track'
-        name_exp = 'exp'
-        TEMP_PIC = ROOT.parents[0] / 'Temp/pic'
-        pic_id = ''.join([str(cctv_id), '.jpg'])
-        if not TEMP_PIC.exists():
-            TEMP_PIC.mkdir(parents=True, exist_ok=True)
-        out_file = TRACK/name_exp/pic_id
         print(out_file)
         sleep(0.1)
         return StreamingHttpResponse(gen_result(out_file), content_type="multipart/x-mixed-replace;boundary=frame")
     elif type == "safety":
         video_num = str(addr)
-        args = parse_api_slowfast(video_num)
+        args = parse_api_slowfast(video_num,out_file)
         run(args)
+        return StreamingHttpResponse(gen_safety(out_file), content_type="multipart/x-mixed-replace;boundary=frame")
     elif type == "normal":
         cam = normal_streaming(addr)
         return StreamingHttpResponse(gen(cam), content_type="multipart/x-mixed-replace;boundary=frame")
     return Response(request)
+    
 
 
 class normal_streaming(threading.Thread):
@@ -194,7 +196,7 @@ class video_camera(threading.Thread):
             print(model,deepsort)
         elif self.type == 'mia':
             model = 'mia.pt'
-            deepsort = False
+            deepsort = True
             conf_thres = 0.5
             print(model,deepsort)
         else:
@@ -219,6 +221,7 @@ class video_camera(threading.Thread):
         )
         self.thread = threading.Thread(target=self.update, args=())
         self.thread.start()
+
     def stop(self):
         self.thread.join()
         self._stop_event.set()
@@ -246,7 +249,8 @@ class video_camera(threading.Thread):
             print(temp_file)
             cv2.imwrite(temp_file, self.frame)
             sleep(0.01)
-            self.stream_yolo.run()
+            ssslog = self.stream_yolo.run()
+            pred_lst.append([ssslog])
             sleep(0.01)
 
 
@@ -258,6 +262,13 @@ def gen(camera):
               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
     
 def gen_result(pic_path):
+    while True:
+        pic = open(pic_path,'rb').read()
+        sleep(0.2)
+        yield(b'--frame\r\n'
+            b'Content-Type: image/jpeg\r\n\r\n' + pic + b'\r\n\r\n')
+
+def gen_safety(pic_path):
     while True:
         pic = open(pic_path,'rb').read()
         sleep(0.2)
@@ -290,72 +301,71 @@ def upload(request):
         WEIGHTS = ROOT / 'weights'
         TRACK = ROOT.parents[0] /'media/track'
         name_exp = 'exp'
-        if request.data.get("class") == "mia" or request.data.get("class") == "fire":
-
-            if request.data.get("class") == "mia":
-                print(WEIGHTS)
-                yolo_api.yolo_detect_api(
-                    source=upload.video_file.path,
-                    yolo_weights= WEIGHTS / 'yolov7.pt',  # model.pt path(s),
-                    strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
-                    config_strongsort=ROOT / 'strong_sort/configs/strong_sort.yaml',
-                    device='0',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
-                    deepsort=True, ########### MOT or not custumized variable ########################
-                    project=TRACK,  # save results to project/name
-                    name=name_exp,  # save results to project/name
-                    save_vid=True,  # save confidences in --save-txt labels
-                    classes=[0,1],  # filter by class: --class 0, or --class 0 2 3
-                    # line_thickness=3,  # bounding box thickness (pixels)
-                    # conf_thres=0.25,  # confidence threshold
-                    # iou_thres=0.45,  # NMS IOU threshold
-                    # save_crop=False,  # save cropped prediction boxes
-                    ###############################################################
-                    # show_vid=False,  # show results
-                    # imgsz=(640, 640),  # inference size (height, width)
-                    # max_det=1000,  # maximum detections per image
-                    # save_txt=False,  # save results to *.txt
-                    # save_conf=False,  # save confidences in --save-txt labels
-                    # nosave=False,  # do not save images/videos
-                    # exist_ok=False,  # existing project/name ok, do not increment
-                )
-            elif request.data.get("class") == "fire":
-                # 화재 모델
-                yolo_api.yolo_detect_api(
-                    source=upload.video_file.path,
-                    # yolo_weights= WEIGHTS / 'yolov7.pt',  # model.pt path(s),
-                    yolo_weights= WEIGHTS / 'fire.pt',  # model.pt path(s),
-                    strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
-                    config_strongsort=ROOT / 'strong_sort/configs/strong_sort.yaml',
-                    device='0',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
-                    deepsort=False, ########### MOT or not custumized variable ########################
-                    project=TRACK,  # save results to project/name
-                    name=name_exp,  # save results to project/name
-                    save_vid=True,  # save confidences in --save-txt labels
-                    conf_thres=0.5,  # confidence threshold
-                    # classes=[0,1]  # filter by class: --class 0, or --class 0 2 3
-                    # line_thickness=3,  # bounding box thickness (pixels)
-                    # iou_thres=0.45,  # NMS IOU threshold
-                    # save_crop=False,  # save cropped prediction boxes
-                    ###############################################################
-                    # show_vid=False,  # show results
-                    # imgsz=(640, 640),  # inference size (height, width)
-                    # max_det=1000,  # maximum detections per image
-                    # save_txt=False,  # save results to *.txt
-                    # save_conf=False,  # save confidences in --save-txt labels
-                    # nosave=False,  # do not save images/videos
-                    # agnostic_nms=False,  # class-agnostic NMS
-                    # augment=False,  # augmented inference
-                    # visualize=False,  # visualize features
-                    # update=False,  # update all models
-                    # exist_ok=False,  # existing project/name ok, do not increment
-                    # hide_labels=False,  # hide labels
-                    # hide_conf=False,  # hide confidences
-                    # hide_class=False,  # hide IDs
-                    # half=False,  # use FP16 half-precision inference
-                    # dnn=False,  # use OpenCV DNN for ONNX inference
-                )
-            
-
+        if request.data.get("class") == "mia":
+            print(WEIGHTS)
+            model = 'mia.pt'
+            deepsort = True
+            iou_thres = 0.2
+            yolo_api.yolo_detect_api(
+                source=upload.video_file.path,
+                yolo_weights= WEIGHTS / model,  # model.pt path(s),
+                strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
+                config_strongsort=ROOT / 'strong_sort/configs/strong_sort.yaml',
+                device='0',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
+                deepsort=deepsort, ########### MOT or not custumized variable ########################
+                project=TRACK,  # save results to project/name
+                name=name_exp,  # save results to project/name
+                save_vid=True,  # save confidences in --save-txt labels
+                iou_thres=iou_thres,  # NMS IOU threshold
+                classes=[0,1],  # filter by class: --class 0, or --class 0 2 3
+                # line_thickness=3,  # bounding box thickness (pixels)
+                # conf_thres=0.25,  # confidence threshold
+                ###############################################################
+                # show_vid=False,  # show results
+                # imgsz=(640, 640),  # inference size (height, width)
+                # max_det=1000,  # maximum detections per image
+                # save_txt=False,  # save results to *.txt
+                # save_conf=False,  # save confidences in --save-txt labels
+                # nosave=False,  # do not save images/videos
+                # exist_ok=False,  # existing project/name ok, do not increment
+            )
+        elif request.data.get("class") == "fire":
+            # 화재 모델
+            model = 'fire.pt'
+            deepsort = False
+            yolo_api.yolo_detect_api(
+                source=upload.video_file.path,
+                yolo_weights= WEIGHTS / model,  # model.pt path(s),
+                strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
+                config_strongsort=ROOT / 'strong_sort/configs/strong_sort.yaml',
+                device='0',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
+                deepsort=deepsort, ########### MOT or not custumized variable ########################
+                project=TRACK,  # save results to project/name
+                name=name_exp,  # save results to project/name
+                save_vid=True,  # save confidences in --save-txt labels
+                classes=[0,1],  # filter by class: --class 0, or --class 0 2 3
+                conf_thres=0.5,  # confidence threshold
+                # line_thickness=3,  # bounding box thickness (pixels)
+                # iou_thres=0.45,  # NMS IOU threshold
+                # save_crop=False,  # save cropped prediction boxes
+                ###############################################################
+                # show_vid=False,  # show results
+                # imgsz=(640, 640),  # inference size (height, width)
+                # max_det=1000,  # maximum detections per image
+                # save_txt=False,  # save results to *.txt
+                # save_conf=False,  # save confidences in --save-txt labels
+                # nosave=False,  # do not save images/videos
+                # agnostic_nms=False,  # class-agnostic NMS
+                # augment=False,  # augmented inference
+                # visualize=False,  # visualize features
+                # update=False,  # update all models
+                # exist_ok=False,  # existing project/name ok, do not increment
+                # hide_labels=False,  # hide labels
+                # hide_conf=False,  # hide confidences
+                # hide_class=False,  # hide IDs
+                # half=False,  # use FP16 half-precision inference
+                # dnn=False,  # use OpenCV DNN for ONNX inference
+            )
         elif request.data.get("class") == "safety":
             # FILE_ROOT = FILE.parents[0].parents[0]
             # 공공안전
@@ -370,7 +380,7 @@ def upload(request):
         video_name = str(video.video_file)
         _,_, res = video_name.split("/")
         file_name, _ = res.split(".") 
-        file = FileWrapper(open(f'media/track/exp/{file_name}.mkv', mode='rb'))
+        file = FileWrapper(open(f'media/track/exp/{file_name}.mp4', mode='rb'))
         print('ddddddddddddddddddddd', file)
         # file = FileWrapper(open(f'media/video/20220930/{res}', mode='rb'))
 
@@ -378,7 +388,7 @@ def upload(request):
         # response['Content-Disposition'] = 'attachment; filename=result_video.mp4'
 
         data = {
-            "video_file": f"/media/track/exp/{file_name}.mkv"
+            "video_file": f"/media/track/exp/{file_name}.mp4"
         }
         return Response(data,status=status.HTTP_200_OK)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
@@ -396,7 +406,7 @@ def alram(request):
 
 class parse_api_slowfast:
 
-    def __init__(self,input_video):
+    def __init__(self,input_video,out_file):
         BASE = os.path.join(os.path.dirname(os.getcwd()),'backend','mmaction2','file')
         self.config = os.path.join(BASE,'slowfast_kinetics_pretrained_r50_4x16x1_20e_ava_rgb_custom_classes.py')
         self.checkpoint = os.path.join(BASE,'latest.pth')
@@ -416,6 +426,7 @@ class parse_api_slowfast:
         self.clip_vis_length = 8
         self.cfg_options=dict()
         self.send = True
+        self.tmp_path = out_file
 
 class TaskInfo:
 
@@ -563,6 +574,7 @@ class ClipHelper:
 
     def __init__(self,
                  config,
+                 tmp_path,
                  display_height=0,
                  display_width=0,
                  input_video=0,
@@ -596,6 +608,8 @@ class ClipHelper:
             # self.cap = input_video
             self.webcam = False
         assert self.cap.isOpened()
+        _, frame = self.cap.read()
+        cv2.imwrite(tmp_path, frame)
 
         # stdet input preprocessing params
         h = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -637,6 +651,7 @@ class ClipHelper:
             self.output_fps = output_fps
         self.show = show
         self.send = send
+        self.tmp_path = tmp_path
         self.video_writer = None
         if out_filename is not None:
             self.video_writer = self.get_output_video_writer(out_filename)
@@ -754,18 +769,19 @@ class ClipHelper:
                 else:
                     cur_display_inds = self.display_inds
 
-                for frame_id in cur_display_inds:
-                    frame,image = self.get_frame(frame_id,task)
-                    if self.send:
-                        pass
+                frame,image = self.get_frame(cur_display_inds[0],task)
+                if self.send:
+                    temp_path = self.tmp_path
+                    cv2.imwrite(temp_path, frame)
+                # for frame_id in cur_display_inds:
                     
-                    if self.show:
-                        pass
-                        # cv2.imshow('Demo', frame)
-                        # cv2.waitKey(int(1000 / self.output_fps))
+                #     if self.show:
+                #         pass
+                #         # cv2.imshow('Demo', frame)
+                #         # cv2.waitKey(int(1000 / self.output_fps))
 
-                    if self.video_writer:
-                        self.video_writer.write(frame)
+                #     if self.video_writer:
+                #         self.video_writer.write(frame)
 
             cur_time = time.time()
             logger.debug(
@@ -845,7 +861,7 @@ class ClipHelper:
 
         return cv2.VideoWriter(
             filename=path,
-            fourcc=cv2.VideoWriter_fourcc(*'XVID'),
+            fourcc=cv2.VideoWriter_fourcc(*'x264'),
             fps=float(self.output_fps),
             frameSize=self.display_size,
             isColor=True)
@@ -978,6 +994,7 @@ def run(args):
     clip_helper = ClipHelper(
         config=config,
         display_height=args.display_height,
+        tmp_path=args.tmp_path,
         display_width=args.display_width,
         input_video=args.input_video,
         predict_stepsize=args.predict_stepsize,
@@ -993,23 +1010,23 @@ def run(args):
     # start read and display thread
     clip_helper.start()
         
-    try:
+    # try:
 
-        st = threading.Thread(target=main_thread, args=(clip_helper,human_detector,stdet_predictor,vis))
-        st.start()
+    st = threading.Thread(target=main_thread, args=(clip_helper,human_detector,stdet_predictor,vis))
+    st.start()
         # streaming_test(clip_helper.display_fn())
-        clip_helper.join()
+    #     clip_helper.join()
 
-    except KeyboardInterrupt:
-        pass
-    finally:
-        # close read & display thread, release all resources
-        clip_helper.clean()
+    # except KeyboardInterrupt:
+    #     pass
+    # finally:
+    #     # close read & display thread, release all resources
+    #     clip_helper.clean()
 
 
 def main_thread(clip_helper,human_detector,stdet_predictor,vis):
     for able_to_read, task in clip_helper:
-
+            # sleep(1)
             if not able_to_read:
                 break
 
