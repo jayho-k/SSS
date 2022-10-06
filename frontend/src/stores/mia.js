@@ -10,6 +10,8 @@ export const useMiaStore = defineStore("MiaStore", {
       age: 0,
     }
     return {
+      is_alarm_view: false,
+
       is_add_mia: false,
       mia_list: [],
       mia_update_id: -1,
@@ -21,6 +23,20 @@ export const useMiaStore = defineStore("MiaStore", {
 
   },
   actions: {
+    refreshToken(){
+      const refresh = localStorage.getItem('refresh')
+
+      axios.post(SGSS.accounts.reissuance(), 
+      {
+           refresh: refresh 
+      }) .then ((res) => {
+
+          localStorage.setItem('token', res.data.access)
+      }) .catch ((err) => {
+          console.log(err)
+      })
+
+    },
     getMiaList () {
       const token = localStorage.getItem('token')
       axios.get(
@@ -31,9 +47,10 @@ export const useMiaStore = defineStore("MiaStore", {
 
       }) .catch ((err) => {
         console.log(err)
-        if (err.response.status === 401) {
-          this.removeToken()
-        }
+				if (err.response.status === 401) {
+										this.refreshToken()
+          alert('다시 로그인 해주세요')
+				}
 
       })
     },
@@ -50,9 +67,10 @@ export const useMiaStore = defineStore("MiaStore", {
       ) .then (() => {
         this.getMiaList ()
       }).catch ((err) => {
-        if (err.response.status === 401) {
-          this.removeToken()
-        }
+				if (err.response.status === 401) {
+										this.refreshToken()
+          alert('다시 로그인 해주세요')
+				}
       })
     },
     deleteMia (id) {
@@ -64,9 +82,10 @@ export const useMiaStore = defineStore("MiaStore", {
         }
       ) .then (() => {
       }).catch ((err) => {
-        if (err.response.status === 401) {
-          this.removeToken()
-        }
+				if (err.response.status === 401) {
+										this.refreshToken()
+          alert('다시 로그인 해주세요')
+				}
       }) 
     },
     updateMia () {
@@ -85,9 +104,10 @@ export const useMiaStore = defineStore("MiaStore", {
       ) .then (() => {
         this.getMiaList ()
       }).catch ((err) => {
-        if (err.response.status === 401) {
-          this.removeToken()
-        }
+				if (err.response.status === 401) {
+					this.refreshToken()
+          alert('다시 로그인 해주세요')
+				}
       }) 
     }
   },

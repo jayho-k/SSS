@@ -41,6 +41,10 @@ export const useUploadVideoStore = defineStore("upload", {
       }) .then (() => 
         this.is_local_view = false
       ) .catch ((err) => {
+        if (err.response.status === 401) {
+					this.refreshToken()
+          alert('다시 로그인 해주세요')
+				}
         console.log(err)
       })
     },

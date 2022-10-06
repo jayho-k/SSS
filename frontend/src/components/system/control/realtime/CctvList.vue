@@ -1,14 +1,15 @@
 <template>
-	<div class="CctvListBox">
+	<div class="CctvListBox metalList">
     <CctvMenu></CctvMenu>
     <div class="CctvItem">
       <div v-for="(D_item, D_i) in DataSet"
       :key="D_i"
       :D_item = D_item
       @click="mapCenter(D_i)"
-      class="CctvItemBox">&nbsp;&nbsp;
-      <span @click="link_cctv(D_item)" class="material-symbols-outlined">add_a_photo</span>
-      {{D_item['name']}} 
+      class="CctvItemBox">
+      <span @click="link_cctv(D_item)" class="material-symbols-outlined" style="display: flex;"><div style="width:10px;"></div>add_a_photo <div style="width:10px;"></div></span>
+      <div class="cctv_name">{{D_item['name'].slice(0, 8)}} </div>
+
       <span class="material-symbols-outlined" @click="unlock($event, D_i)">lock</span>
       </div>
     </div>
@@ -113,7 +114,7 @@ export default {
 .CctvItem{
   padding: 0px 4px;
   width:244px;
-  height:calc(100% - 35px);
+  height:calc(100% - 34px);
 	overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -156,14 +157,19 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', end
 .CctvItem::-webkit-scrollbar-thumb{
     /* 스크롤바 막대 높이 설정    */
     height: 17%;
-    background-color: rgba(255,255,255,1);
+    background-color: rgba(0,0,0,0.5);
     /* 스크롤바 둥글게 설정    */
     border-radius: 10px;    
 }
 
 /* 스크롤바 뒷 배경 설정*/
 .CctvItem::-webkit-scrollbar-track{
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(255,255,255,1);
 }
 
+
+.cctv_name {
+  width:140px;
+  text-align: left;
+}
 </style>
