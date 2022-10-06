@@ -211,7 +211,7 @@ class yolo_stream(object):
             dataset = LoadStreams(self.source, img_size=self.imgsz, stride=self.stride.cpu().numpy())
             nr_sources = 1
         else:
-            dataset = LoadImages(self.source, img_size=self.imgsz, stride=self.stride)
+            dataset = LoadImages(self.source, img_size=self.imgsz, stride=self.stride.cpu().numpy())
             nr_sources = 1
         vid_path, vid_writer, txt_path = [None] * nr_sources, [None] * nr_sources, [None] * nr_sources
 
