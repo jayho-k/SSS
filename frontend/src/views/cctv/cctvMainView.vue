@@ -20,6 +20,8 @@ export default {
   display: flex;
   background-color: var(--main-color1);
   padding: 20px 20px;
+  min-height: 680px;
+  
 }
 
 </style>

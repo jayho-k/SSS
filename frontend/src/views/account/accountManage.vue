@@ -1,11 +1,11 @@
 <template>
   <Suspense>
-          <template #default>
-            <accountList />
-          </template>
-          <template #fallback>
-            Account List is loading...
-          </template>
+    <template #default>
+      <accountList />
+    </template>
+    <template #fallback>
+      Account List is loading...
+    </template>
   </Suspense>
 </template>
 

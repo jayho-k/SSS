@@ -1,5 +1,8 @@
 <template>
-	<div id="map" style="width:1620px;height:1040px;"></div>
+
+  <div v-show="store.is_kakao_view" id="map" class="mapView"  style="min-height: 680px;"></div>
+  <Streaming v-if="!store.is_kakao_view" class="mapView"></Streaming>
+
 </template>
 
 <script>
@@ -7,18 +10,21 @@ import { onMounted, watch } from 'vue'
 import { useKakaoStore } from '@/stores/kakaoMap'
 import Swal from 'sweetalert2'
 import markerImg from '@/assets/marker.png'
+import Streaming from '@/components/system/control/realtime/CctvStreaming.vue'
 export default {
+  components: {Streaming},
 	setup() {
 		const store = useKakaoStore()
     store.getCctvList()
 		/* global kakao */
     const save_markers = []
     const save_overlay = []
+    store.cctv_mode = 0
     var save_drag_index = null
     store.saved_markers = save_markers
 		store.saved_overlay = save_overlay
 		onMounted(() => {
-      
+
 			if (window.kakao && window.kakao.maps) {
 				initMap();
 			} else {
@@ -31,10 +37,16 @@ export default {
 
 		const initMap = () => {
 			const container = document.getElementById("map")
+      
 			const options = {
 				center: new kakao.maps.LatLng(33.450701, 126.570667),
 				level: 5,
-			}
+			} 
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var moveLatLng = new kakao.maps.LatLng(position.coords.latitude, position.coords.longitude);   
+          initMap.map.panTo(moveLatLng);
+      })}
 			//지도 객체를 등록합니다.
 			//지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
 			initMap.map = new kakao.maps.Map(container, options)
@@ -113,9 +125,10 @@ export default {
         },
         showCancelButton: true,
         confirmButtonText: '생성',
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#3fc3ee',
         showLoaderOnConfirm: true,
         cancelButtonText: '취소',
+        cancelButtonColor: '#f27474',
         preConfirm: (title) => {
           if (title === '') {
             Swal.showValidationMessage(
@@ -148,19 +161,14 @@ export default {
             })
             save_overlay.push(customOverlay)
             save_markers.push(marker);
-            createCctv(title, position.Ma, position.La, store.saved_markers_info)
+            createCctv(title, position.Ma, position.La)
 
             customOverlay.setMap(initMap.map, marker)
 
             
-            
-            // 생성된 마커를 배열에 추가합니다
-
-            // make_overlay (title, position, store.saved_overlay, marker)
 
              // add 클릭 이벤트
             kakao.maps.event.addListener(marker, 'click', function() {
-              console.log(store.cctv_mode)
               if (store.cctv_mode === 1) {
                 click_update_Marker(marker)
               } 
@@ -223,9 +231,10 @@ export default {
         },
         showCancelButton: true,
         confirmButtonText: '수정',
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#a5dc86',
         showLoaderOnConfirm: true,
         cancelButtonText: '취소',
+        cancelButtonColor:'#f27474',
         preConfirm: (title) => {
           if (title === '') {
             Swal.showValidationMessage(
@@ -275,32 +284,29 @@ export default {
         }
       })
     }
+
+    
 		function click_delete_marker_and_overlay(marker) {
 			var s_index = null
       for(var i = 0; i < store.saved_markers_info.length; i++) {
         if (marker.getTitle() === store.saved_markers_info[i]['name']) {
 					s_index = i
 				}}
-			const swalWithBootstrapButtons = Swal.mixin({
-				customClass: {
-					confirmButton: 'btn btn-success',
-					cancelButton: 'btn btn-danger'
-				},
-				buttonsStyling: false
-			})
-			swalWithBootstrapButtons.fire({
-				title: 'Are you sure?',
-				text: "You won't be able to revert this!",
+			Swal.fire({
+				title: '삭제하시겠습니까?',
+				
 				icon: 'warning',
 				showCancelButton: true,
-				confirmButtonText: 'Yes, delete it!',
-				cancelButtonText: 'No, cancel!',
-				reverseButtons: true
+				confirmButtonText: '삭제',
+				cancelButtonText: '취소',
+        confirmButtonColor: '#f8bb86',
+        cancelButtonColor: '#f27474',
+				// reverseButtons: true
 			}).then((result) => {
 				if (result.isConfirmed) {
-					swalWithBootstrapButtons.fire(
-						'Deleted!',
-						'Your file has been deleted.',
+					Swal.fire(
+						'삭제',
+						'삭제되었습니다.',
 						'success'
 					)
 					save_markers[s_index].setMap(null)
@@ -313,9 +319,9 @@ export default {
 					/* Read more about handling dismissals below */
 					result.dismiss === Swal.DismissReason.cancel
 				) {
-					swalWithBootstrapButtons.fire(
-						'Cancelled',
-						'Your imaginary file is safe :)',
+					Swal.fire(
+						'취소',
+						'취소되었습니다.',
 						'error'
 					)
 				}
@@ -323,8 +329,6 @@ export default {
 		}
 
     function drag_start_move_marker(marker) {
-      console.log(marker.getTitle())
-      console.log(store.saved_markers_info)
       for (var d_m_m_i = 0; d_m_m_i < store.saved_markers_info.length;  d_m_m_i ++) {
         if (marker.getTitle() === store.saved_markers_info[d_m_m_i]['name']) {
           save_overlay[d_m_m_i].setMap(null)
@@ -351,16 +355,17 @@ export default {
       store.updateCctv(store.saved_markers_info[save_drag_index])
       //수정 api 작동안됨
     }
-    function createCctv(title, lat, lon, info) {
+    function createCctv(title, lat, lon) {
       const cctv_Data = {
         name: title,
         video : 'asdf',
         latitude : lat,
         longitude : lon,
       }
-      store.createCctv(cctv_Data, info)
+      store.createCctv(cctv_Data)
     }
 		return {
+      store,
       save_markers,
       save_overlay,
 			initMap,
@@ -385,7 +390,10 @@ export default {
 .customOverlay:hover {
   opacity: 100%;
 }
-
+.mapView {
+  width:1620px;
+  height:calc(100vh - 40px);
+}
 .btn-success {
 	font-size: 20px;
 }

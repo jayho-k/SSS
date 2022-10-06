@@ -1,27 +1,23 @@
 <template>
   <div>
-    <div class="CctvMenuBox"> &nbsp;&nbsp;
-      <div style="text-align:left; width:200px;">CCTV</div>
-      <CctvMenu></CctvMenu>
+    <div class="AlarmMenuBox">&nbsp;&nbsp;
+      <div style="text-align:left; width:180px;">Alarm</div>
+      <AlarmMenu></AlarmMenu>
     </div>
-
     <div style="height:30px;"></div>
   </div>
 </template>
   
 <script>
-import CctvMenu from '@/components/system/control/realtime/RevisionCctvMenu.vue'
+import AlarmMenu from '@/components/system/RevisionAlarmMenu.vue'
   export default {
-    components: {
-      CctvMenu,
-    }
+    components: {AlarmMenu}
 
   }
 </script>
   
-<style scoped>
-
-  .CctvMenuBox {
+<style>
+  .AlarmMenuBox {
     position: absolute;
     display: flex;
     align-items: center;

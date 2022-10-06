@@ -7,9 +7,8 @@
       :D_item = D_item
       @click="mapCenter(D_i)"
       class="CctvItemBox">&nbsp;&nbsp;
-      {{D_item.name}} 
-      <span class="material-symbols-outlined" @click="unlock(D_i)">lock</span>
-      <span class="material-symbols-outlined">lock_open</span>
+      {{D_item['name']}} 
+      <span class="material-symbols-outlined" @click="unlock($event, D_i)">lock</span>
       </div>
     </div>
 	</div>
@@ -27,14 +26,22 @@ export default {
       const kakaoStore = useKakaoStore()
       const DataSet = ref(computed(() => kakaoStore.saved_markers_info))
       function mapCenter (D_i) {
+
         kakaoStore.setMapCenter(D_i)
       }
-      function unlock (m_i) {
-        kakaoStore.saved_markers[m_i].setDraggable(true)
-
+      function unlock (e, m_i) {
+        e.target.classList.toggle('toggle_color')
+        if (kakaoStore.saved_markers[m_i].getDraggable() === true) {
+          e.target.innerText = 'lock'
+          kakaoStore.saved_markers[m_i].setDraggable(false)
+        } else {
+          e.target.innerText = 'lock_open'
+          kakaoStore.saved_markers[m_i].setDraggable(true)
+        }
       }
 
       return {
+        kakaoStore,
         DataSet,
         mapCenter,
         unlock,
@@ -43,23 +50,26 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .CctvListBox {
   position: relative;
   width: var(--controller-width);
-  height: 400px;
+  height: calc((100vh - 720px) / 360 * 260 + 180px);
   background-color: var(--main-color2);
   padding: 4px;
   
 
 }
+.toggle_color {
+  color: var(--sweet-red);
 
+}
 
 /* 영역 설정*/
 .CctvItem{
   padding: 0px 4px;
   width:244px;
-  height:365px;
+  height:calc(100% - 35px);
 	overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -80,12 +90,15 @@ background: -webkit-linear-gradient(top, rgba(245,246,246,1) 0%,rgba(219,220,226
 background: linear-gradient(to bottom, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 10%,rgba(219,220,226,1) 85%,rgba(184,186,198,1) 96%,rgba(221,223,227,1) 99%,rgba(245,246,246,1) 100%); 
 
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=0 ); 
-/* 클릭시  
-background: rgb(245,246,246); 
-background: -moz-linear-gradient(top, rgba(245,246,246,1) 0%, rgba(221,223,227,1) 4%, rgba(221,223,227,1) 4%, rgba(184,186,198,1) 6%, rgba(219,220,226,1) 92%, rgba(219,220,226,1) 94%, rgba(219,220,226,1) 97%, rgba(219,220,226,1) 97%, rgba(245,246,246,1) 100%); 
-background: -webkit-linear-gradient(top, rgba(245,246,246,1) 0%,rgba(221,223,227,1) 4%,rgba(221,223,227,1) 4%,rgba(184,186,198,1) 6%,rgba(219,220,226,1) 92%,rgba(219,220,226,1) 94%,rgba(219,220,226,1) 97%,rgba(219,220,226,1) 97%,rgba(245,246,246,1) 100%); 
-background: linear-gradient(to bottom, rgba(245,246,246,1) 0%,rgba(221,223,227,1) 4%,rgba(221,223,227,1) 4%,rgba(184,186,198,1) 6%,rgba(219,220,226,1) 92%,rgba(219,220,226,1) 94%,rgba(219,220,226,1) 97%,rgba(219,220,226,1) 97%,rgba(245,246,246,1) 100%); 
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=0 );  */
+
+
+}
+.CctvItemBox:hover {
+  background: rgb(255,255,255); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(241,241,241,1) 6%, rgba(241,241,241,1) 6%, rgba(225,225,225,1) 7%, rgba(246,246,246,1) 96%, rgba(241,241,241,1) 98%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(241,241,241,1) 6%,rgba(241,241,241,1) 6%,rgba(225,225,225,1) 7%,rgba(246,246,246,1) 96%,rgba(241,241,241,1) 98%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(241,241,241,1) 6%,rgba(241,241,241,1) 6%,rgba(225,225,225,1) 7%,rgba(246,246,246,1) 96%,rgba(241,241,241,1) 98%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f1f1f1',GradientType=0 ); /* IE6-9 */
 }
 
 /* 스크롤바 설정*/

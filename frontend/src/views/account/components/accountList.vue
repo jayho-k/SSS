@@ -7,9 +7,6 @@
                     <input type="text" placeholder=" 이름으로 검색 " v-model="search" @keypress.enter="searchUser">
                 </div>
             </div>
-      <button @click="logOutClick" class="logOut" id="logOut">로그아웃</button>
-      <button @click="refresh" class="refresh" id="refresh">토큰재발급</button>
-      <button @click="myPage" class="myPage" id="myPage">마이페이지</button>
       
     </div>
 
@@ -43,18 +40,12 @@
               <td v-show="store.user_list_mode === 1">{{user.phone_number}}</td>
               <td v-show="store.user_list_mode === 1">{{user.email}}</td>
               <td v-show="store.user_list_mode === 1">{{user.id}}</td>
-              <div v-if="toggle_box == true">
-                <td v-show="store.user_list_mode === 1">
-                  <!-- <button @click="changePassword(index)" class="changePassword" id="changePassword">비밀번호 변경</button> -->
+              <div class="button_td">
+                <td  v-show="store.user_list_mode === 1">
                   <button @click="ismModalViewed = true" class="changePassword" id="changePassword">비밀번호 변경</button>
                 </td>
                 <td v-show="store.user_list_mode === 1">
                   <button @click="deleteAccount(index)" class="deleteAccount" id="deleteAccount">삭제</button>
-                </td>
-              </div>
-              <div v-else>
-                <td v-show="store.user_list_mode === 1">
-                  <button @click="activate(index)" class="activate" id="activate">사용자 활성화</button>
                 </td>
               </div>
             </tr>
@@ -64,47 +55,36 @@
             <tr v-for="(user, index) in store.deactivate_users"
             :key="user.id">
               <td v-show="store.user_list_mode === 2">{{user.name}}</td>
-              <!-- <td>asdf</td> -->
               <td v-show="store.user_list_mode === 2">{{user.department}}</td>
               <td v-show="store.user_list_mode === 2">{{user.phone_number}}</td>
               <td v-show="store.user_list_mode === 2">{{user.email}}</td>
               <td v-show="store.user_list_mode === 2">{{user.id}}</td>
-              <div>
+              <div class="button_td">
                 <td v-show="store.user_list_mode === 2">
-                  <!-- <button @click="changePassword(index)" class="changePassword" id="changePassword">비밀번호 변경</button> -->
-                  <button @click="ismModalViewed = true" class="changePassword" id="changePassword">비밀번호 변경</button>
+                  <button @click="activate(index)" class="activate" id="activate">사용자 활성화</button>
                 </td>
                 <td v-show="store.user_list_mode === 2">
                   <button @click="deleteAccount(index)" class="deleteAccount" id="deleteAccount">삭제</button>
                 </td>
               </div>
               <div>
-                <td v-show="store.user_list_mode === 2">
-                  <button @click="activate(index)" class="activate" id="activate">사용자 활성화</button>
-                </td>
+
               </div>
             </tr>
           
           <tr v-for="(user, index) in store.search_users"
           :key="user.id">
             <td v-show="store.user_list_mode === 3">{{user.name}}</td>
-            <!-- <td>asdf</td> -->
             <td v-show="store.user_list_mode === 3">{{user.department}}</td>
             <td v-show="store.user_list_mode === 3">{{user.phone_number}}</td>
             <td v-show="store.user_list_mode === 3">{{user.email}}</td>
             <td v-show="store.user_list_mode === 3">{{user.id}}</td>
-            <div v-if="toggle_box == true">
+            <div class="button_td">
               <td v-show="store.user_list_mode === 3">
-                <!-- <button @click="changePassword(index)" class="changePassword" id="changePassword">비밀번호 변경</button> -->
                 <button @click="ismModalViewed = true" class="changePassword" id="changePassword">비밀번호 변경</button>
               </td>
               <td v-show="store.user_list_mode === 3">
                 <button @click="deleteAccount(index)" class="deleteAccount" id="deleteAccount">삭제</button>
-              </td>
-            </div>
-            <div v-else>
-              <td v-show="store.user_list_mode === 3">
-                <button @click="activate(index)" class="activate" id="activate">사용자 활성화</button>
               </td>
             </div>
           </tr>
@@ -117,21 +97,15 @@
 
 
 <script>
-import { manageAccounts } from "@/stores/accountManage";
-import { ref, onMounted } from "vue"
-import axios from "axios"
-import SGSS from '@/api/SGSS';
-import router from '@/router';
+import { useAccounts } from "@/stores/accounts";
+import { ref } from "vue"
   export default {
     name:'manageTable',
     components: {},
     setup () {
-      const store = manageAccounts()
-      const currentUser = axios.get(SGSS.accounts.userManage(), {headers: store.authHeader})
-      onMounted(() => {
-        store.activateList()
-        store.deactivateList()
-      })
+      const store = useAccounts()
+      store.activateList(),
+      store.deactivateList()
       const toggle_box = ref(true)
       function changeList () {
         if (toggle_box.value === true){
@@ -140,52 +114,17 @@ import router from '@/router';
           store.user_list_mode = 2
         }
       }
-      function logOutClick(){
-        store.logout()
-      }
       const search = ref('')
       function searchUser(){
         store.user_list_mode = 3
         store.searchUser(search.value)
       }
-      
-      // function deleteAccount(idx){
-      //   if(userData.value.length > 0 ){
-      //      console.log(userData.value[idx]['id'])
-      //     userData.value.splice(idx, 1)
-         
-      //     store.deleteAccount(userData.value[idx]['id'])
-      //   }else{
-      //     console.log(userData.value)
-      //   }
-      // }
-      function refresh(){
-        store.refreshToken()
-      }
-      // function activate(idx){
-      //   console.log(userData.value[idx]['id'])
-      //   store.userActviate(userData.value[idx]['id'])
-      // }
-      // function changePassword(idx){
-      //   router
-      //   store.changePassword(userData.value[idx]['id'])
-      // }
-      function myPage(){
-        router.push({name : 'myPage'})
-      }
-
-      
-      
       return {
         store,
-        currentUser,
         toggle_box,
         search,
         changeList,
-        logOutClick,
         searchUser,
-        refresh,
-        myPage,
       }
     }
   }
@@ -229,7 +168,10 @@ import router from '@/router';
     cursor: pointer;
     display: inline-block;
   }
-
+  .button_td {
+    display: flex;
+    justify-content: center;
+  }
   .toggle-switch {
     display: inline-block;
     background: #ccc;
@@ -300,6 +242,11 @@ import router from '@/router';
         border: none;
         cursor: pointer;
     }
+    body {
+    background-color: #000000;
+    background-image: url("@/assets/account/background.png");
+    background-size: cover;
+  }
 
 
 </style>

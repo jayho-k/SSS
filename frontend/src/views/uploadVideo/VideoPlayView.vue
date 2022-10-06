@@ -1,16 +1,15 @@
 <template>
   <div class="uploadVideoMain">
-    <VideoFiles></VideoFiles>
-
+    <VideoPlayer></VideoPlayer>
     <UploadController></UploadController>
   </div>
 </template>
 
 <script>
-import VideoFiles from '@/components/system/uploadVideo/VideoFiles.vue'
+import VideoPlayer from '@/components/system/uploadVideo/VideoPlayer.vue'
 import UploadController from '@/components/system/control/uploadVideo/UploadController'
 export default {
-    components: { VideoFiles, UploadController }
+    components: { VideoPlayer, UploadController }
 
 }
 </script>

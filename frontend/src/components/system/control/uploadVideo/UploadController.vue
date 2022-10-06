@@ -5,38 +5,26 @@
     <!-- 업로드 -->
   <VideoList class="metalList"></VideoList>
   <MiaList class="metalList"></MiaList>
-
-
-      
-      
-      
-    
-    
   </div>  
 </template>
 
-<script>
-import { useIndexStore } from '@/stores/index'
+<script scoped>
 import NavMenu from '@/components/system/control/NavMenu.vue'
 import WatchMenu from '@/components/system/control/WatchMenu.vue'
-// import AlarmList from '@/components/system/control/realtime/AlarmList.vue'
 
 import VideoList from '@/components/system/control/uploadVideo/VideoList.vue'
 import MiaList from '@/components/system/MiaList.vue'
 export default {
   components: {
     NavMenu,
-    // AlarmList,
     WatchMenu,
-
+    
     VideoList,
     MiaList,
   },
   setup () {
-    const IndexStore = useIndexStore()
-    const view_case =IndexStore.view_case
+
     return {
-      view_case
     }
 
   }

@@ -1,63 +1,49 @@
 <template>
   <div class="modal" id="login-modal">
     <div class="modal-content">
-      <div class="modal-content-left"></div>
-      <div class="modal-content-right">
-        <div @click="$emit('loginClose')" class="close-btn">&times;</div>
+      <!-- 아이디 찾기 -->
+      <!-- <div class="findIdBox centerBox">
+        <div>
+          <input type="text" v-model="findIdData.name">
+        </div>
+        <div>
+          <input type="email" v-model="findIdData.email">
+        </div>
+        <div class="findIdBotton">아이디 찾기</div>
+      </div> -->
+
+      <div class="loginBox">
         <form
           @submit.prevent="checklogin()"
           class="modal-form"
           id="form"
         >
           <h1 class="font-weight-bold">로그인</h1>
-          <div class="form-validation">
+          <div class="">
             <input
               v-model="credential.username"
               type="text"
-              class="modal-input"
+              class="modal-input form-validation"
               id="name"
               name="name"
               placeholder="아이디를 입력하세요"
             />
-            <p v-if="isError">{{ errorMsg }}</p>
+            <div v-if="isError" style="color: red;">{{ errorMsg }}</div>
           </div>
-          <div class="form-validation">
+          <div class="">
             <input
               v-model="credential.password"
               type="password"
-              class="modal-input"
+              class="modal-input form-validation"
               id="password1"
               name="password"
               placeholder="비밀번호를 입력하세요"
             />
-            <p v-if="isPwError">{{errorMsg}}</p>
+            <div v-if="isPwError" style="color: red;">{{errorPwMsg}}</div>
           </div>
           <input type="submit" class="modal-input-btn" value="로그인" />
-          <button @click="login.logout()">로그아웃</button>
-          <!-- <div
-            @click="login.login(credential)"
-            style="border: none; cursor: pointer"
-            class="my-2"
-          >
-            회원가입
-          </div> -->
-          <!-- <router-link></router-link> -->
-          <!-- <div class="modal-findIdPwBtn">
-            <div class="overlay" @click="$emit('close-modal')"></div>
-            <div class="modal-card">
-              <slot name="body">
-                관리자에게 문의 부탁드립니다.<br>
-                Tel : 042-123-4567
-              </slot>
-            </div>
-            <footer class="modal-footer">
-              <slot name="footer">
-                <button @click="$emit('close')">Close</button>
-              </slot>
-            </footer>
-          </div> -->
         </form>
-        <router-link to="/signup">회원가입</router-link>
+        <button @click="signup()" class="sign-btn">회원가입</button>
       </div>
     </div>
   </div>
@@ -66,6 +52,7 @@
 <script>
 import { useAccounts } from "@/stores/accounts";
 import { ref } from "vue"
+import router from '@/router';
 export default {
   name: "LoginView",
   components: {},
@@ -73,34 +60,42 @@ export default {
   setup() {
     const login = useAccounts();
     const isError = ref(false)
+    const isPwError = ref(false)
     const errorMsg = ref('')
+    const errorPwMsg = ref('')
     const credential = ref({
       username: "",
       password: "",
     })
+    const findIdData = {
+      name: '',
+      email: '',
+    }
 
     function checklogin () {
       if(credential.value.username === "") {
         isError.value = true
         errorMsg.value = "아이디를 입력해주세요"
       } else if (credential.value.password === "") {
-        isError.value = true
-        errorMsg.value = "비밀번호를 입력해주세요"
+        isPwError.value = true
+        errorPwMsg.value = "비밀번호를 입력해주세요"
       } else {
-        console.log(credential)
         login.login(credential.value)
       }
     }
-    function checkPassword(){
-      // 특수문자, 몇글자 등등
+    function signup() {
+      router.push({name:"signup"})
     }
     return {
       login,
       credential,
       isError,
+      isPwError,
+      errorPwMsg,
       errorMsg,
+      findIdData,
       checklogin,
-      checkPassword
+      signup
     }
   },
   methods: {},
@@ -108,11 +103,91 @@ export default {
 </script>
 
 <style>
-  /* .modal{
-    background-image: url("@/assets/account/background.png");
-    background-size: cover;
-  } */
+  .centerBox {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    top: calc(50% - 200px);
+    left: calc(50% - 200px);
+    border: 3px;
+    background-color: rgba( 255, 255, 255, 0.2 );
+    border-radius: 15px;
+    transition: all 1s;
+  }
+  .modal-input-btn{
+    margin: 15px;
+    width: 210px;
+    height: 30px;
+    background: radial-gradient(95% 60% at 50% 75%, #005FD6 0%, #209BFF 100%);
+    border: 1px solid #54A1FD;
+    box-shadow: 0px 8px 20px -8px #1187FF, inset 0px 1px 8px -4px #FFFFFF;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    transition: all .2s ease;
+    -webkit-tap-highlight-color: rgba(255,255,255,0);
+  }
+  .sign-btn{
+    margin: 15px;
+    width: 210px;
+    height: 30px;
+    background: radial-gradient(95% 60% at 50% 75%, #005FD6 0%, #209BFF 100%);
+    border: 1px solid #54A1FD;
+    box-shadow: 0px 8px 20px -8px #1187FF, inset 0px 1px 8px -4px #FFFFFF;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    transition: all .2s ease;
+    -webkit-tap-highlight-color: rgba(255,255,255,0);
+  }
+  .loginBox {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    top: calc(50% - 200px);
+    left: calc(50% - 200px);
+    border: 3px;
+    background-color: rgba( 255, 255, 255, 0.2 );
+    border-radius: 15px;
+    transition: all 1s;
+  }
+  .centerBox:hover {
+    width: 400px;
+    height: 400px;
+    top: calc(50% - 200px);
+    left: 50%;
+    border: 3px solid white;
+    background-color: white;
+    border-radius: 15px;
+
+  }
+
+  .form-validation {
+    border: 3px solid rgba(87, 55, 18, 0.6);
+    font-size: 16px;
+  }
+  .findIdBox {
+    width: 200px;
+    height: 400px;
+    top: calc(50% - 200px);
+    left: calc(50% - 200px);
+    border: 3px solid white;
+    background-color: white;
+    border-radius: 15px;
+
+  }
+  .findIdBox:before {
+  content: "«";
+  color: blue;
+  }
   body {
+    background-color: #000000;
     background-image: url("@/assets/account/background.png");
     background-size: cover;
   }
@@ -138,4 +213,90 @@ export default {
     z-index: 10;
     opacity: 1;
   }
+  .modal-input { 
+    margin: 15px 30px;
+    border-radius: 5px;
+    height: 30px;
+  }
+  .modal-input::placeholder {
+    text-align: center;
+  }
+  .gosign {
+    color: black;
+  }
+
+  .font-weight-bold {
+    color: #000000;
+  }
+
+
+  .button {
+    background: #fff;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    transition: all .35s ease-in-out .35s;
+    margin: 0 auto;
+    width: 200px;
+    height: 40px;
+    text-align: center;
+
+    box-shadow: 2px 1px;
+  }
+  .span {
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+    padding: 4px 4px 4px 4px;
+    background: #fff;
+    z-index: 100;
+    height: 24px;
+    width: 184px;
+    position: relative;
+    transition: all .35s ease-in-out .35s;
+    font-size: 16px;
+  }
+.button-wrapper {
+    display: inline-block;
+  }
+  .button:hover span {
+    background: var(--sweet-blue);
+    color: #fff;
+    transition: all .35s ease-in-out .35s;
+  }
+  .button:after {
+    bottom: -100%;
+    right: -100%;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: var(--sweet-blue);
+    transition: all .35s ease-in-out .5s;
+  }
+  .button:hover:after {
+    right: 0;
+    bottom: 0;
+    transition: all ease-in-out .35s;
+  }
+  .button:before {
+    top: -100%;
+    left: -100%;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: var(--sweet-blue);
+    transition: all .35s ease-in-out .5s;
+  }
+  .button:hover:before {
+    left: 0;
+    top: 0;
+    transition: all ease-in-out .35s;
+  }
+
+  
 </style>
