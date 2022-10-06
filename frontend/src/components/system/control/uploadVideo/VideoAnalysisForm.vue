@@ -5,7 +5,7 @@
 			<option value="">선택</option>
 			<option value="fire">화재감지 영상분석</option>
 			<option value="mia">미아탐색 영상분석</option>
-			<option value="safety">야생동물 영상분석</option>
+			<option value="safety">공공안전 영상분석</option>
 		</select>
 
 
@@ -16,7 +16,7 @@
 					<span class="span">
 						<span v-if="uploadStore.analysis_case === 'fire'" class="material-symbols-outlined">local_fire_department</span>
 						<span v-if="uploadStore.analysis_case === 'mia'" class="material-symbols-outlined">face</span>
-						<span v-if="uploadStore.analysis_case === 'safety'" class="material-symbols-outlined">cruelty_free</span>
+						<span v-if="uploadStore.analysis_case === 'safety'" class="material-symbols-outlined">sports_kabaddi</span>
 						<div>분석</div>
 					</span>
 				</div>  
@@ -182,7 +182,7 @@ export default {
 	.select {
 		width: 204px;
 		height: 40px;
-		font-size: 20px;
+		font-size: 16px;
 		margin-top: 20%;
     margin-left: 24px;
     display: flex;

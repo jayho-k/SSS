@@ -1,5 +1,6 @@
 <template>
   <div class="NavMenuBox navMetal">
+    <div class="mia_modal" v-if="miaStore.is_mia_img_modal"></div>
     <router-link class="cursor navItem" to="/cctv"><span class="material-symbols-outlined">photo_camera</span></router-link>
     <router-link class="cursor navItem" to="/upload"><span class="material-symbols-outlined">drive_folder_upload</span></router-link>
     <a class="cursor navItem" @click="isModalViewed=true"><span class="material-symbols-outlined">badge</span></a>
@@ -9,12 +10,14 @@
   <ModalView v-if="isModalViewed" @close-modal="isModalViewed=false">
     <myPage />
   </ModalView>
+
 </template>
 
 <script>
 import ModalView from '@/views/account/components/ModalView.vue'
 import myPage from '@/views/account/components/myPage.vue'
 import { useAccounts } from '@/stores/accounts'
+import { useMiaStore } from '@/stores/mia'
 import { ref } from 'vue'
 export default {
   components: {
@@ -24,12 +27,14 @@ export default {
   setup() {
     const isModalViewed = ref(false)
     const accountStore = useAccounts()
+    const miaStore = useMiaStore()
     const account = useAccounts()
     account.fetchCurrentUser()
     return {
       accountStore,
       account,
-      isModalViewed
+      isModalViewed,
+      miaStore
 
     }
   }
@@ -75,5 +80,13 @@ export default {
 
 .cursor:hover {
   cursor: pointer;
+}
+.mia_modal {
+  position: absolute;
+  width: 300px;
+  right:0px;
+  height: 600px;
+  background: #FFF;
+  z-index: 200;
 }
 </style>

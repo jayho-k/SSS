@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="CctvMenuBox"> &nbsp;&nbsp;
-      <div style="text-align:left; width:200px;">CCTV</div>
+      <div style="text-align:left; width:60px;">CCTV</div>
       <CctvMenu></CctvMenu>
     </div>
-
     <div style="height:30px;"></div>
+
   </div>
 </template>
   
