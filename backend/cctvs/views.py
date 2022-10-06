@@ -207,7 +207,7 @@ class video_camera(threading.Thread):
             yolo_weights= WEIGHTS / model,  # model.pt path(s),
             strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
             config_strongsort=ROOT / 'strong_sort/configs/strong_sort.yaml',
-            device='cpu',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
+            device='0',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
             deepsort=deepsort, ########### MOT or not custumized variable ########################
             project=TRACK,  # save results to project/name
             name=name_exp,  # save results to project/name
@@ -299,7 +299,7 @@ def upload(request):
                     yolo_weights= WEIGHTS / 'yolov7.pt',  # model.pt path(s),
                     strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
                     config_strongsort=ROOT / 'strong_sort/configs/strong_sort.yaml',
-                    device='cpu',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
+                    device='0',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
                     deepsort=True, ########### MOT or not custumized variable ########################
                     project=TRACK,  # save results to project/name
                     name=name_exp,  # save results to project/name
@@ -326,7 +326,7 @@ def upload(request):
                     yolo_weights= WEIGHTS / 'fire.pt',  # model.pt path(s),
                     strong_sort_weights=WEIGHTS / 'osnet_x0_25_msmt17.pt',  # model.pt path,
                     config_strongsort=ROOT / 'strong_sort/configs/strong_sort.yaml',
-                    device='cpu',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
+                    device='0',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
                     deepsort=False, ########### MOT or not custumized variable ########################
                     project=TRACK,  # save results to project/name
                     name=name_exp,  # save results to project/name
@@ -406,7 +406,7 @@ class parse_api_slowfast:
         self.det_score_thr = 0.9
         self.input_video = input_video
         self.label_map = os.path.join(BASE,'label_map.txt')
-        self.device = 'cpu'
+        self.device = 'cuda:0'
         self.output_fps = 25
         self.out_filename = None
         self.show = True
