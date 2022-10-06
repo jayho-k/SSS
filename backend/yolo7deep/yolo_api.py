@@ -1,16 +1,12 @@
 import argparse
-from doctest import FAIL_FAST
 
 import os
-from tkinter import Variable
 # limit the number of cpus used by high performance libraries
 os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
 os.environ["MKL_NUM_THREADS"] = "1"
 os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
 os.environ["NUMEXPR_NUM_THREADS"] = "1"
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE","backend.settings")
 
 import sys
 import numpy as np
@@ -101,7 +97,7 @@ def run(
     save_dir = Path(project) / exp_name  # non-increment run
     save_dir = Path(save_dir)
     (save_dir / 'tracks' if save_txt else save_dir).mkdir(parents=True, exist_ok=True)  # make dir
-    print(conf_thres)
+
     # Load model
     device = select_device(device)
     
@@ -221,13 +217,12 @@ def run(
 
                 # pass detections to strongsort
                 t4 = time_synchronized()
-                if deepsort:
-                    outputs[i] = strongsort_list[i].update(xywhs.cpu(), confs.cpu(), clss.cpu(), im0)
+                outputs[i] = strongsort_list[i].update(xywhs.cpu(), confs.cpu(), clss.cpu(), im0)
                 t5 = time_synchronized()
                 dt[3] += t5 - t4
 
-                # draw boxes for visualization
                 if deepsort:
+                # draw boxes for visualization
                     if len(outputs[i]) > 0:
                         for j, (output, conf) in enumerate(zip(outputs[i], confs)):
         
@@ -256,46 +251,32 @@ def run(
                                     txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
                                     save_one_box(bboxes, imc, file=save_dir / 'crops' / txt_file_name / names[c] / f'{id}' / f'{p.stem}.jpg', BGR=True)
 
-                        print(f'{s}Done. YOLO:({t3 - t2:.3f}s), StrongSORT:({t5 - t4:.3f}s)')
-                    else:
-                        strongsort_list[i].increment_ages()
-                        print('No detections')
+                    print(f'{s}Done. YOLO:({t3 - t2:.3f}s), StrongSORT:({t5 - t4:.3f}s)')
                 else:
                     for *xyxy, conf, cls in reversed(det):
                         if save_vid or show_vid:  # Add bbox to image
                             label = f'{names[int(cls)]} {conf:.2f}'
                             plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=line_thickness)
-
-
-            # Stream results
-            if show_vid:
-                # cv2.imshow(str(p), im0)
-                # cv2.waitKey(1)  # 1 millisecond
-                print(show_vid)
-                print("****************************************")
-                # _, jpeg = cv2.imencode('.jpg', im0)
-                # return jpeg.tobytes()
+            else:
+                strongsort_list[i].increment_ages()
+                print('No detections')
 
             # Save results (image with detections)
             if save_vid:
-                if dataset.mode == 'image':
-                    save_path = str(Path(save_path).with_suffix('.jpg'))
-                    print(f" The image with the result is saved in: {save_path}")
-                    cv2.imwrite(save_path, im0)
-                else:
-                    if vid_path[i] != save_path:  # new video
-                        vid_path[i] = save_path
-                        if isinstance(vid_writer[i], cv2.VideoWriter):
-                            vid_writer[i].release()  # release previous video writer
-                        if vid_cap:  # video
-                            fps = vid_cap.get(cv2.CAP_PROP_FPS)
-                            w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                            h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                        else:  # stream
-                            fps, w, h = 30, im0.shape[1], im0.shape[0]
-                        save_path = str(Path(save_path).with_suffix('.mkv'))  # force *.mp4 suffix on results videos
-                        vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'XVID'), fps, (w, h))
-                    vid_writer[i].write(im0)
+                
+                if vid_path[i] != save_path:  # new video
+                    vid_path[i] = save_path
+                    if isinstance(vid_writer[i], cv2.VideoWriter):
+                        vid_writer[i].release()  # release previous video writer
+                    if vid_cap:  # video
+                        fps = vid_cap.get(cv2.CAP_PROP_FPS)
+                        w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                        h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                    else:  # stream
+                        fps, w, h = 30, im0.shape[1], im0.shape[0]
+                    save_path = str(Path(save_path).with_suffix('.mkv'))  # force *.mp4 suffix on results videos
+                    vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'XVID'), fps, (w, h))
+                vid_writer[i].write(im0)
 
             prev_frames[i] = curr_frames[i]
 
@@ -307,45 +288,7 @@ def run(
         print(f"Results saved to {colorstr('bold', save_dir)}{s}")
     if update:
         strip_optimizer(yolo_weights)  # update model (to fix SourceChangeWarning)
-    return save_dir
 
-
-def parse_opt():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--yolo-weights', nargs='+', type=str, default=WEIGHTS / 'yolov7.pt', help='model.pt path(s)')
-    parser.add_argument('--strong-sort-weights', type=str, default=WEIGHTS / 'osnet_x0_25_msmt17.pt')
-    parser.add_argument('--config-strongsort', type=str, default='strong_sort/configs/strong_sort.yaml')
-    parser.add_argument('--source', type=str, default='0', help='file/dir/URL/glob, 0 for webcam')  
-    parser.add_argument('--imgsz', '--img', '--img-size', nargs='+', type=int, default=[640], help='inference size h,w')
-    parser.add_argument('--conf-thres', type=float, default=0.5, help='confidence threshold')
-    parser.add_argument('--iou-thres', type=float, default=0.5, help='NMS IoU threshold')
-    parser.add_argument('--max-det', type=int, default=1000, help='maximum detections per image')
-    parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
-    parser.add_argument('--show-vid', action='store_true', help='display tracking video results')
-    parser.add_argument('--save-txt', action='store_true', help='save results to *.txt')
-    parser.add_argument('--save-conf', action='store_true', help='save confidences in --save-txt labels')
-    parser.add_argument('--save-crop', action='store_true', help='save cropped prediction boxes')
-    parser.add_argument('--save-vid', action='store_true', help='save video tracking results')
-    parser.add_argument('--nosave', action='store_true', help='do not save images/videos')
-    # class 0 is person, 1 is bycicle, 2 is car... 79 is oven
-    parser.add_argument('--classes', nargs='+', type=int, help='filter by class: --classes 0, or --classes 0 2 3')
-    parser.add_argument('--agnostic-nms', action='store_true', help='class-agnostic NMS')
-    parser.add_argument('--augment', action='store_true', help='augmented inference')
-    parser.add_argument('--visualize', action='store_true', help='visualize features')
-    parser.add_argument('--update', action='store_true', help='update all models')
-    parser.add_argument('--project', default=ROOT / 'runs/track', help='save results to project/name')
-    parser.add_argument('--name', default='exp', help='save results to project/name')
-    parser.add_argument('--exist-ok', action='store_true', help='existing project/name ok, do not increment')
-    parser.add_argument('--line-thickness', default=3, type=int, help='bounding box thickness (pixels)')
-    parser.add_argument('--hide-labels', default=False, action='store_true', help='hide labels')
-    parser.add_argument('--hide-conf', default=False, action='store_true', help='hide confidences')
-    parser.add_argument('--hide-class', default=False, action='store_true', help='hide IDs')
-    parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
-    parser.add_argument('--dnn', action='store_true', help='use OpenCV DNN for ONNX inference')
-    opt = parser.parse_args()
-    opt.imgsz *= 2 if len(opt.imgsz) == 1 else 1  # expand
-
-    return opt
 
 def parse_api(
         source=ROOT / 'test_video.mp4',
@@ -437,14 +380,7 @@ def parse_api(
     return api
 
 
-def main(opt):
-    check_requirements(requirements=ROOT / 'requirements.txt', exclude=('tensorboard', 'thop'))
-    run(**vars(opt))
-
 def yolo_detect_api(**kwargs):
+    check_requirements(requirements=ROOT / 'requirements.txt', exclude=('tensorboard', 'thop'))
     api = parse_api(**kwargs)
     run(**api)
-
-if __name__ == "__main__":
-    opt = parse_opt()
-    main(opt)
