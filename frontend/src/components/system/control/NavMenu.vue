@@ -32,8 +32,7 @@ export default {
     const accountStore = useAccounts()
     const miaStore = useMiaStore()
     const account = useAccounts()
-    console.log(serverURL)
-    console.log(miaStore.modal_mia_img)
+
     account.fetchCurrentUser()
     miaStore.modal_mia_img
     function toggle_modal () {
@@ -94,7 +93,7 @@ export default {
 }
 .mia_modal {
   position: absolute;
-  border: 4px inset var(--sweet-green);
+  border: 5px inset red;
   width: 276px;
   right:10px;
   top: 20px;
@@ -111,5 +110,9 @@ export default {
   position: absolute;
   right: 20px;
   top: 20px;
+  color: black;
+}
+.closeButton:hover {
+  color: var(--sweet-red);
 }
 </style>
