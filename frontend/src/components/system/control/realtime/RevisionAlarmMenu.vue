@@ -2,8 +2,6 @@
   <div class="RevisionMenuBox">
     <span class="material-symbols-outlined"  @click="toggle_view">account_circle</span>
     <div style="display:flex;">
-      <span @click="add_mia" class="material-symbols-outlined metalBtn linearBtn">person_add</span>
-      <span @click="del_mia" class="material-symbols-outlined metalBtn linearBtn">delete</span>
     </div>
   </div>
 </template>
@@ -14,20 +12,12 @@ export default {
   setup() {
     const miaStore = useMiaStore()
     miaStore.mia_list_mode = true
-    function add_mia (e) { 
-      e.target.classList.toggle('clickB')
-        miaStore.is_add_mia = !miaStore.is_add_mia
-      }
-    function del_mia (e) { 
-      e.target.classList.toggle('clickR')
-      miaStore.mia_list_mode = !miaStore.mia_list_mode
-    }
+
     function toggle_view () {
       miaStore.is_alarm_view = !miaStore.is_alarm_view
     }
     return {
-      add_mia,
-      del_mia,
+
       toggle_view
     }
   }

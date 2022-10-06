@@ -15,10 +15,12 @@ export const useKakaoStore = defineStore("Kakao", {
 			map_center: [33.450705, 126.570677],
 
 			is_kakao_view: true,
-			selete_cctv:'',
+
 
 			alarm_list: [],
-			}
+			streaming_cctv:null,
+			streaming_case: 'normal',
+		}
 	},
 	actions: {
 		refreshToken(){

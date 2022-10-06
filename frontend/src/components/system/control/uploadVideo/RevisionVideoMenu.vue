@@ -71,7 +71,6 @@ export default {
 
 /* active ------------------------- */
 
-
 .clickB:hover {
   color: hsl(210, 100%, 40%);
 
