@@ -15,10 +15,15 @@ export default {
   setup() {
     const miaStore = useMiaStore()
     miaStore.mia_list_mode = true
-    function add_mia (e) { 
-      e.target.classList.toggle('clickB')
+    function add_mia () { 
+        miaStore.mia_update_id = -1
         miaStore.is_add_mia = !miaStore.is_add_mia
+        miaStore.miaData = {
+        name:'',
+        child_img: {name: '이미지를 추가해 주세요'},
+        age: 0,
       }
+    }
     function del_mia (e) { 
       e.target.classList.toggle('clickR')
       miaStore.mia_list_mode = !miaStore.mia_list_mode
@@ -74,7 +79,7 @@ export default {
 /* active ------------------------- */
 
 
-.clickB {
+.clickB:hover {
   color: hsl(210, 100%, 40%);
 
   box-shadow: 
