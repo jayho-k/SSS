@@ -1,11 +1,10 @@
 <template>
   <div class="NavMenuBox navMetal">
-    <div class="mia_modal" v-if="miaStore.is_mia_img_modal"></div>
+    <div class="mia_modal" v-if="miaStore.is_mia_img_modal"><img class="mia_modal_img"  :src="`${serverURL}${miaStore.modal_mia_img}`"></div>
     <router-link class="cursor navItem" to="/cctv"><span class="material-symbols-outlined">photo_camera</span></router-link>
     <router-link class="cursor navItem" to="/upload"><span class="material-symbols-outlined">drive_folder_upload</span></router-link>
     <a class="cursor navItem" @click="isModalViewed=true"><span class="material-symbols-outlined">badge</span></a>
     <div class="cursor navItem" @click="accountStore.logout"><span class="material-symbols-outlined">logout</span></div>
-
   </div>
   <ModalView v-if="isModalViewed" @close-modal="isModalViewed=false">
     <myPage />
@@ -25,12 +24,18 @@ export default {
     myPage
   },
   setup() {
+    const serverURL = process.env.VUE_APP_VIDEO_API
+
     const isModalViewed = ref(false)
     const accountStore = useAccounts()
     const miaStore = useMiaStore()
     const account = useAccounts()
+    console.log(serverURL)
+    console.log(miaStore.modal_mia_img)
     account.fetchCurrentUser()
+    miaStore.modal_mia_img
     return {
+      serverURL,
       accountStore,
       account,
       isModalViewed,
@@ -68,8 +73,8 @@ export default {
   
   background-color: hsl(0,0%,90%);
   box-shadow: inset hsla(0,0%,15%,  1) 0  0px 0px 4px, /* border */
-    inset hsla(0,0%,15%, .8) 0 -1px 5px 4px, /* soft SD */
-    inset hsla(0,0%,0%, .25) 0 -1px 0px 7px, /* bottom SD */
+    inset rgba(0, 0, 0, 0.8) 0 -1px 5px 4px, /* soft SD */
+    inset rgba(0, 0, 0, 0.25) 0 -1px 0px 7px, /* bottom SD */
     inset hsla(0,0%,100%,.7) 0  2px 1px 7px, /* top HL */
     
     hsla(0,0%, 0%,.15) 0 -2px 4px 4px, /* outer SD */
@@ -83,10 +88,17 @@ export default {
 }
 .mia_modal {
   position: absolute;
-  width: 300px;
-  right:0px;
-  height: 600px;
+  border: 4px inset var(--sweet-green);
+  width: 276px;
+  right:10px;
+  top: 20px;
+  height: 360px;
   background: #FFF;
-  z-index: 200;
+  z-index: 150;
+}
+.mia_modal_img {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
 }
 </style>
