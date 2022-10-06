@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="MiaMenuBox">&nbsp;&nbsp;
-      <div style="text-align:left; width:180px;">MIA</div>
+      <div style="text-align:left; width:60px;">MIA</div>
       <MiaMenu></MiaMenu>
     </div>
     <div style="height:30px;"></div>
@@ -11,7 +11,8 @@
 <script>
 import MiaMenu from '@/components/system/RevisionMiaMenu.vue'
   export default {
-    components: {MiaMenu}
+    components: {MiaMenu},
+
 
   }
 </script>
