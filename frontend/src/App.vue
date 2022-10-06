@@ -1,6 +1,7 @@
 <template>
   <div class="main">
     <router-view></router-view>
+
   </div>
 </template>
 
@@ -52,4 +53,5 @@ body {
   min-width: 1280px;
   min-height: 720px;
 }
+
 </style>
