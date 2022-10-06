@@ -269,6 +269,7 @@ class yolo_stream(object):
 
                 txt_path = str(self.save_dir / 'tracks' / txt_file_name)  # im.txt
                 s += '%gx%g ' % im.shape[2:]  # print string
+                ssslog = ''
                 imc = im0.copy() if self.api.save_crop else im0  # for save_crop
 
                 if self.cfg.STRONGSORT.ECC:  # camera motion compensation
@@ -282,6 +283,7 @@ class yolo_stream(object):
                     for c in det[:, -1].unique():
                         n = (det[:, -1] == c).sum()  # detections per class
                         s += f"{n} {self.names[int(c)]}{'s' * (n > 1)}, "  # add to string
+                        ssslog += f"{n} {self.names[int(c)]}"
 
                     xywhs = xyxy2xywh(det[:, 0:4])
                     confs = det[:, 4]
@@ -339,7 +341,7 @@ class yolo_stream(object):
 
 
                 self.prev_frames[i] = curr_frames[i]
-                return 0
+                return ssslog
 
         # Print results
         t = tuple(x / seen * 1E3 for x in dt)  # speeds per image

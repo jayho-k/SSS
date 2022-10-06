@@ -246,7 +246,9 @@ class video_camera(threading.Thread):
             print(temp_file)
             cv2.imwrite(temp_file, self.frame)
             sleep(0.01)
-            self.stream_yolo.run()
+            ssslog = self.stream_yolo.run()
+            pred_lst.append([ssslog])
+            print(ssslog, pred_lst)
             sleep(0.01)
 
 
