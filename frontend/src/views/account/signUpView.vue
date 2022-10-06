@@ -22,7 +22,7 @@
           <div >
             <input v-model="credential.name" type="text" class="modal-input-sign form-validation" id="managerName" name="managerName" placeholder="관리자명">
           </div>
-          <input type="submit" class="back-btn" value="Sign up">
+          <input type="submit" class="back-btn"  value="Sign up">
         </form>
         <button class="back-btn" @click="()=>$router.push({name:'login'})" >Cancel</button>
       </div>

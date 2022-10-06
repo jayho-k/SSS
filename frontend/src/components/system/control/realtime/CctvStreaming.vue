@@ -7,7 +7,7 @@
 			<option value="safety"><span class="material-symbols-outlined">safety</span></option>
 		</select>
 
-		<img class="real_img" :src="`${serverURL}/api/cctvs/${userStore.streaming_id}/${kakaoStore.streaming_cctv}/streaming/${kakaoStore.streaming_case}/`" 	@error="replaceDefault">
+		<img style="font-size:200px" class="real_img" :src="`${serverURL}/cctvs/${userStore.streaming_id}/${kakaoStore.streaming_cctv}/streaming/${kakaoStore.streaming_case}/`" alt="잠시만 기다려 주세용" >
 
 	</div>
 </template>
@@ -15,7 +15,6 @@
 <script>
 import { useAccounts } from '@/stores/accounts'
 import { useKakaoStore } from '@/stores/kakaoMap'
-import defaultImg from  '@/assets/loading.gif'
 export default {
 	setup() {
 		const serverURL = process.env.VUE_APP_VIDEO_API
@@ -33,9 +32,7 @@ export default {
 			kakaoStore.is_kakao_view = null
 			setTimeout(()=> {kakaoStore.is_kakao_view === false}, 1)
 		}
-		function replaceDefault(e) {
-      e.target.src = defaultImg
-    }
+
 
 		setInterval(get_alarmList(), 3000)
 		return {
@@ -44,7 +41,6 @@ export default {
 			kakaoStore,
 			get_alarmList,
 			streaming_case,
-			replaceDefault,
 		}
 	}
 }
