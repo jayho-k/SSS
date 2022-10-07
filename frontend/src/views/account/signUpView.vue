@@ -8,7 +8,7 @@
             <input v-model="credential.username" type="text" class="modal-input-sign form-validation" name="userId" id="userId" placeholder="아이디" required>
           </div>
           <div >
-            <input v-model="credential.password" type="text" class="modal-input-sign form-validation" name="userPassword" id="userPassword" placeholder="비밀번호" required>
+            <input v-model="credential.password" type="password" class="modal-input-sign form-validation" name="userPassword" id="userPassword" placeholder="비밀번호" required>
           </div>
           <div >
             <input v-model="credential.department" type="text" class="modal-input-sign form-validation" name="corpName" id="corpName" placeholder="기관/소속명" required>
