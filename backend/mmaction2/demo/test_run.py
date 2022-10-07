@@ -199,7 +199,7 @@ class parse_api:
         self.det_score_thr=0.9
         self.action_score_thr=0.5
         self.label_map=os.path.join(BASE,'label_map.txt')
-        self.device='cpu'
+        self.device='cuda:0'
         self.out_filename=output_path
         self.predict_stepsize=8
         self.output_stepsize=4
