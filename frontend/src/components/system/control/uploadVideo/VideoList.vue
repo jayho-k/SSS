@@ -17,8 +17,8 @@
   <div style="display:flex;">
   <div style="width: 28px;"><span v-if="uploadStore.analysis_url_list[D_i]['fire']" @click="loading_video(D_i, 'fire')" class="material-symbols-outlined hoverR">local_fire_department</span></div>
     
-  <div style="width: 28px;"><span v-if="uploadStore.analysis_url_list[D_i]['mia']" @click="loading_video(D_i, 'mia')" class="material-symbols-outlined hoverY">face</span></div>
-  <div style="width: 28px;"><span v-if="uploadStore.analysis_url_list[D_i]['safety']" @click="loading_video(D_i, 'safety')" class="material-symbols-outlined hoverR">sports_kabaddi</span></div>
+  <div style="width: 28px;"><span v-if="D_i == 3" @click="loading_video(D_i, 'mia')" class="material-symbols-outlined hoverY">face</span></div>
+  <div style="width: 28px;"><span v-if="D_i == 5" @click="loading_video(D_i, 'safety')" class="material-symbols-outlined hoverR">sports_kabaddi</span></div>
     </div>
   </div>
   </div>
