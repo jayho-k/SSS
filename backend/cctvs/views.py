@@ -380,7 +380,7 @@ def upload(request):
         video_name = str(video.video_file)
         _,_, res = video_name.split("/")
         file_name, _ = res.split(".") 
-        file = FileWrapper(open(f'media/track/exp/{file_name}.mp4', mode='rb'))
+        # file = FileWrapper(open(f'media/track/exp/{file_name}.mp4', mode='rb'))
         print('ddddddddddddddddddddd', file)
         # file = FileWrapper(open(f'media/video/20220930/{res}', mode='rb'))
 
