@@ -11,6 +11,8 @@ RUN pip install -r requirements.txt
 RUN mim install mmcv-full
 RUN mim install mmdet
 
+RUN git clone https://github.com/open-mmlab/mmaction2.git
+
 WORKDIR /jenkins_home/workspace/b302/backend/mmaction2
 RUN pip install -e .
 
