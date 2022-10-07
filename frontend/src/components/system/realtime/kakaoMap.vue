@@ -45,7 +45,7 @@ export default {
 			const container = document.getElementById("map")
       
 			const options = {
-				center: new kakao.maps.LatLng(33.450701, 126.570667),
+				center: new kakao.maps.LatLng(36.3536803010019, 127.34157932229512),
 				level: 5,
 			} 
       if (navigator.geolocation) {
