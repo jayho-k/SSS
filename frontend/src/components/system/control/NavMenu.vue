@@ -1,6 +1,6 @@
 <template>
   <div class="NavMenuBox navMetal">
-    <div class="mia_modal" v-if="miaStore.is_mia_img_modal"><img class="mia_modal_img"  :src="`${serverURL}${miaStore.modal_mia_img}`"><span @click="toggle_modal" class="material-symbols-outlined closeButton">
+    <div class="mia_modal" v-if="miaStore.is_mia_img_modal"><img class="mia_modal_img"  :src="`${serverURL}/api${miaStore.modal_mia_img}`"><span @click="toggle_modal" class="material-symbols-outlined closeButton">
 close
 </span></div>
     <router-link class="cursor navItem" to="/cctv"><span class="material-symbols-outlined">photo_camera</span></router-link>
